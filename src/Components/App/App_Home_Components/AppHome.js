@@ -1,6 +1,7 @@
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "../../../Style/theme";
+import { Link } from "react-router-dom";
 
 // theme 파일 폰트 적용 방법
 const Header1 = styled.div`
@@ -15,6 +16,9 @@ const AppHome = () => {
   return (
     <ThemeProvider theme={theme}>
       <Header1>홈 모바일 페이지</Header1>
+      <Link to="/about">
+        소개 페이지
+      </Link>
     </ThemeProvider>
   );
 };
