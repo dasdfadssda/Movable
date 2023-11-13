@@ -15,5 +15,29 @@
    npm start
    ```
 ## 프로젝트 파일 개요
-
+📦src
+ ┣ 📂API
+ ┣ 📂Assets
+ ┣ 📂Components
+ ┃ ┣ 📂App
+ ┃ ┃ ┣ 📂App_About_Components
+ ┃ ┃ ┃ ┗ 📜AppAbout.js
+ ┃ ┃ ┗ 📂App_Home_Components
+ ┃ ┃ ┃ ┗ 📜AppHome.js
+ ┃ ┗ 📂Web
+ ┃ ┃ ┣ 📂Web_About_Components
+ ┃ ┃ ┃ ┗ 📜WebAbout.js
+ ┃ ┃ ┗ 📂Web_Home_Components
+ ┃ ┃ ┃ ┗ 📜Webhome.js
+ ┣ 📂Page
+ ┃ ┣ 📜AboutPage.js
+ ┃ ┗ 📜HomePage.js
+ ┣ 📂Style
+ ┃ ┗ 📜theme.js
+ ┣ 📂Util
+ ┣ 📂contexts
+ ┃ ┗ 📜ThemeContext.js.js
+ ┣ 📜App.js
+ ┣ 📜ScrollToTop.js
+ ┗ 📜index.js
 
