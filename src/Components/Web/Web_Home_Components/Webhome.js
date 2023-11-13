@@ -3,7 +3,7 @@ import styled, { ThemeProvider } from "styled-components";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../../contexts/ThemeContext.js"; // Context APi 적용
 
-// theme 파일 폰트 적용 방법
+// theme 파일 폰트 적용 방법 + style-components 사용
 const Header1 = styled.div`
   font-size: ${(props) => props.theme.Web_fontSizes.Header1};
   font-weight: ${(props) => props.theme.fontWeights.Header1};

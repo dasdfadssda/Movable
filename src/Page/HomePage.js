@@ -14,7 +14,7 @@ const HomePage = () => {
         </div>
       ) : (
         <div>
-            <WebHome/>
+          <WebHome />
         </div>
       )}
     </>
