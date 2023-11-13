@@ -4,7 +4,7 @@ import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
+  // <React.StrictMode> // 개발자 도구 제거 
     <App />
-  </React.StrictMode>
+  // </React.StrictMode>
 );
