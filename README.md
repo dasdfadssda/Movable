@@ -15,29 +15,29 @@
    npm start
    ```
 ## 프로젝트 파일 개요
-📦src
- ┣ 📂API
- ┣ 📂Assets
- ┣ 📂Components
- ┃ ┣ 📂App
- ┃ ┃ ┣ 📂App_About_Components
- ┃ ┃ ┃ ┗ 📜AppAbout.js
- ┃ ┃ ┗ 📂App_Home_Components
- ┃ ┃ ┃ ┗ 📜AppHome.js
- ┃ ┗ 📂Web
- ┃ ┃ ┣ 📂Web_About_Components
- ┃ ┃ ┃ ┗ 📜WebAbout.js
- ┃ ┃ ┗ 📂Web_Home_Components
- ┃ ┃ ┃ ┗ 📜Webhome.js
- ┣ 📂Page
- ┃ ┣ 📜AboutPage.js
- ┃ ┗ 📜HomePage.js
- ┣ 📂Style
- ┃ ┗ 📜theme.js
- ┣ 📂Util
- ┣ 📂contexts
- ┃ ┗ 📜ThemeContext.js.js
- ┣ 📜App.js
- ┣ 📜ScrollToTop.js
- ┗ 📜index.js
+📦src <br>
+ ┣ 📂API <br>
+ ┣ 📂Assets <br>
+ ┣ 📂Components <br>
+ ┃ ┣ 📂App <br>
+ ┃ ┃ ┣ 📂App_About_Components <br>
+ ┃ ┃ ┃ ┗ 📜AppAbout.js <br>
+ ┃ ┃ ┗ 📂App_Home_Components <br>
+ ┃ ┃ ┃ ┗ 📜AppHome.js <br>
+ ┃ ┗ 📂Web <br>
+ ┃ ┃ ┣ 📂Web_About_Components <br>
+ ┃ ┃ ┃ ┗ 📜WebAbout.js <br>
+ ┃ ┃ ┗ 📂Web_Home_Components <br>
+ ┃ ┃ ┃ ┗ 📜Webhome.js <br>
+ ┣ 📂Page <br>
+ ┃ ┣ 📜AboutPage.js <br>
+ ┃ ┗ 📜HomePage.js <br>
+ ┣ 📂Style <br>
+ ┃ ┗ 📜theme.js <br>
+ ┣ 📂Util <br>
+ ┣ 📂contexts <br>
+ ┃ ┗ 📜ThemeContext.js.js  <br>
+ ┣ 📜App.js  <br>
+ ┣ 📜ScrollToTop.js  <br>
+ ┗ 📜index.js  <br>
 
