@@ -15,6 +15,8 @@ git clone https://github.com/dasdfadssda/react_base_file.git
    npm start
    ```
 ## 프로젝트 파일 개요
+파일 구조에 대한 설명은 [여기](https://quddkflty.tistory.com/67)를 클릭해주세요.<br>
+<br>
 📦src <br>
  ┣ 📂API <br>
  ┣ 📂Assets <br>
