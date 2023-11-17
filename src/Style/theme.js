@@ -3,7 +3,6 @@ import { createGlobalStyle } from "styled-components";
 // GlobalStyle을 생성 => 폰트 적용
 export const GlobalStyle = createGlobalStyle`
 
-// 웹폰트 적용 (내장 폰트를 적용할 경우 개발 환경에 따라 적용이 안되는 경우가 있음)
 @font-face {
   font-family: 'Pretendard';
   font-weight: 100;
@@ -106,6 +105,8 @@ export const GlobalStyle = createGlobalStyle`
 
   body{
       font-family: "Pretendard";
+      margin: 0px;
+      padding: 0px;
    }
 
 `;

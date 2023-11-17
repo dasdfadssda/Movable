@@ -8,7 +8,6 @@ import { theme } from "./Style/theme";
 
 function App() {
 
-
   return (
     <ThemeProvider theme={theme}>
     <Router>

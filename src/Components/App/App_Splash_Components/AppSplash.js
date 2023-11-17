@@ -12,10 +12,19 @@ const Header1 = styled.div`
   font-family: "Pretendard";
 `;
 
+const Div = styled.div`
+  width: 100%;
+  background-color: red;
+  height: 100vh;
+  overflow-y: hidden;
+`;
+
 const AppSpash = () => {
   return (
     <ThemeProvider theme={theme}>
-      <Header1>스플래시 화면 모바일 페이지</Header1>
+      <Div>
+          스플레쉬 하면
+      </Div>
     </ThemeProvider>
   );
 };
