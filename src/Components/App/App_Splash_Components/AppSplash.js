@@ -12,15 +12,12 @@ const Header1 = styled.div`
   font-family: "Pretendard";
 `;
 
-const AppAbout = () => {
+const AppSpash = () => {
   return (
     <ThemeProvider theme={theme}>
-      <Header1>소개 모바일 페이지</Header1>
-      <Link to="/">
-        홈 페이지
-      </Link>
+      <Header1>스플래시 화면 모바일 페이지</Header1>
     </ThemeProvider>
   );
 };
 
-export default AppAbout;
+export default AppSpash;

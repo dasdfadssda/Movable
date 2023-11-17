@@ -8,24 +8,19 @@ const Header1 = styled.div`
   font-size: ${(props) => props.theme.Web_fontSizes.Header1};
   font-weight: ${(props) => props.theme.fontWeights.Header1};
   line-height: ${(props) => props.theme.LineHeight.Header1};
-  color: ${(props) => props.theme.colors.secondary};
+  color: ${(props) => props.theme.colors.primary};
   font-family: "Pretendard";
 `;
 
-const AppHome = () => {
+const AppMap = () => {
   return (
     <ThemeProvider theme={theme}>
-      <Header1>홈 모바일 페이지</Header1>
-     <div>
-     <Link to="/Map">
-        지도 페이지
-      </Link>
-     </div>
-      <Link to="/Route">
-        경로 페이지
+      <Header1>지도 모바일 페이지</Header1>
+      <Link to="/">
+        홈 페이지
       </Link>
     </ThemeProvider>
   );
 };
 
-export default AppHome;
+export default AppMap;
