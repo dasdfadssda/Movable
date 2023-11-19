@@ -24,7 +24,7 @@ const AppHome = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      {!loading ? (
+      {loading ? (
         <AppSpash/>
       ) : (
         <div>
