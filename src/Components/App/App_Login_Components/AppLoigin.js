@@ -1,10 +1,10 @@
 import React from "react";
 import KakaoLogin from "react-kakao-login";
-import { dbService } from "../fbase"; // fbase.js에서 dbService 가져오기
+import { dbService } from "../../../fbase"; // fbase.js에서 dbService 가져오기
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
-function LoginPage() {
+function AppLoginPage() {
   const navigate = useNavigate();
   const kakaoClientId = process.env.REACT_APP_KAKAO_CLIENT_ID;
 
@@ -53,10 +53,9 @@ function LoginPage() {
          margin: "300px"
       }}
       >
-asdf
       </div>
     </div>
   );
 }
 
-export default LoginPage;
+export default AppLoginPage;

@@ -4,6 +4,7 @@ import HomePage from "./Page/HomePage";
 import ScrollToTop from "./ScrollToTop";
 import { ThemeProvider } from "./contexts/ThemeContext.js";
 import { theme } from "./Style/theme";
+import AppLoginPage from "./Components/App/App_Login_Components/AppLoigin";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/Map" element={<MapPage />} />
           <Route path="/Route" element={<HomePage />} />
+          <Route path="/Login" element={<AppLoginPage />} />
         </Routes>
       </Router>
     </ThemeProvider>
