@@ -5,6 +5,7 @@ import ScrollToTop from "./ScrollToTop";
 import { ThemeProvider } from "./contexts/ThemeContext.js";
 import { theme } from "./Style/theme";
 import AppLoginPage from "./Components/App/App_Login_Components/AppLoigin";
+import RoutePage from "./Page/RoutePage";
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
           {/* 기본 화면 설정 */}
           <Route path="/" element={<HomePage />} />
           <Route path="/Map" element={<MapPage />} />
-          <Route path="/Route" element={<HomePage />} />
+          <Route path="/Route" element={<RoutePage />} />
           <Route path="/Login" element={<AppLoginPage />} />
         </Routes>
       </Router>
