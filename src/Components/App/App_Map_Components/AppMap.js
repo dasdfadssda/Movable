@@ -11,8 +11,8 @@ import styled, { ThemeProvider } from "styled-components";
 import { theme } from "../../../Style/theme";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import currentLocation from "../../../assets/img/currentPosition.svg";
-import ActivePicker from "../../../assets/img/_Picker=장애인 가능.png";
+import currentLocation from "../../../Assets/img/currentPosition.svg";
+import ActivePicker from "../../../Assets/img/_Picker=장애인 가능.png";
 
 // theme 파일 폰트 적용 방법 + style-components 사용
 const Header1 = styled.div`
