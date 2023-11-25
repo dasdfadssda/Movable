@@ -5,14 +5,15 @@ import {
   Overlay,
   Marker,
   useMap,
+  Polygon,
 } from "react-naver-maps";
 import React, { useState, useCallback, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "../../../Style/theme";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import currentLocation from "../../../Assets/img/currentPosition.svg";
-import ActivePicker from "../../../Assets/img/_Picker=장애인 가능.png";
+import currentLocation from "../../../assets/img/currentPosition.svg";
+import ActivePicker from "../../../assets/img/_Picker=장애인 가능.png";
 
 // theme 파일 폰트 적용 방법 + style-components 사용
 const Header1 = styled.div`
@@ -26,10 +27,9 @@ const Header1 = styled.div`
 const AppMap = () => {
   const NAVER_API_KEY = process.env.REACT_APP_NAVER_MAP_API_KEY;
   const NAVER_ID = process.env.REACT_APP_NAVER_ID;
-  const navermaps = useNavermaps();
-  const [currentPosition, setCurrentPosition] = useState(null);
-  const [myLocation, setMyLocation] = useState("");
+  const navermaps = window.naver.maps;
   const naverMap = useMap();
+  const [currentPosition, setCurrentPosition] = useState(null);
   const [markers, setMarkers] = useState([]);
 
   const handleZoomChanged = useCallback((zoom) => {
@@ -37,50 +37,30 @@ const AppMap = () => {
   }, []);
 
   // 현재 위치 받아오기
-  const handleCurrentLocationClick = useCallback(() => {
+  const handleCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const newPosition = new navermaps.LatLng(
-          position.coords.latitude,
-          position.coords.longitude
-        );
-        setCurrentPosition(newPosition);
-        setMyLocation("");
-      });
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const newPosition = new navermaps.LatLng(
+            position.coords.latitude,
+            position.coords.longitude
+          );
+          setCurrentPosition(newPosition);
+          console.log("My current location: ", currentPosition);
+        },
+        (error) => {
+          console.error("Error getting current position:", error);
+          window.alert("현재 위치를 찾을 수 없습니다.");
+        }
+      );
     } else {
-      window.alert("현재 위치를 찾을 수 없습니다.");
+      window.alert("브라우저가 위치 정보를 지원하지 않습니다.");
     }
   }, [navermaps]);
 
   useEffect(() => {
     // 페이지 로딩 시에 현재 위치 받아오기
-    handleCurrentLocationClick();
-  }, []); // 빈 배열을 전달하여 한 번만 실행되도록 함
-
-  useEffect(() => {
-    if (typeof myLocation !== "string") {
-      const currentPosition = new navermaps.LatLng(
-        myLocation.latitude,
-        myLocation.longitude
-      );
-      setCurrentPosition(currentPosition);
-    }
-  }, [myLocation]);
-
-  // 현재 위치 업데이트
-  const updateCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const newPosition = new navermaps.LatLng(
-          position.coords.latitude,
-          position.coords.longitude
-        );
-        setCurrentPosition(newPosition);
-        setMyLocation("");
-      });
-    } else {
-      window.alert("현재 위치를 찾을 수 없습니다.");
-    }
+    handleCurrentLocation();
     // 무장애 여행 정보 API 호출
     axios
       .get(dataForbstacleApi)
@@ -97,7 +77,8 @@ const AppMap = () => {
       .catch((error) => {
         console.error("Error fetching data from the API", error);
       });
-  };
+  }, [handleCurrentLocation, navermaps, dataForbstacleApi]); // 빈 배열을 전달하여 한 번만 실행되도록 함
+
   return (
     <ThemeProvider theme={theme}>
       <Header1>지도 모바일 페이지</Header1>
@@ -120,7 +101,7 @@ const AppMap = () => {
           <img
             src={currentLocation}
             alt="Current Location"
-            onClick={updateCurrentLocation}
+            //onClick={handleMoveToCurrentLocation}
             style={{ cursor: "pointer" }}
           />
         </div>

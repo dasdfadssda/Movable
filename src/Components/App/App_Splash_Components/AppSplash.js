@@ -2,7 +2,7 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "../../../Style/theme";
 // import { Link } from "react-router-dom";
-import backgroundImage from "../../../Assets/Splash/SplashScreen.png";
+import backgroundImage from "../../../assets/Splash/SplashScreen.png";
 
 // theme 파일 폰트 적용 방법 + style-components 사용
 const Header1 = styled.div`
@@ -44,7 +44,7 @@ const AppSpash = () => {
       <Div>
         <LogoDiv>
           <Logo
-            src={require("../../../Assets/Splash/Splash_Logo.png")}
+            src={require("../../../assets/Splash/Splash_Logo.png")}
             alt="로고"
           />
         </LogoDiv>
