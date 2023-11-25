@@ -3,6 +3,7 @@ const axios = require('axios');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { OpenAIAPIKey, OpenAI } = require('openai');
+require('dotenv').config();
 
 const app = express();
 const port = 3001;
@@ -11,7 +12,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 const openai = new OpenAI({
-  apiKey: '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',
+  apiKey: process.env.REACT_APP_OPEN_AI_KEY,
 });
 
 // 대기 시간을 적용하는 함수
@@ -67,7 +68,7 @@ app.post('/calculateDistance', async (req, res) => {
       `https://naveropenapi.apigw.ntruss.com/map-direction/v1/driving?start=${startLongitude},${startLatitude}&goal=${endLongitude},${endLatitude}&option=trafast`,
       {
         headers: {
-          'X-NCP-APIGW-API-KEY-ID': 'xcwdvzvlov',
+          'X-NCP-APIGW-API-KEY-ID': process.env.REACT_APP_NAVER_ID,
           'X-NCP-APIGW-API-KEY': '08pJN0ezMAvmyi7R6pbw6KoXN0yTDvcZPd59tM5u',
         },
       }
