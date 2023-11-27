@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { OpenAIAPIKey, OpenAI } = require('openai');
+const { OpenAI } = require('openai');
 require('dotenv').config();
 
 const openai = new OpenAI({

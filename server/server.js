@@ -2,7 +2,7 @@ const express = require('express');
 const axios = require('axios');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const { OpenAIAPIKey, OpenAI } = require('openai');
+const { OpenAI } = require('openai');
 require('dotenv').config();
 
 const app = express();
