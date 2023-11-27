@@ -6,6 +6,7 @@ import { ThemeProvider } from "./contexts/ThemeContext.js";
 import { theme } from "./Style/theme";
 import AppLoginPage from "./Components/App/App_Login_Components/AppLoigin";
 import RoutePage from "./Page/RoutePage";
+import AppOpenAI from "./Components/App/App_AI_Components/OpenAI.js";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/Map" element={<MapPage />} />
           <Route path="/Route" element={<RoutePage />} />
           <Route path="/Login" element={<AppLoginPage />} />
+          <Route path="/AppOpenAI" element={<AppOpenAI />} />
         </Routes>
       </Router>
     </ThemeProvider>

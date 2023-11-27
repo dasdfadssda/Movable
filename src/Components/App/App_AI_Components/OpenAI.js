@@ -14,16 +14,16 @@ const Header1 = styled.div`
 const Div = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: yellow;
+  background-color: green;
   height: 100vh;
   width: 100%;
 `;
 
-const AppRoute = () => {
+const AppOpenAI = () => {
   return (
     <ThemeProvider theme={theme}>
       <Div>
-        <Header1>경로 모바일 페이지</Header1>
+        <Header1>AppOpenAI 모바일 페이지</Header1>
         <Link to="/">홈 페이지</Link>
         asdf
       </Div>
@@ -31,4 +31,4 @@ const AppRoute = () => {
   );
 };
 
-export default AppRoute;
+export default AppOpenAI;

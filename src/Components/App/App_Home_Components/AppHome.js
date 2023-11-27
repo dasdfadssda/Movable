@@ -25,7 +25,7 @@ const AppHome = () => {
   return (
     <ThemeProvider theme={theme}>
       {loading ? (
-        <AppSpash/>
+        <AppSpash />
       ) : (
         <div>
           <Header1>홈 모바일 페이지</Header1>
@@ -33,6 +33,9 @@ const AppHome = () => {
             <Link to="/Map">지도 페이지</Link>
           </div>
           <Link to="/Route">경로 페이지</Link>
+          <div>
+            <Link to="/AppOpenAI">ai 페이지</Link>
+          </div>
         </div>
       )}
     </ThemeProvider>
