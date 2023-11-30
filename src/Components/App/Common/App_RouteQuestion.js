@@ -4,10 +4,11 @@ import { theme } from "../../../Style/theme";
 
 const Div = styled.div`
   display: flex;
-  flex-direction: column;
   background-color: #fff;
-  width: 100%;
+  width: 94%;
   align-items: center;
+  justify-items: flex-start;
+  margin-top: 40px;
 `;
 
 const Header2 = styled.div`
@@ -16,6 +17,12 @@ const Header2 = styled.div`
   line-height: ${(props) => props.theme.LineHeight.Header2};
   color: ${(props) => props.theme.colors.black_70};
   font-family: "Pretendard";
+`;
+
+const LocationIcon = styled.img`
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
 `;
 
 const AppQuestion = ({ num }) => {
@@ -31,6 +38,9 @@ const AppQuestion = ({ num }) => {
   return (
     <ThemeProvider theme={theme}>
       <Div>
+        <LocationIcon
+          src={require("../../../Assets/Route/Location_Icon.png")}
+        />
         <Header2>{title}</Header2>
       </Div>
     </ThemeProvider>
