@@ -6,6 +6,8 @@ import ProgressComponent from "./Common/App_RouteTaskBar";
 import AppQuestion from "./Common/App_RouteQuestion";
 import RouteTask1 from "./AppRoute_Task1";
 import RouteTask2 from "./AppRoute_Task2";
+import RouteTask3 from "./AppRoute_Task3";
+import RouteTask4 from "./AppRoute_Task4";
 
 const Div = styled.div`
   display: flex;
@@ -14,11 +16,19 @@ const Div = styled.div`
   height: 100vh;
   width: 100%;
   align-items: center;
+  justify-content: space-between;
+`;
+
+const PartDiv = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const NextButton = styled.button`
   display: flex;
-  width: 95%;
+  width: 94%;
   padding: 10px 150px;
   justify-content: center;
   align-items: center;
@@ -31,29 +41,62 @@ const NextButton = styled.button`
   font-weight: ${(props) => props.theme.fontWeights.Body3};
   line-height: ${(props) => props.theme.LineHeight.Body3};
   color: ${(props) => props.theme.colors.Primary_pink100};
-  margin-top: 278px;
+  margin-bottom: 32px;
 `;
 
 const AppRoute = () => {
   const [step, setStep] = useState(1);
-  const [selectedRoute, setSelectedRoute] = useState(null); // 추가
+  const [selectedRoutes, setSelectedRoutes] = useState([
+    null,
+    null,
+    null,
+    null,
+  ]); // 변경
 
   const handleRouteSelect = (route) => {
-    setSelectedRoute(route);
+    setSelectedRoutes((prevRoutes) => {
+      const newRoutes = [...prevRoutes];
+      newRoutes[step - 1] = route;
+      return newRoutes;
+    });
     console.log("선택한 내용은 :", route);
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Div>
-        <AppBarComponent title="추천 코스" route="/" />
-        <ProgressComponent step={step} />
-        <AppQuestion num={step} />
-        {step === 1 && <RouteTask1 onRouteSelect={handleRouteSelect} />}
-        {step === 2 && <RouteTask2 onRouteSelect={handleRouteSelect} />}
+        <PartDiv>
+          <AppBarComponent title="추천 코스" route="/" />
+          <ProgressComponent step={step} />
+          {step < 5 && <AppQuestion num={step} />}
+          {step === 1 && (
+            <RouteTask1
+              onRouteSelect={handleRouteSelect}
+              selectedRoute={selectedRoutes[0]}
+            />
+          )}
+          {step === 2 && (
+            <RouteTask2
+              onRouteSelect={handleRouteSelect}
+              selectedRoute={selectedRoutes[1]}
+            />
+          )}
+          {step === 3 && (
+            <RouteTask3
+              onRouteSelect={handleRouteSelect}
+              selectedRoute={selectedRoutes[2]}
+            />
+          )}
+          {step === 4 && (
+            <RouteTask4
+              onRouteSelect={handleRouteSelect}
+              selectedRoute={selectedRoutes[3]}
+            />
+          )}
+        </PartDiv>
         <NextButton
-          disabled={selectedRoute === null}
-          onClick={() => setStep((step) => step + 1)}
+          disabled={selectedRoutes[step - 1] === null}
+          onClick={() => setStep((prevStep) => prevStep + 1)}
         >
           다음
         </NextButton>
