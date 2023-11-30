@@ -1,8 +1,8 @@
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { theme } from "../../../Style/theme";
-import backButtonImage from "../../../Assets/Route/Cancel_Icon.png";
+import { theme } from "../../../../Style/theme";
+import backButtonImage from "../../../../Assets/Route/Cancel_Icon.png";
 
 const AppBar = styled.div`
   display: flex;

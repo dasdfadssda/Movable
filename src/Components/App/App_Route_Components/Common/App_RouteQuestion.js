@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
-import { theme } from "../../../Style/theme";
+import { theme } from "../../../../Style/theme";
 
 const Div = styled.div`
   display: flex;
@@ -39,7 +39,7 @@ const AppQuestion = ({ num }) => {
     <ThemeProvider theme={theme}>
       <Div>
         <LocationIcon
-          src={require("../../../Assets/Route/Location_Icon.png")}
+          src={require("../../../../Assets/Route/Location_Icon.png")}
         />
         <Header2>{title}</Header2>
       </Div>
