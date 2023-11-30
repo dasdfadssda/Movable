@@ -34,13 +34,13 @@ const ProgressComponent = ({ step }) => {
   return (
     <ThemeProvider theme={theme}>
       <ProgressBar>
-        <Circle active={(step = 1)} />
+        <Circle active={(step <= 0)} />
+        <Line />
+        <Circle active={step <= 1} />
         <Line />
         <Circle active={step <= 2} />
         <Line />
         <Circle active={step <= 3} />
-        <Line />
-        <Circle active={step <= 4} />
       </ProgressBar>
     </ThemeProvider>
   );

@@ -33,7 +33,7 @@ const AppQuestion = ({ num }) => {
     "어떤 유형의 액티비티를 원하세요?",
   ];
 
-  const title = questions[num];
+  const title = questions[num - 1];
 
   return (
     <ThemeProvider theme={theme}>
