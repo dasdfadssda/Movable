@@ -1,8 +1,8 @@
 import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { theme } from "../../Style/theme";
-import backButtonImage from "../../Assets/Route/Cancel_Icon.png";
+import { theme } from "../../../Style/theme";
+import backButtonImage from "../../../Assets/Route/Cancel_Icon.png";
 
 const AppBar = styled.div`
   display: flex;
@@ -10,7 +10,7 @@ const AppBar = styled.div`
   align-items: center;
   background-color: white;
   height: 36px;
-  width: 100%;
+  width: 96%;
   margin-bottom: 29px;
   margin-top: 12px;
 `;

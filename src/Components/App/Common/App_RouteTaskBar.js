@@ -1,12 +1,12 @@
 import React from "react";
 import styled, { css , ThemeProvider} from "styled-components";
-import { theme } from "../../Style/theme";
+import { theme } from "../../../Style/theme";
 
 const ProgressBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 98%;
+  width: 92%;
 `;
 
 const Circle = styled.div`
@@ -34,13 +34,13 @@ const ProgressComponent = ({ step }) => {
   return (
     <ThemeProvider theme={theme}>
     <ProgressBar>
-      <Circle active={step != 1} />
+      <Circle active={step !== 1} />
       <Line />
-      <Circle active={step != 2} />
+      <Circle active={step !== 2} />
       <Line />
-      <Circle active={step != 3} />
+      <Circle active={step !== 3} />
       <Line />
-      <Circle active={step != 4} />
+      <Circle active={step !== 4} />
     </ProgressBar>
     </ThemeProvider>
   );
