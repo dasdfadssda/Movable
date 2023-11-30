@@ -113,15 +113,15 @@ export const GlobalStyle = createGlobalStyle`
 
 export const theme = {
   colors: {
-    Main: "#ED685A",
-    Sub1: "#F7D7D2",
-    Sub2: "#FFF7F5",
-    White: "#FFF",
+    Primary_pink100: "#ED685A",
+    Primary_pink50: "#F7D7D2",
+    Primary_pink30: "#FFF7F5",
+    White: "#FFFFFF",
     black_30: "#E3E3E3",
     black_50: "#A5A5A5",
     black_70: "#5B5B5B",
     black_90: "#1F1F1F",
-    black_100: "#000"
+    black_100: "#000000"
   },
   Web_fontSizes: {
     Header1: "20px",
