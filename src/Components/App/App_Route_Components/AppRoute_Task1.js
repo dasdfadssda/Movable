@@ -3,7 +3,7 @@ import styled from "styled-components";
 import BusanImg from "../../../Assets/Route/Busan_Text.png";
 import DajeonImg from "../../../Assets/Route/Dajeon_Text.png";
 import InCheonImg from "../../../Assets/Route/InCheon_Text.png";
-import SeoulImg from "../../../Assets/Route/Seoul_Text.png";
+import Gwangwon from "../../../Assets/Route/강원.png";
 import Jeju from "../../../Assets/Route/Jeju_Text.png";
 import Jeounju from "../../../Assets/Route/Jeonju_Text.png";
 
@@ -51,7 +51,7 @@ const Img = styled.img`
 `;
 const RouteTask1 = ({ onRouteSelect }) => { 
   const [selectedBtn, setSelectedBtn] = useState(null);
-  const imageUrls = [BusanImg, DajeonImg, InCheonImg, SeoulImg, Jeounju, Jeju];
+  const imageUrls = [BusanImg, Gwangwon, Jeju, InCheonImg, Jeounju, DajeonImg];
 
   const handleClick = (index) => { 
     setSelectedBtn(index + 1);
