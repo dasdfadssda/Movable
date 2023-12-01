@@ -9,7 +9,7 @@ import RouteTask2 from "./AppRoute_Task2";
 import RouteTask3 from "./AppRoute_Task3";
 import RouteTask4 from "./AppRoute_Task4";
 import AppLoading from "./AppLoading";
-import axios from 'axios';
+import { askOpenAI } from "../../../Api/RouteAPI";
 
 const Div = styled.div`
   display: flex;
@@ -60,11 +60,6 @@ const AppRoute = () => {
     null,
   ]);
 
-  const place = ["부산", "강원", "제주", "인천", "전주", "대전"];
-  const Schedule = ["당일치기", "1박2일", "2박3일"];
-  const disable = ["시각장애", "청각장애", "지체장애", "노약자"];
-  const active = ["문화시설", "축제공연", "자연휴양", "레저스포츠"];
-
   const handleRouteSelect = (route) => {
     setSelectedRoutes((prevRoutes) => {
       const newRoutes = [...prevRoutes];
@@ -110,7 +105,13 @@ const AppRoute = () => {
         </PartDiv>
         <NextButton
           disabled={selectedRoutes[step - 1] === null}
-          onClick={() => setStep((prevStep) => prevStep + 1)}
+          onClick={async () => {
+            if (step === 4) {
+              const response = await askOpenAI(selectedRoutes);
+              console.log("입력 받은 대답 : ", response);
+            }
+            setStep((prevStep) => prevStep + 1);
+          }}
         >
           다음
         </NextButton>
