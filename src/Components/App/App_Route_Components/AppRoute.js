@@ -59,10 +59,6 @@ const AppRoute = () => {
   const disable = ["시각장애", '청각장애', '지체장애','노약자'];
   const active = ["문화시설", '축제공연', '자연휴양','레저스포츠'];
 
-
-
-
-
   const handleRouteSelect = (route) => {
     setSelectedRoutes((prevRoutes) => {
       const newRoutes = [...prevRoutes];
