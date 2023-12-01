@@ -36,13 +36,17 @@ const NextButton = styled.button`
   gap: 8px;
   border-radius: 4px;
   background: ${(props) =>
-    props.disabled ? props.theme.colors.black_30 : "var(--Primary_pink30, #fff7f5)"};
+    props.disabled
+      ? props.theme.colors.black_30
+      : "var(--Primary_pink30, #fff7f5)"};
   border: none;
   font-size: ${(props) => props.theme.Web_fontSizes.Body3};
   font-weight: ${(props) => props.theme.fontWeights.Body3};
   line-height: ${(props) => props.theme.LineHeight.Body3};
   color: ${(props) =>
-    props.disabled ? props.theme.colors.black_50 : props.theme.colors.Primary_pink100 };
+    props.disabled
+      ? props.theme.colors.black_50
+      : props.theme.colors.Primary_pink100};
   margin-bottom: 32px;
 `;
 
@@ -53,12 +57,12 @@ const AppRoute = () => {
     null,
     null,
     null,
-  ]); 
+  ]);
 
-  const place = ["부산", '강원', '제주', '인천', '전주', '대전'];
-  const Schedule = ["당일치기", '1박2일', '2박3일'];
-  const disable = ["시각장애", '청각장애', '지체장애','노약자'];
-  const active = ["문화시설", '축제공연', '자연휴양','레저스포츠'];
+  const place = ["부산", "강원", "제주", "인천", "전주", "대전"];
+  const Schedule = ["당일치기", "1박2일", "2박3일"];
+  const disable = ["시각장애", "청각장애", "지체장애", "노약자"];
+  const active = ["문화시설", "축제공연", "자연휴양", "레저스포츠"];
 
   const handleRouteSelect = (route) => {
     setSelectedRoutes((prevRoutes) => {
@@ -101,9 +105,7 @@ const AppRoute = () => {
               selectedRoute={selectedRoutes[3]}
             />
           )}
-           {step === 5 && (
-           <AppLoading/>
-          )}
+          {step === 5 && <AppLoading />}
         </PartDiv>
         <NextButton
           disabled={selectedRoutes[step - 1] === null}
