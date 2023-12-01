@@ -109,6 +109,7 @@ const AppRoute = () => {
             if (step === 4) {
               const response = await askOpenAI(selectedRoutes);
               console.log("입력 받은 대답 : ", response);
+              setStep((prevStep) => prevStep + 1);
             }
             setStep((prevStep) => prevStep + 1);
           }}
