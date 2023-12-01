@@ -66,6 +66,7 @@ const AppRoute = () => {
       return newRoutes;
     });
     console.log("선택한 내용은 :", route);
+    console.log("전체 선택 내용은 :", selectedRoutes);
   };
 
   return (
