@@ -52,7 +52,16 @@ const AppRoute = () => {
     null,
     null,
     null,
-  ]); // 변경
+  ]); 
+
+  const place = ["부산", '강원', '제주', '인천', '전주', '대전'];
+  const Schedule = ["당일치기", '1박2일', '2박3일'];
+  const disable = ["시각장애", '청각장애', '지체장애','노약자'];
+  const active = ["문화시설", '축제공연', '자연휴양','레저스포츠'];
+
+
+
+
 
   const handleRouteSelect = (route) => {
     setSelectedRoutes((prevRoutes) => {
