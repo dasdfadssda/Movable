@@ -36,12 +36,13 @@ const NextButton = styled.button`
   gap: 8px;
   border-radius: 4px;
   background: ${(props) =>
-    props.disabled ? "gray" : "var(--Primary_pink30, #fff7f5)"};
+    props.disabled ? props.theme.colors.black_30 : "var(--Primary_pink30, #fff7f5)"};
   border: none;
   font-size: ${(props) => props.theme.Web_fontSizes.Body3};
   font-weight: ${(props) => props.theme.fontWeights.Body3};
   line-height: ${(props) => props.theme.LineHeight.Body3};
-  color: ${(props) => props.theme.colors.Primary_pink100};
+  color: ${(props) =>
+    props.disabled ? props.theme.colors.black_50 : props.theme.colors.Primary_pink100 };
   margin-bottom: 32px;
 `;
 
