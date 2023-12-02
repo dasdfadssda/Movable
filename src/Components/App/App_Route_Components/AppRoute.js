@@ -118,12 +118,12 @@ const AppRoute = () => {
             onClick={async () => {
               setStep((prevStep) => prevStep + 1);
               console.log("현재 step: ", step);
-              // if (step === 4) {
-              //   const response = await askOpenAI(selectedRoutes);
-              //   console.log("입력 받은 대답 : ", response);
-              //   setAnswer(response.answer);
-              //   console.log("ai 연동: ", step);
-              // }
+              if (step === 4) {
+                const response = await askOpenAI(selectedRoutes);
+                console.log("입력 받은 대답 : ", response);
+                setAnswer(response.answer);
+                console.log("ai 연동: ", step);
+              }
             }}
           >
             다음
