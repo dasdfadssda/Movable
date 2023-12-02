@@ -24,6 +24,7 @@ export const askOpenAI = async (selectedRoutes) => {
   const disable = ["시각장애", "청각장애", "지체장애", "노약자"];
   const active = ["문화시설", "축제공연", "자연휴양", "레저스포츠"];
   const areaId = [6, 32, 39, 2, 37, 3]
+  const contentId = [14, 15, 12, 28];
 
   const placeData = await getPlaceData(areaId[selectedRoutes[0]-1]);
   const disableData = await getDisableData(placeData.contentid);
