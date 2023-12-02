@@ -18,14 +18,14 @@ const getEveningData = async (areaCode, contentTypeId) => {
   }
 };
 
-const getDisableData = async (contentId) => {
-  try {
-    const response = await axios.get(`https://apis.data.go.kr/B551011/KorWithService1/detailWithTour1?MobileOS=ETC&MobileApp=asdf&contentId=${contentId}&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D`);
-    return response.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
+// const getDisableData = async (contentId) => {
+//   try {
+//     const response = await axios.get(`https://apis.data.go.kr/B551011/KorWithService1/detailWithTour1?MobileOS=ETC&MobileApp=asdf&contentId=${contentId}&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D`);
+//     return response.data;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
 
 export const askOpenAI = async (selectedRoutes) => {
   const place = ["부산", "강원", "제주", "인천", "전주", "대전"];
