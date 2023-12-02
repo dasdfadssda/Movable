@@ -109,8 +109,8 @@ const AppRoute = () => {
               selectedRoute={selectedRoutes[3]}
             />
           )}
-          {step === 5 && <AppLoading answer={answer} />}
-          {step === 6 && <AnswerComponent />}
+          {step === 5 && <AppLoading />}
+          {step === 6 && <AnswerComponent answer={answer}/>}
         </PartDiv>
         <NextButton
           disabled={selectedRoutes[step - 1] === null}
