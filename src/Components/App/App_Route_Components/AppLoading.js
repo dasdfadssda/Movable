@@ -5,6 +5,7 @@ const Div = styled.div`
   display: flex;
   background-color: #fff;
   width: 100%;
+  height: 100%;
   align-items: center;
   justify-content: center;
   margin-top: 24px;

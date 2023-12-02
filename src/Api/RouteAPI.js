@@ -6,9 +6,10 @@ export const askOpenAI = async (selectedRoutes) => {
   const disable = ["시각장애", "청각장애", "지체장애", "노약자"];
   const active = ["문화시설", "축제공연", "자연휴양", "레저스포츠"];
 
-  const question = `${place[selectedRoutes[0]]}에서 ${Schedule[selectedRoutes[1]]}로 ${disable[selectedRoutes[2]]}가 있는 사람이 ${active[selectedRoutes[3]]}를 경험할 수 있는 여행 일정을 짜주세요.`;
+  const question = `${place[selectedRoutes[0]-1]}에서 ${Schedule[selectedRoutes[1]-1]}로 ${disable[selectedRoutes[2]-1]}가 있는 사람이 ${active[selectedRoutes[3]-1]}를 경험할 수 있는 여행 일정을 짜주세요.`;
 
   try {
+    console.log("서버 요청 start");
     const response = await axios.post('http://localhost:3001/ask', { question });
     return response.data;
   } catch (error) {

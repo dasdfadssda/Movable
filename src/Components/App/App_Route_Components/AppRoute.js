@@ -59,6 +59,9 @@ const AppRoute = () => {
     null,
     null,
   ]);
+  const [answer, setAnswer] = useState(null);
+
+  const AnswerComponent = ({ answer }) => <div>{answer}</div>;
 
   const handleRouteSelect = (route) => {
     setSelectedRoutes((prevRoutes) => {
@@ -101,17 +104,20 @@ const AppRoute = () => {
               selectedRoute={selectedRoutes[3]}
             />
           )}
-          {step === 5 && <AppLoading />}
+          {step === 5 &&
+            (answer ? <AnswerComponent answer={answer} /> : <AppLoading />)}
         </PartDiv>
         <NextButton
           disabled={selectedRoutes[step - 1] === null}
           onClick={async () => {
+            setStep((prevStep) => prevStep + 1);
+            console.log("현재 step: ", step);
             if (step === 4) {
               const response = await askOpenAI(selectedRoutes);
               console.log("입력 받은 대답 : ", response);
-              setStep((prevStep) => prevStep + 1);
+              setAnswer(response.answer);
+              console.log("ai 연동: ", step);
             }
-            setStep((prevStep) => prevStep + 1);
           }}
         >
           다음
