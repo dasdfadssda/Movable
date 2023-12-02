@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "../../../Style/theme";
 import AppBarComponent from "./Common/App_AppBar";
@@ -73,12 +73,18 @@ const AppRoute = () => {
     console.log("전체 선택 내용은 :", selectedRoutes);
   };
 
+  useEffect(() => {
+    if (answer) {
+      setStep((prevStep) => prevStep + 1);
+    }
+  }, [answer]);
+
   return (
     <ThemeProvider theme={theme}>
       <Div>
         <PartDiv>
           <AppBarComponent title="추천 코스" route="/" />
-          <ProgressComponent step={step} />
+          {step < 6 &&  <ProgressComponent step={step} /> }
           {step < 5 && <AppQuestion num={step} />}
           {step === 1 && (
             <RouteTask1
@@ -104,8 +110,8 @@ const AppRoute = () => {
               selectedRoute={selectedRoutes[3]}
             />
           )}
-          {step === 5 &&
-            (answer ? <AnswerComponent answer={answer} /> : <AppLoading />)}
+          {step === 5 && <AppLoading />}
+          {step === 6 && <AnswerComponent />}
         </PartDiv>
         <NextButton
           disabled={selectedRoutes[step - 1] === null}
