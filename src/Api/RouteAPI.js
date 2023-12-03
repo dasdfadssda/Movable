@@ -40,7 +40,7 @@ export const askOpenAI = async (selectedRoutes) => {
   // const disableData = await getDisableData(placeData.contentid); 
   const afternoonData = await getEveningData(areaId[selectedRoutes[0]-1], contentTypeId[selectedRoutes[3]-1]);
 
-  const question = `${place[selectedRoutes[0]-1]}에서 ${Schedule[selectedRoutes[1]-1]}로 ${disable[selectedRoutes[2]-1]}가 있는 사람이 ${active[selectedRoutes[3]-1]}를 경험할 수 있는 여행 일정을 짜주세요. 일정은 아침 일정 - 점심 식사 - 저녁 일정 - 저녁 식사 - 숙소 순으로 clientid만을 list로 만들어서 짜주세요. 이 때, 저녁 일정 정보는 ${afternoonData}을 기반으로 짜줘. 또한 야행 정보는 다음과 같습니다: ${placeData}.`;
+  const question = `${place[selectedRoutes[0]-1]}에서 ${Schedule[selectedRoutes[1]-1]}로 ${disable[selectedRoutes[2]-1]}가 있는 사람이 ${active[selectedRoutes[3]-1]}를 경험할 수 있는 여행 일정을 짜주세요. 일정은 아침 일정 - 점심 식사 - 저녁 일정 - 저녁 식사 - 숙소 순으로 clientid만을 list로 만들어서 짜주세요. 이 때, 저녁 일정 정보는 ${afternoonData}을 기반으로 짜줘. 또한 여행 정보는 다음과 같습니다: ${placeData}.`;
 
   try {
     console.log("서버 요청 start");
