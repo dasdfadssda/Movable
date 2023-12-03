@@ -22,6 +22,7 @@ import Cafe from "../../../Assets/Map/cafe.png";
 import Parking from "../../../Assets/Map/parking.png";
 import Hotel from "../../../Assets/Map/hotel.png";
 import Toilet from "../../../Assets/Map/toilet.png";
+import FindRoute from "../../../Assets/Map/FindRoute.png";
 import AppFindRoute from "./AppFindRoute.js";
 
 // theme 파일 폰트 적용 방법 + style-components 사용
@@ -34,10 +35,9 @@ const Header1 = styled.div`
 `;
 
 const SearchInput = styled.input`
-  width: 100%;
+  width: calc(50% - 4px);
   margin-right: 10px;
   border: none;
-  font-style: #a5a5a5;
   border-radius: 8px;
   padding: 10px 40px 10px 16px;
   background-image: url(${Search});
@@ -45,11 +45,14 @@ const SearchInput = styled.input`
   background-repeat: no-repeat;
   text-indent: 20px;
 
+  &::placeholder {
+    color: #a5a5a5;
+  }
   &:focus {
     background-image: none;
     background-position: -10px center;
     text-indent: 0;
-    width: 50%;
+    width: calc(50% - 8px);
   }
 `;
 const AppMap = () => {
@@ -109,22 +112,6 @@ const AppMap = () => {
     } else {
       window.alert("브라우저가 위치 정보를 지원하지 않습니다.");
     }
-    axios
-      .get(naverMapApi, {
-        headers: {
-          "X-Naver-Client-Id": NAVER_ID,
-          "X-Naver-Client-Secret": NAVER_API_KEY,
-        },
-      })
-      .then((response) => {
-        console.log("Search Results:", response.data.items);
-
-        // Here you can process the response data and extract the information you need
-        // For example, you can loop through response.data.items and print details like title, address, etc.
-      })
-      .catch((error) => {
-        console.error("Error fetching data from Naver Search API", error);
-      });
   }, [navermaps, setCurrentPosition]);
 
   const handleToCurrentPosition = () => {
@@ -157,53 +144,78 @@ const AppMap = () => {
         console.error("Error fetching data from the API", error);
       });
   }, [handleCurrentLocation, navermaps, dataForbstacleApi]);
-  const handleNavigateToFindRoute = () => {
-    navigate({ AppFindRoute });
+  const handleSearch = () => {
+    if (!searchQuery) {
+      alert("검색어를 입력해주세요.");
+      return;
+    }
+    axios
+      .get("/v1/search/local.json", {
+        headers: {
+          "X-Naver-Client-Id": NAVER_ID,
+          "X-Naver-Client-Secret": NAVER_API_KEY,
+        },
+        params: {
+          query: searchQuery,
+        },
+      })
+      .then((response) => {
+        const items = response.data.items;
+        const restaurants = items.filter((item) =>
+          item.category.includes("박물관")
+        );
+        console.log("박물관:", restaurants);
+      })
+      .catch((error) => {
+        console.error("Error fetching data from Naver Search API", error);
+      });
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <Link to="/">홈 페이지</Link>
       <MapDiv
         style={{
           position: "relative",
           width: "100%",
-          height: "600px",
+          height: "730px",
+          display: "flex",
+          backgroundColor: "#fff",
+          alignItems: "center",
         }}
         onInitialized={(map) => setNaverMap(map)}
       >
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            height: "48px",
-            padding: "10px",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
+        <SearchContainer>
           <SearchInput
             type="text"
             placeholder="어디로 가볼까요?"
             value={searchQuery}
             onChange={handleSearchChange}
-            style={{
-              width: "100%",
-              marginRight: "10px",
-              border: "none",
-              fontStyle: "#A5A5A5",
-              borderRadius: "8px",
-              padding: "10px 40px 10px 16px",
-            }}
           />
-        </div>
-
+          <FindRouteButton onClick={handleSearch} />
+        </SearchContainer>
+        <ChipContainer>
+          <Chip>
+            <img src={Restaurant} alt="Restaurant" />
+          </Chip>
+          <Chip>
+            <img src={Cafe} alt="Cafe" />
+          </Chip>
+          <Chip>
+            <img src={Parking} alt="Parking" />
+          </Chip>
+          <Chip>
+            <img src={Hotel} alt="Hotel" />
+          </Chip>
+          <Chip>
+            <img src={Toilet} alt="Toilet" />
+          </Chip>
+        </ChipContainer>
         <div
           style={{
             position: "absolute",
             left: 10,
             bottom: 10,
-            zIndex: 1000,
+            zIndex: 500,
           }}
         >
           <img
@@ -213,16 +225,6 @@ const AppMap = () => {
             alt="Current Location"
             style={{ cursor: "pointer" }}
           />
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            bottom: 10,
-            right: 10,
-            zIndex: 1000,
-          }}
-        >
-          <button onClick={handleNavigateToFindRoute}>경로 설정</button>
         </div>
         {currentPosition && (
           <NaverMap
@@ -259,7 +261,6 @@ const AppMap = () => {
             <SliderContent>
               <div>
                 <h3>{selectedMarkerInfo.title}</h3>
-                {/* Add more details or components as needed */}
               </div>
               <CloseButton onClick={handleSliderClose}>Close</CloseButton>
             </SliderContent>
@@ -272,8 +273,7 @@ const AppMap = () => {
 
 export default AppMap;
 const dataForbstacleApi =
-  "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=1000&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
-const naverMapApi = "https://openapi.naver.com/v1/search/local.json";
+  "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=500&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
 
 const Slider = styled.div`
   position: fixed;
@@ -284,13 +284,11 @@ const Slider = styled.div`
   padding: 20px;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
 `;
-
 const SliderContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
-
 const CloseButton = styled.button`
   background-color: #3498db;
   color: white;
@@ -298,4 +296,40 @@ const CloseButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+`;
+const ChipContainer = styled.div`
+  display: flex;
+  position: absolute;
+  align-items: center;
+  margin-top: 12px;
+  width: 50px;
+  top: 72px;
+  height: 25px;
+  margin-left: 16px;
+`;
+
+const Chip = styled.div`
+  margin-right: 4px;
+  cursor: pointer;
+`;
+const SearchContainer = styled.div`
+  position: absolute;
+  top: 0;
+  left: 6px;
+  right: 16px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  z-index: 1000;
+`;
+const FindRouteButton = styled.button`
+  width: 48px;
+  height: 48px;
+  cursor: pointer;
+  background: none;
+  background-image: url(${FindRoute});
+  background-size: cover;
+  border: none;
+  padding: 0;
+  margin-left: 8px;
 `;
