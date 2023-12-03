@@ -3,6 +3,8 @@ import styled, { ThemeProvider } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { theme } from "../../../../Style/theme";
 import backButtonImage from "../../../../Assets/Route/Cancel_Icon.png";
+import mapButtonImage from "../../../../Assets/Route/map.png";
+import shareButtonImage from "../../../../Assets/Route/share_Icon.png";
 
 const AppBar = styled.div`
   display: flex;
@@ -24,10 +26,10 @@ const Body6 = styled.div`
 `;
 
 const BackButton = styled.button`
-  background: url(${backButtonImage}) no-repeat center;
+  background: url(${(props) => props.ButtonImage}) no-repeat center;
   border: none;
-  width: 32px;
-  height: 32px;
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
   cursor: pointer;
 `;
 
@@ -35,7 +37,7 @@ const SizedBox = styled.div`
   width: 34px;
 `;
 
-const AppBarComponent = ({ title, route }) => {
+const AppBarComponent = ({ title, route, step }) => {
   const navigate = useNavigate();
 
   const goBack = () => {
@@ -44,11 +46,38 @@ const AppBarComponent = ({ title, route }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <AppBar>
-        <BackButton onClick={goBack} />
-        <Body6>{title}</Body6>
-        <SizedBox>ㅤㅤ</SizedBox>
-      </AppBar>
+      {step > 5 ? (
+        <>
+          <AppBar>
+            <BackButton
+              onClick={goBack}
+              ButtonImage={mapButtonImage}
+              width={24}
+              height={24}
+            />
+            <Body6>{title}</Body6>
+            <BackButton
+              onClick={goBack}
+              ButtonImage={shareButtonImage}
+              width={24}
+              height={24}
+            />
+          </AppBar>
+        </>
+      ) : (
+        <>
+          <AppBar>
+            <BackButton
+              onClick={goBack}
+              width={32}
+              height={32}
+              ButtonImage={backButtonImage}
+            />
+            <Body6>{title}</Body6>
+            <SizedBox>ㅤㅤ</SizedBox>
+          </AppBar>
+        </>
+      )}
     </ThemeProvider>
   );
 };
