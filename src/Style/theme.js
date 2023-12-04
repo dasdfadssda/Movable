@@ -123,16 +123,16 @@ export const theme = {
     black_90: "#1F1F1F",
     black_100: "#000000"
   },
-  Web_fontSizes: {
-    Header1: "20px",
-    Header2: "20px",
-    Header3: "24px",
-    Body1: "12px",
-    Body2: "14px",
-    Body3: "14px",
-    Body4: "16px",
-    Body5: "16px",
-    Body6: "16px",
+ Web_fontSizes: {
+    Header1: "1.333rem", // 20px / 16px / 375px = 0.01333333rem
+    Header2: "1.333rem", // 20px / 16px / 375px = 0.01333333rem
+    Header3: "1.6rem",   // 24px / 16px / 375px = 0.016rem
+    Body1: "0.8rem",     // 12px / 16px / 375px = 0.008rem
+    Body2: "0.9333rem",  // 14px / 16px / 375px = 0.00933333rem
+    Body3: "0.9333rem",  // 14px / 16px / 375px = 0.00933333rem
+    Body4: "1.0667rem",  // 16px / 16px / 375px = 0.01066667rem
+    Body5: "1.0667rem",  // 16px / 16px / 375px = 0.01066667rem
+    Body6: "1.0667rem",  // 16px / 16px / 375px = 0.01066667rem
   },
   fontWeights: {
     Header1: "600",
