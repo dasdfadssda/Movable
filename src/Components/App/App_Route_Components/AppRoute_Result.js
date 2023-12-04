@@ -6,6 +6,12 @@ import OneDay2Img from "../../../Assets/Route/도솔식당.png";
 import OneDay3Img from "../../../Assets/Route/비밀공간.png";
 import OneDay4Img from "../../../Assets/Route/카누체험.png";
 import OneDay5Img from "../../../Assets/Route/소바카게.png";
+import OneDay6Img from "../../../Assets/Route/숙소.png";
+import TwoDay1Img from "../../../Assets/Route/강원식물원.png";
+import TwoDay2Img from "../../../Assets/Route/왕가수라청.png";
+import TwoDay3Img from "../../../Assets/Route/갤러리오스.png";
+import TwoDay4Img from "../../../Assets/Route/알펜시아 리조트.png";
+import TwoDay5Img from "../../../Assets/Route/까치둥지.png";
 
 const AnswerComponent = ({ answer }) => {
   const [activeButton, setActiveButton] = useState("1");
@@ -69,6 +75,72 @@ const AnswerComponent = ({ answer }) => {
       difficulty: "상",
       difficultynum: 4.77,
     },
+    {
+      id: 6,
+      day: 1,
+      Category: "숙소",
+      Title: "00숙소",
+      position: "숙소",
+      Image: OneDay6Img,
+      time: "18분",
+      difficulty: "중",
+      difficultynum: 3.22,
+    },
+    {
+      id: 7,
+      day: 2,
+      Category: "관광 명소",
+      Title: "강원식물원",
+      position: "자연휴양",
+      Image: TwoDay1Img,
+      time: "15분",
+      difficulty: "하",
+      difficultynum: 4.80,
+    },
+    {
+      id: 2,
+      day: 1,
+      Category: "점심",
+      Title: "도솔마을",
+      position: "한식",
+      Image: TwoDay2Img,
+      time: "5분",
+      difficulty: "하",
+      difficultynum: 3.93,
+    },
+    {
+      id: 3,
+      day: 1,
+      Category: "카페",
+      Title: "비밀공간",
+      position: "카페",
+      Image: TwoDay3Img,
+      time: "1분",
+      difficulty: "중",
+      difficultynum: 4.43,
+    },
+    {
+      id: 4,
+      day: 1,
+      Category: "액티비티",
+      Title: "카누체험",
+      position: "레저 스포츠",
+      Image: TwoDay4Img,
+      time: "18분",
+      difficulty: "상",
+      difficultynum: 4.03,
+    },
+    {
+      id: 5,
+      day: 1,
+      Category: "저녁",
+      Title: "소바카게",
+      position: "일식",
+      Image: TwoDay5Img,
+      time: "18분",
+      difficulty: "상",
+      difficultynum: 4.77,
+    },
   ];
 
   const buttons = [];
@@ -106,43 +178,67 @@ const AnswerComponent = ({ answer }) => {
           />
           <ColumnDiv>
             <FlexDiv>
-              <Body1 color={theme.colors.black_70}>자동차</Body1>
-              <Body1 color={theme.colors.black_30}>
-                &nbsp;|&nbsp;{duringTime}
+              <Body1 color={theme.colors.black_70} top={-5}>
+                자동차
+              </Body1>
+              <Body1 color={theme.colors.black_30} top={-5}>
+                &nbsp;|&nbsp;
+                <ColorfulText color="#A5A5A5">{duringTime}</ColorfulText>
               </Body1>
             </FlexDiv>
             <PackageDiv>
-            {TravelPackage.map((item) => (
-              <PackageItem key={item.id}>
-                <TravelCategory>{item.Category}</TravelCategory>
-                <FlexDiv flex={"flex-start"}>
-                  <ImageDiv
-                    src={item.Image}
-                    alt={item.Title}
-                    width={110}
-                    height={70}
-                    left={-5}
-                  />
-                  <PackageInfo>
-                  <FlexDiv flex={"center"} bottom={5}>
-                    <TravelTitle>{item.Title}</TravelTitle>
-                    <TravelPosition> &nbsp;{item.position}</TravelPosition>
-                    </FlexDiv>
-                    <FlexDiv>
-                      <Body1 color={theme.colors.black_50}>
-                        난이도&nbsp;
-                      </Body1>
-                      <Body1 color={theme.colors.Primary_pink100}>
-                        {item.difficulty}&nbsp;
-                      </Body1>
-                      <Body1 color={"#E3E3E3"}>
-                       |&nbsp;
-                      </Body1>
-                    </FlexDiv>
-                  </PackageInfo>
-                </FlexDiv>
-              </PackageItem>
-            ))}
+              {TravelPackage.map((item) => (
+                <PackageItem key={item.id}>
+                  <TravelCategory>{item.Category}</TravelCategory>
+                  <FlexDiv flex={"flex-start"}>
+                    <ImageDiv
+                      src={item.Image}
+                      alt={item.Title}
+                      width={110}
+                      height={70}
+                      left={-5}
+                    />
+                    <PackageInfo>
+                      <FlexDiv flex={"center"} bottom={5}>
+                        <TravelTitle>{item.Title}</TravelTitle>
+                        <TravelPosition> &nbsp;{item.position}</TravelPosition>
+                      </FlexDiv>
+                      <FlexDiv flex={"flex-start"}>
+                        <Body1 color={theme.colors.black_50}>
+                          난이도&nbsp;
+                        </Body1>
+                        <Body1 color={theme.colors.Primary_pink100}>
+                          {item.difficulty}&nbsp;
+                        </Body1>
+                        <ImageDiv
+                          src={require("../../../Assets/Route/travelLine.png")}
+                          width={1.5}
+                          height={13}
+                          right={5}
+                          top={1.2}
+                        />
+                        <ImageDiv
+                          src={require("../../../Assets/Route/StarIcon.png")}
+                          width={14}
+                          height={14}
+                          right={4}
+                        />
+                        <TravelDifficultyNum>
+                          {item.difficultynum}
+                        </TravelDifficultyNum>
+                      </FlexDiv>
+                      <FlexDiv flex={"center"}>
+                        <TravelTime>
+                          {" "}
+                          <ColorfulText color="#5B5B5B">자동차</ColorfulText>
+                          <ColorfulText color="#E3E3E3">&nbsp;|&nbsp;</ColorfulText>
+                          <ColorfulText color="#A5A5A5">{item.time}</ColorfulText>
+                        </TravelTime>
+                      </FlexDiv>
+                    </PackageInfo>
+                  </FlexDiv>
+                </PackageItem>
+              ))}
             </PackageDiv>
           </ColumnDiv>
         </FlexDiv>
@@ -200,6 +296,7 @@ const ImageDiv = styled.img`
   height: ${(props) => props.height}px;
   margin-right: ${(props) => props.right}px;
   margin-left: ${(props) => props.left}px;
+  margin-top: ${(props) => props.top}px;
 `;
 
 const Body1 = styled.div`
@@ -208,7 +305,7 @@ const Body1 = styled.div`
   line-height: ${(props) => props.theme.LineHeight.Body1};
   color: ${(props) => props.color};
   font-family: "Pretendard";
-  margin-top: -5px;
+  margin-top: ${(props) => props.top}px;
 `;
 
 const Body2 = styled.div`
@@ -223,13 +320,12 @@ const Body2 = styled.div`
 const ColumnDiv = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: yellow;
   height: 100%;
   width: 100%;
 `;
 
 const PackageDiv = styled.div`
-margin-top: 30px;
+  margin-top: 30px;
 `;
 
 const PackageItem = styled.div`
@@ -240,38 +336,60 @@ const PackageItem = styled.div`
 `;
 
 const PackageInfo = styled.div`
-display: flex;
-flex-direction: column;
-align-items: flex-start;
-height: 100%;
-justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
+  justify-content: flex-start;
+  margin-left: 8px;
 `;
 
 const TravelCategory = styled.div`
-color: var(--black-70, #5B5B5B);
-font-family: 'Pretendard';
-font-size: 14px;
-font-style: normal;
-font-weight: 500;
-line-height: 140%; 
-`
+  color: var(--black-70, #5b5b5b);
+  font-family: "Pretendard";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+`;
 
 const TravelTitle = styled.div`
-color: var(--Primary_pink100, #ED685A);
-font-family: 'Pretendard';
-font-size: 14px;
-font-style: normal;
-font-weight: 600;
-line-height: 140%;
-margin-top: 5px;
-`
+  color: var(--Primary_pink100, #ed685a);
+  font-family: "Pretendard";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+  margin-top: 5px;
+`;
 
 const TravelPosition = styled.div`
-color: var(--black-50, #A5A5A5);
-font-family: 'Pretendard';
-font-size: 12px;
-font-style: normal;
-font-weight: 500;
-line-height: 140%;
-margin-top: 5px;
-`
+  color: var(--black-50, #a5a5a5);
+  font-family: "Pretendard";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  margin-top: 5px;
+`;
+
+const TravelDifficultyNum = styled.div`
+  color: var(--black-70, #5b5b5b);
+  font-family: "Pretendard";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+`;
+
+const TravelTime = styled.div`
+  font-family: "Pretendard";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+`;
+
+const ColorfulText = styled.span`
+  color: ${(props) => props.color || "black"};
+`;
