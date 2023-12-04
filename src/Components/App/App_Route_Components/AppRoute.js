@@ -53,7 +53,7 @@ const NextButton = styled.button`
 `;
 
 const AppRoute = () => {
-  const [step, setStep] = useState(6);
+  const [step, setStep] = useState(1);
   const [selectedRoutes, setSelectedRoutes] = useState([
     null,
     null,
@@ -118,12 +118,15 @@ const AppRoute = () => {
             onClick={async () => {
               setStep((prevStep) => prevStep + 1);
               console.log("현재 step: ", step);
-              // if (step === 4) {
-              //   const response = await askOpenAI(selectedRoutes);
-              //   console.log("입력 받은 대답 : ", response);
-              //   setAnswer(response.answer);
-              //   console.log("ai 연동: ", step);
-              // }
+              if (step === 4) {
+                // const response = await askOpenAI(selectedRoutes);
+                // console.log("입력 받은 대답 : ", response);
+                // setAnswer(response.answer);
+                setTimeout(() => {
+                  setAnswer("값들어감");
+                  console.log("ai 연동: ", step);
+                }, 5000);
+              }
             }}
           >
             다음

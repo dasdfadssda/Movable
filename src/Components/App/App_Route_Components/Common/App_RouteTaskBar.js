@@ -7,6 +7,7 @@ const ProgressBar = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 92%;
+  margin-top: 65px;
 `;
 
 const Circle = styled.div`
