@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "../../../Style/theme";
 import OneDay1Img from "../../../Assets/Route/비룡폭포.png";
@@ -95,51 +95,51 @@ const AnswerComponent = ({ answer }) => {
       Image: TwoDay1Img,
       time: "15분",
       difficulty: "하",
-      difficultynum: 4.80,
+      difficultynum: 4.8,
     },
     {
-      id: 2,
-      day: 1,
+      id: 8,
+      day: 2,
       Category: "점심",
-      Title: "도솔마을",
+      Title: "왕가수라청",
       position: "한식",
       Image: TwoDay2Img,
-      time: "5분",
+      time: "10분",
       difficulty: "하",
-      difficultynum: 3.93,
+      difficultynum: 3.79,
     },
     {
-      id: 3,
-      day: 1,
+      id: 9,
+      day: 2,
       Category: "카페",
-      Title: "비밀공간",
+      Title: "갤러리오스",
       position: "카페",
       Image: TwoDay3Img,
       time: "1분",
       difficulty: "중",
-      difficultynum: 4.43,
+      difficultynum: 4.66,
     },
     {
-      id: 4,
-      day: 1,
+      id: 10,
+      day: 2,
       Category: "액티비티",
-      Title: "카누체험",
+      Title: "알펜시아 리조트",
       position: "레저 스포츠",
       Image: TwoDay4Img,
       time: "18분",
       difficulty: "상",
-      difficultynum: 4.03,
+      difficultynum: 3.59,
     },
     {
-      id: 5,
-      day: 1,
+      id: 11,
+      day: 2,
       Category: "저녁",
-      Title: "소바카게",
-      position: "일식",
+      Title: "까치둥지",
+      position: "한식",
       Image: TwoDay5Img,
-      time: "18분",
-      difficulty: "상",
-      difficultynum: 4.77,
+      time: "23분",
+      difficulty: "중",
+      difficultynum: 4.32,
     },
   ];
 
@@ -169,13 +169,23 @@ const AnswerComponent = ({ answer }) => {
           <Body2>{mainPlace}</Body2>
         </FlexDiv>
         <FlexDiv flex={"flex-start"}>
-          <ImageDiv
-            src={require("../../../Assets/Route/colum_line.png")}
-            width={24}
-            height={638}
-            left={8}
-            right={8}
-          />
+          {activeButton === "1" ? (
+            <ImageDiv
+              src={require("../../../Assets/Route/colum_line.png")}
+              width={24}
+              height={638}
+              left={8}
+              right={8}
+            />
+          ) : (
+            <ImageDiv
+              src={require("../../../Assets/Route/ColumLine2.png")}
+              width={24}
+              height={524}
+              left={8}
+              right={8}
+            />
+          )}
           <ColumnDiv>
             <FlexDiv>
               <Body1 color={theme.colors.black_70} top={-5}>
@@ -187,7 +197,9 @@ const AnswerComponent = ({ answer }) => {
               </Body1>
             </FlexDiv>
             <PackageDiv>
-              {TravelPackage.map((item) => (
+              {TravelPackage.filter(
+                (item) => item.day.toString() === activeButton
+              ).map((item) => (
                 <PackageItem key={item.id}>
                   <TravelCategory>{item.Category}</TravelCategory>
                   <FlexDiv flex={"flex-start"}>
@@ -231,8 +243,12 @@ const AnswerComponent = ({ answer }) => {
                         <TravelTime>
                           {" "}
                           <ColorfulText color="#5B5B5B">자동차</ColorfulText>
-                          <ColorfulText color="#E3E3E3">&nbsp;|&nbsp;</ColorfulText>
-                          <ColorfulText color="#A5A5A5">{item.time}</ColorfulText>
+                          <ColorfulText color="#E3E3E3">
+                            &nbsp;|&nbsp;
+                          </ColorfulText>
+                          <ColorfulText color="#A5A5A5">
+                            {item.time}
+                          </ColorfulText>
                         </TravelTime>
                       </FlexDiv>
                     </PackageInfo>
