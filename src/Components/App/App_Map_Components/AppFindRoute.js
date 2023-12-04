@@ -15,33 +15,9 @@ import axios from "axios";
 import currentLocation from "../../../Assets/img/currentPosition.svg";
 import ActivePicker from "../../../Assets/img/_Picker=장애인 가능.png";
 import currentSpot from "../../../Assets/Map/currentLocation.png";
-import Search from "../../../Assets/Map/fe_search.png";
-import FindRoute from "../../../Assets/Map/FindRoute.png";
 
-const SearchInput = styled.input`
-  width: calc(50% - 4px);
-  margin-right: 10px;
-  border: none;
-  border-radius: 8px;
-  padding: 10px 40px 10px 16px;
-  background-image: url(${Search});
-  background-position: 13px center;
-  background-repeat: no-repeat;
-  text-indent: 20px;
-
-  &::placeholder {
-    color: #a5a5a5;
-  }
-  &:focus {
-    background-image: none;
-    background-position: -10px center;
-    text-indent: 0;
-    width: calc(50% - 8px);
-  }
-`;
 
 const AppFindRoute = () => {
-
   const NAVER_API_KEY = process.env.REACT_APP_NAVER_MAP_API_KEY;
   const NAVER_ID = process.env.REACT_APP_NAVER_ID;
   const navermaps = window.naver.maps;
@@ -58,7 +34,6 @@ const AppFindRoute = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
-
 
   const handleSliderClose = () => {
     setSliderVisible(false);
@@ -155,7 +130,7 @@ const AppFindRoute = () => {
         style={{
           position: "relative",
           width: "100%",
-          height: "730px",
+          height: "100vh",
           display: "flex",
           backgroundColor: "#fff",
           alignItems: "center",
@@ -164,28 +139,21 @@ const AppFindRoute = () => {
         onInitialized={(map) => setNaverMap(map)}
       >
         <SearchContainer>
-          <SearchInput
-            type="text"
-            placeholder="어디로 가볼까요?"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          <FindRouteButton onClick={handleSearch} />
+
         </SearchContainer>
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             overflowY: "scroll",
-            position: "absolute",
+            // position: "absolute",
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
             zIndex: 1000,
           }}
-        >
-        </div>
+        ></div>
         <div
           style={{
             position: "absolute",
@@ -204,11 +172,7 @@ const AppFindRoute = () => {
         </div>
         {currentPosition && (
           <NaverMap
-            draggable
-            zoomControl
-            zoomControlOptions={{
-              position: navermaps.Position.TOP_RIGHT,
-            }}
+            // draggable
             defaultCenter={currentPosition}
             defaultZoom={13}
             onZoomChanged={handleZoomChanged}
@@ -279,21 +243,12 @@ const CloseButton = styled.button`
 const SearchContainer = styled.div`
   position: absolute;
   top: 0;
-  left: 6px;
-  right: 16px;
+  right: 0;
+  left: 0;
   padding: 10px;
   display: flex;
   flex-direction: row;
   z-index: 1000;
-`;
-const FindRouteButton = styled.button`
-  width: 48px;
-  height: 48px;
-  cursor: pointer;
-  background: none;
-  background-image: url(${FindRoute});
-  background-size: cover;
-  border: none;
-  padding: 0;
-  margin-left: 8px;
+  background-color: white;
+  height: auto;
 `;
