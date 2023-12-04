@@ -53,7 +53,7 @@ const NextButton = styled.button`
 `;
 
 const AppRoute = () => {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(6);
   const [selectedRoutes, setSelectedRoutes] = useState([
     null,
     null,
