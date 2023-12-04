@@ -19,6 +19,16 @@ const AnswerComponent = ({ answer }) => {
   const [duringTime, setDuringTime] = useState("2시간 30분");
   const daysToShow = 2;
 
+  useEffect(() => {
+    if (activeButton === "2") {
+      setMainPlace("강원도 원주시");
+      setDuringTime("30분");
+    } else if (activeButton === "1") {
+      setMainPlace("강원도 태백시");
+      setDuringTime("2시간 30분");
+    }
+  }, [activeButton]);
+  
   const TravelPackage = [
     {
       id: 1,
