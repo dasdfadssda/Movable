@@ -2,6 +2,39 @@ import React, { useState } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "../../../Style/theme";
 
+const AnswerComponent = ({ answer }) => {
+  const [activeButton, setActiveButton] = useState("1");
+  const [mainPlace, setMainPlace] = useState("강원도 태백시");
+  const daysToShow = 2;
+  
+  const buttons = [];
+  for (let i = 1; i <= daysToShow; i++) {
+    buttons.push(
+      <ChipButton
+        key={i}
+        isActive={activeButton === i.toString()}
+        onClick={() => setActiveButton(i.toString())}
+      >
+        {i}일차
+      </ChipButton>
+    );
+  }
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Div>
+        <FlexDiv bottom={10.68}>{buttons}</FlexDiv>
+        <FlexDiv>
+          <VectorLogo src={require('../../../Assets/Route/vector_chip.png')} width={40} height={40}/>
+          <Body2>{mainPlace}</Body2>
+        </FlexDiv>
+      </Div>
+    </ThemeProvider>
+  );
+};
+
+export default AnswerComponent;
+
 const Div = styled.div`
   display: flex;
   background-color: #fff;
@@ -13,11 +46,12 @@ const Div = styled.div`
   background-color: gainsboro;
 `;
 
-const ButtonDiv = styled.div`
+const FlexDiv = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-start;
-  margin-bottom: 10.68px;
+  margin-bottom:  ${(props) => props.bottom}px;
+  align-items: center;
 `;
 
 const ChipButton = styled.button`
@@ -43,30 +77,17 @@ const ChipButton = styled.button`
   margin-right: 6px;
 `;
 
-const AnswerComponent = ({ answer }) => {
-  const [activeButton, setActiveButton] = useState("1");
-  const daysToShow = 2;
+const VectorLogo = styled.img`
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
+  margin-right:  ${(props) => props.right}px;
+`;
 
-  const buttons = [];
-  for (let i = 1; i <= daysToShow; i++) {
-    buttons.push(
-      <ChipButton
-        key={i}
-        isActive={activeButton === i.toString()}
-        onClick={() => setActiveButton(i.toString())}
-      >
-        {i}일차
-      </ChipButton>
-    );
-  }
-
-  return (
-    <ThemeProvider theme={theme}>
-      <Div>
-        <ButtonDiv>{buttons}</ButtonDiv>
-      </Div>
-    </ThemeProvider>
-  );
-};
-
-export default AnswerComponent;
+const Body2 = styled.div`
+  font-size: ${(props) => props.theme.Web_fontSizes.Body2};
+  font-weight: ${(props) => props.theme.fontWeights.Body2};
+  line-height: ${(props) => props.theme.LineHeight.Body2};
+  color: ${(props) => props.theme.colors.black_70};
+  font-family: "Pretendard";
+  margin-bottom: 5px;
+`;
