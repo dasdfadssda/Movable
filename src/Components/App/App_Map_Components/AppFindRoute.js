@@ -15,7 +15,7 @@ import axios from "axios";
 import currentLocation from "../../../Assets/img/currentPosition.svg";
 import ActivePicker from "../../../Assets/img/_Picker=장애인 가능.png";
 import currentSpot from "../../../Assets/Map/currentLocation.png";
-
+import CancelIcon from "../../../Assets/Map/FindRoute/Cancel_Icon.png";
 
 const AppFindRoute = () => {
   const NAVER_API_KEY = process.env.REACT_APP_NAVER_MAP_API_KEY;
@@ -30,11 +30,18 @@ const AppFindRoute = () => {
   const [sliderVisible, setSliderVisible] = useState(false);
   const [selectedMarkerInfo, setSelectedMarkerInfo] = useState(null);
   const [newPosition, setNewPosition] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
-  };
 
+  // 검색어 관련 코드 
+  const [searchValue1, setSearchValue1] = useState("");
+  const [searchValue2, setSearchValue2] = useState("");
+
+  const handleSearchChange1 = (event) => {
+    setSearchValue1(event.target.value);
+  };
+  const handleSearchChange2 = (event) => {
+    setSearchValue2(event.target.value);
+  };
+  
   const handleSliderClose = () => {
     setSliderVisible(false);
   };
@@ -47,14 +54,26 @@ const AppFindRoute = () => {
   const handleCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
           const newPosition = new navermaps.LatLng(
             position.coords.latitude,
             position.coords.longitude
           );
           setCurrentPosition(newPosition);
           setNewPosition(newPosition);
-          console.log("My current location: ", newPosition);
+          console.log("My current location: ", newPosition);  
+          // 위도와 경도를 주소로 변환하는 API 호출
+          try {
+            const reverseGeocodeResponse = await axios.post(
+              `http://localhost:3001/reverseGeocoding`, // 서버 URL에 맞게 수정해주세요.
+              { latitude: position.coords.latitude, longitude: position.coords.longitude }
+            );
+  
+            const address = reverseGeocodeResponse.data.address;
+            setSearchValue1(address); // 주소를 검색 값으로 설정
+          } catch (error) {
+            console.error("Error getting address from coordinates:", error);
+          }
         },
         (error) => {
           console.error("Error getting current position:", error);
@@ -64,7 +83,8 @@ const AppFindRoute = () => {
     } else {
       window.alert("브라우저가 위치 정보를 지원하지 않습니다.");
     }
-  }, [navermaps, setCurrentPosition]);
+  }, [navermaps, setCurrentPosition, setSearchValue1]);
+  
 
   const handleToCurrentPosition = () => {
     console.log("Trying to pan to current position", newPosition);
@@ -97,32 +117,6 @@ const AppFindRoute = () => {
       });
   }, [handleCurrentLocation, navermaps, dataForbstacleApi]);
 
-  const handleSearch = () => {
-    if (!searchQuery) {
-      alert("검색어를 입력해주세요.");
-      return;
-    }
-    axios
-      .get("/v1/search/local.json", {
-        headers: {
-          "X-Naver-Client-Id": NAVER_ID,
-          "X-Naver-Client-Secret": NAVER_API_KEY,
-        },
-        params: {
-          query: searchQuery,
-        },
-      })
-      .then((response) => {
-        const items = response.data.items;
-        const restaurants = items.filter((item) =>
-          item.category.includes("박물관")
-        );
-        console.log("박물관:", restaurants);
-      })
-      .catch((error) => {
-        console.error("Error fetching data from Naver Search API", error);
-      });
-  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -139,7 +133,26 @@ const AppFindRoute = () => {
         onInitialized={(map) => setNaverMap(map)}
       >
         <SearchContainer>
-
+          <FlexDiv bottom={8}>
+            <ImageDiv
+              src={require("../../../Assets/Map/FindRoute/Frame1.png")}
+              right={10}
+              width={16}
+              height={16}
+            />
+            <SearchInput />
+            <CancelButton ButtonImage={CancelIcon} />
+          </FlexDiv>
+          <FlexDiv>
+            <ImageDiv
+              src={require("../../../Assets/Map/FindRoute/Frame1.png")}
+              right={10}
+              width={16}
+              height={16}
+            />
+            <SearchInput />
+            <CancelButton ButtonImage={CancelIcon} />
+          </FlexDiv>
         </SearchContainer>
         <div
           style={{
@@ -197,16 +210,6 @@ const AppFindRoute = () => {
             ))}
           </NaverMap>
         )}
-        {sliderVisible && selectedMarkerInfo && (
-          <Slider>
-            <SliderContent>
-              <div>
-                <h3>{selectedMarkerInfo.title}</h3>
-              </div>
-              <CloseButton onClick={handleSliderClose}>Close</CloseButton>
-            </SliderContent>
-          </Slider>
-        )}
       </MapDiv>
     </ThemeProvider>
   );
@@ -216,29 +219,6 @@ export default AppFindRoute;
 
 const dataForbstacleApi =
   "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=500&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
-
-const Slider = styled.div`
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: white;
-  padding: 20px;
-  box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
-`;
-const SliderContent = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const CloseButton = styled.button`
-  background-color: #3498db;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-`;
 
 const SearchContainer = styled.div`
   position: absolute;
@@ -251,4 +231,50 @@ const SearchContainer = styled.div`
   z-index: 1000;
   background-color: white;
   height: auto;
+  flex-direction: column;
+`;
+
+const FlexDiv = styled.div`
+  display: flex;
+  width: 96%;
+  justify-content: flex-start;
+  margin-bottom: ${(props) => props.bottom}px;
+  align-items: center;
+  align-items: ${(props) => props.flex};
+`;
+
+const ImageDiv = styled.img`
+  width: ${(props) => props.width}px;
+  height: ${(props) => props.height}px;
+  margin-right: ${(props) => props.right}px;
+  margin-left: ${(props) => props.left}px;
+  margin-top: ${(props) => props.top}px;
+`;
+
+const SearchInput = styled.input`
+  width: calc(90%);
+  border: 1px solid var(--black-30, #e3e3e3);
+  border-radius: 4px;
+  background-position: 13px center;
+  background-repeat: no-repeat;
+  text-indent: 20px;
+  height: 32px;
+
+  &::placeholder {
+    color: #a5a5a5;
+  }
+  &:focus {
+    background-image: none;
+    background-position: -10px center;
+    text-indent: 0;
+    width: calc(90%);
+  }
+`;
+
+const CancelButton = styled.button`
+  width: 24px;
+  height: 24px;
+  background: url(${(props) => props.ButtonImage}) no-repeat center/contain;
+  margin-left: 24px;
+  border: none;
 `;

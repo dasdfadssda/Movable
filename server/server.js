@@ -59,7 +59,7 @@ app.post('/ask', async (req, res) => {
   }
 });
 
-// Naver 지도 API 호출을 처리하는 라우트
+// Naver 지도 API 거리 계산 호출을 처리하는 라우트
 app.post('/calculateDistance', async (req, res) => {
   const { startLatitude, startLongitude, endLatitude, endLongitude } = req.body;
 
@@ -69,7 +69,7 @@ app.post('/calculateDistance', async (req, res) => {
       {
         headers: {
           'X-NCP-APIGW-API-KEY-ID': process.env.REACT_APP_NAVER_ID,
-          'X-NCP-APIGW-API-KEY': '08pJN0ezMAvmyi7R6pbw6KoXN0yTDvcZPd59tM5u',
+          'X-NCP-APIGW-API-KEY': process.env.REACT_APP_NAVER_SECRET,
         },
       }
     );
@@ -84,6 +84,37 @@ app.post('/calculateDistance', async (req, res) => {
     res.status(500).json({ error: '검색 실패' });
   }
 });
+
+// Naver 지도 API 역지오코딩 호출을 처리하는 라우트
+app.post('/reverseGeocoding', async (req, res) => {
+  const { latitude, longitude } = req.body;
+
+  try {
+    const reverseGeocodeResponse = await axios.get(
+      `https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc`,
+      {
+        params: {
+          coords: `${longitude},${latitude}`,
+          orders: 'addr',
+          output: 'json'
+        },
+        headers: {
+          'X-NCP-APIGW-API-KEY-ID': process.env.REACT_APP_NAVER_ID,
+          'X-NCP-APIGW-API-KEY': process.env.REACT_APP_NAVER_SECRET,
+        },
+      }
+    );
+
+    const addressData = reverseGeocodeResponse.data.results[0].region;
+    const address = addressData.area1.name + ' ' + addressData.area2.name + ' ' + addressData.area3.name;
+
+    res.json({ address, addressData });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: '검색 실패' });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
