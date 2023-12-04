@@ -49,8 +49,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": [
-    "http://localhost:3001",
-    "https://openapi.naver.com/v1/search/"
-  ]
+  "proxy": "http://localhost:3001"
 }

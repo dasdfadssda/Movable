@@ -229,7 +229,6 @@ const AppMap = () => {
             </Chip>
           </ChipContainer>
         </div>
-
         <div
           style={{
             position: "absolute",
