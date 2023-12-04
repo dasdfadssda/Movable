@@ -6,7 +6,7 @@ const AnswerComponent = ({ answer }) => {
   const [activeButton, setActiveButton] = useState("1");
   const [mainPlace, setMainPlace] = useState("강원도 태백시");
   const daysToShow = 2;
-  
+
   const buttons = [];
   for (let i = 1; i <= daysToShow; i++) {
     buttons.push(
@@ -25,11 +25,20 @@ const AnswerComponent = ({ answer }) => {
       <Div>
         <FlexDiv bottom={10.68}>{buttons}</FlexDiv>
         <FlexDiv bottom={8}>
-          <ImageDiv src={require('../../../Assets/Route/vector_chip.png')} width={40} height={40}/>
+          <ImageDiv
+            src={require("../../../Assets/Route/vector_chip.png")}
+            width={40}
+            height={40}
+          />
           <Body2>{mainPlace}</Body2>
         </FlexDiv>
         <FlexDiv>
-          <ImageDiv src={require('../../../Assets/Route/colum_line.png')}  width={24} height={638}/>
+          <ImageDiv
+            src={require("../../../Assets/Route/colum_line.png")}
+            width={24}
+            height={638}
+            left={8}
+          />
         </FlexDiv>
       </Div>
     </ThemeProvider>
@@ -44,16 +53,15 @@ const Div = styled.div`
   width: 93%;
   align-items: center;
   justify-content: center;
-  margin-top: -9px;
+  margin-top: 65px;
   flex-direction: column;
-  background-color: gainsboro;
 `;
 
 const FlexDiv = styled.div`
   display: flex;
   width: 100%;
   justify-content: flex-start;
-  margin-bottom:  ${(props) => props.bottom}px;
+  margin-bottom: ${(props) => props.bottom}px;
   align-items: center;
 `;
 
@@ -83,7 +91,8 @@ const ChipButton = styled.button`
 const ImageDiv = styled.img`
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
-  margin-right:  ${(props) => props.right}px;
+  margin-right: ${(props) => props.right}px;
+  margin-left: ${(props) => props.left}px;
 `;
 
 const Body2 = styled.div`

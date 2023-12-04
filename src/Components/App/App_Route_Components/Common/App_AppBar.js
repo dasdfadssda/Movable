@@ -13,8 +13,8 @@ const AppBar = styled.div`
   background-color: white;
   height: 36px;
   width: 96%;
-  margin-bottom: 29px;
-  margin-top: 12px;
+  padding-top: 12px;
+  position: fixed;
 `;
 
 const Body6 = styled.div`
