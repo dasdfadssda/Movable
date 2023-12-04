@@ -28,8 +28,8 @@ const AppBarComponent = ({ title, route, step }) => {
             <BackButton
               onClick={goBack}
               ButtonImage={shareButtonImage}
-              width={24}
-              height={24}
+              width={21}
+              height={20}
             />
           </AppBar>
         </>
@@ -73,7 +73,7 @@ const Body6 = styled.div`
 `;
 
 const BackButton = styled.button`
-  background: url(${(props) => props.ButtonImage}) no-repeat center;
+  background: url(${(props) => props.ButtonImage}) no-repeat center/contain;
   border: none;
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
