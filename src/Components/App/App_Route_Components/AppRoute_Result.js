@@ -24,9 +24,12 @@ const AnswerComponent = ({ answer }) => {
     <ThemeProvider theme={theme}>
       <Div>
         <FlexDiv bottom={10.68}>{buttons}</FlexDiv>
-        <FlexDiv>
-          <VectorLogo src={require('../../../Assets/Route/vector_chip.png')} width={40} height={40}/>
+        <FlexDiv bottom={8}>
+          <ImageDiv src={require('../../../Assets/Route/vector_chip.png')} width={40} height={40}/>
           <Body2>{mainPlace}</Body2>
+        </FlexDiv>
+        <FlexDiv>
+          <ImageDiv src={require('../../../Assets/Route/colum_line.png')}  width={24} height={638}/>
         </FlexDiv>
       </Div>
     </ThemeProvider>
@@ -77,7 +80,7 @@ const ChipButton = styled.button`
   margin-right: 6px;
 `;
 
-const VectorLogo = styled.img`
+const ImageDiv = styled.img`
   width: ${(props) => props.width}px;
   height: ${(props) => props.height}px;
   margin-right:  ${(props) => props.right}px;
