@@ -16,6 +16,8 @@ import currentLocation from "../../../Assets/img/currentPosition.svg";
 import ActivePicker from "../../../Assets/img/_Picker=장애인 가능.png";
 import currentSpot from "../../../Assets/Map/currentLocation.png";
 import CancelIcon from "../../../Assets/Map/FindRoute/Cancel_Icon.png";
+import Oneimage from "../../../Assets/Map/FindRoute/FirstNum.png";
+import Twoimage from "../../../Assets/Map/FindRoute/SecondNum.png";
 
 const AppFindRoute = () => {
   const NAVER_API_KEY = process.env.REACT_APP_NAVER_MAP_API_KEY;
@@ -31,7 +33,7 @@ const AppFindRoute = () => {
   const [selectedMarkerInfo, setSelectedMarkerInfo] = useState(null);
   const [newPosition, setNewPosition] = useState(null);
 
-  // 검색어 관련 코드 
+  // 검색어 관련 코드
   const [searchValue1, setSearchValue1] = useState("");
   const [searchValue2, setSearchValue2] = useState("");
 
@@ -41,7 +43,7 @@ const AppFindRoute = () => {
   const handleSearchChange2 = (event) => {
     setSearchValue2(event.target.value);
   };
-  
+
   const handleSliderClose = () => {
     setSliderVisible(false);
   };
@@ -61,16 +63,23 @@ const AppFindRoute = () => {
           );
           setCurrentPosition(newPosition);
           setNewPosition(newPosition);
-          console.log("My current location: ", newPosition);  
+          console.log("My current location: ", newPosition);
           // 위도와 경도를 주소로 변환하는 API 호출
           try {
             const reverseGeocodeResponse = await axios.post(
               `http://localhost:3001/reverseGeocoding`, // 서버 URL에 맞게 수정해주세요.
-              { latitude: position.coords.latitude, longitude: position.coords.longitude }
+              {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              }
             );
-  
+
             const address = reverseGeocodeResponse.data.address;
-            setSearchValue1(address); // 주소를 검색 값으로 설정
+            console.log(
+              "읽은 데이터 :",
+              reverseGeocodeResponse.data.addressResult
+            );
+            setSearchValue1(address);
           } catch (error) {
             console.error("Error getting address from coordinates:", error);
           }
@@ -84,7 +93,6 @@ const AppFindRoute = () => {
       window.alert("브라우저가 위치 정보를 지원하지 않습니다.");
     }
   }, [navermaps, setCurrentPosition, setSearchValue1]);
-  
 
   const handleToCurrentPosition = () => {
     console.log("Trying to pan to current position", newPosition);
@@ -98,7 +106,7 @@ const AppFindRoute = () => {
 
   useEffect(() => {
     // 페이지 로딩 시에 현재 위치 받아오기
-    handleCurrentLocation();
+    // handleCurrentLocation();
     // 무장애 여행 정보 API 호출
     axios
       .get(dataForbstacleApi)
@@ -116,7 +124,6 @@ const AppFindRoute = () => {
         console.error("Error fetching data from the API", error);
       });
   }, [handleCurrentLocation, navermaps, dataForbstacleApi]);
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -140,7 +147,7 @@ const AppFindRoute = () => {
               width={16}
               height={16}
             />
-            <SearchInput />
+            <SearchInput value={searchValue1} onChange={handleSearchChange1} image={Oneimage}/>
             <CancelButton ButtonImage={CancelIcon} />
           </FlexDiv>
           <FlexDiv>
@@ -150,7 +157,12 @@ const AppFindRoute = () => {
               width={16}
               height={16}
             />
-            <SearchInput />
+            <SearchInput
+              value={searchValue2}
+              onChange={handleSearchChange2}
+              placeholder="도착지 입력"
+              image={Twoimage}
+            />
             <CancelButton ButtonImage={CancelIcon} />
           </FlexDiv>
         </SearchContainer>
@@ -255,19 +267,35 @@ const SearchInput = styled.input`
   width: calc(90%);
   border: 1px solid var(--black-30, #e3e3e3);
   border-radius: 4px;
-  background-position: 13px center;
-  background-repeat: no-repeat;
   text-indent: 20px;
   height: 32px;
+  background-image: url(${(props) => props.image});
+  background-position: left 10px center;
+  background-repeat: no-repeat; 
+  background-size: 16px;
+  padding-left: 16px;
 
   &::placeholder {
-    color: #a5a5a5;
+    color: var(--black-50, #a5a5a5);
+    font-family: "Pretendard";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
   }
   &:focus {
     background-image: none;
     background-position: -10px center;
     text-indent: 0;
     width: calc(90%);
+  }
+  &:focus:not(:placeholder-shown) {
+    color: var(--black-90, #1f1f1f);
+    font-family: "Pretendard";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
   }
 `;
 

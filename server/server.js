@@ -69,7 +69,7 @@ app.post('/calculateDistance', async (req, res) => {
       {
         headers: {
           'X-NCP-APIGW-API-KEY-ID': process.env.REACT_APP_NAVER_ID,
-          'X-NCP-APIGW-API-KEY': process.env.REACT_APP_NAVER_SECRET,
+          'X-NCP-APIGW-API-KEY': process.env.REACT_APP_NAVER_MAP_API_KEY,
         },
       }
     );
@@ -91,24 +91,20 @@ app.post('/reverseGeocoding', async (req, res) => {
 
   try {
     const reverseGeocodeResponse = await axios.get(
-      `https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc`,
+      `https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?request=coordsToaddr&coords=${longitude},${latitude}&sourcecrs=epsg:4326&output=json&orders=legalcode,admcode,roadaddr`,
       {
-        params: {
-          coords: `${longitude},${latitude}`,
-          orders: 'addr',
-          output: 'json'
-        },
         headers: {
           'X-NCP-APIGW-API-KEY-ID': process.env.REACT_APP_NAVER_ID,
-          'X-NCP-APIGW-API-KEY': process.env.REACT_APP_NAVER_SECRET,
+          'X-NCP-APIGW-API-KEY': process.env.REACT_APP_NAVER_MAP_API_KEY,
         },
       }
     );
 
     const addressData = reverseGeocodeResponse.data.results[0].region;
+    const addressResult = reverseGeocodeResponse.data;
     const address = addressData.area1.name + ' ' + addressData.area2.name + ' ' + addressData.area3.name;
 
-    res.json({ address, addressData });
+    res.json({ address, addressData, addressResult });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: '검색 실패' });
