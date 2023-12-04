@@ -55,6 +55,7 @@ const SearchInput = styled.input`
     width: calc(50% - 8px);
   }
 `;
+
 const AppMap = () => {
   const NAVER_API_KEY = process.env.REACT_APP_NAVER_MAP_API_KEY;
   const NAVER_ID = process.env.REACT_APP_NAVER_ID;
@@ -74,6 +75,7 @@ const AppMap = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
+
   const handleCategoryToggle = (category) => {
     setSelectedCategories((prevSelected) => {
       if (prevSelected.includes(category)) {
@@ -83,6 +85,7 @@ const AppMap = () => {
       }
     });
   };
+
   const handleSliderClose = () => {
     setSliderVisible(false);
   };
@@ -144,6 +147,7 @@ const AppMap = () => {
         console.error("Error fetching data from the API", error);
       });
   }, [handleCurrentLocation, navermaps, dataForbstacleApi]);
+
   const handleSearch = () => {
     if (!searchQuery) {
       alert("검색어를 입력해주세요.");
@@ -181,6 +185,7 @@ const AppMap = () => {
           display: "flex",
           backgroundColor: "#fff",
           alignItems: "center",
+          overflow: "hidden",
         }}
         onInitialized={(map) => setNaverMap(map)}
       >
@@ -193,23 +198,38 @@ const AppMap = () => {
           />
           <FindRouteButton onClick={handleSearch} />
         </SearchContainer>
-        <ChipContainer>
-          <Chip>
-            <img src={Restaurant} alt="Restaurant" />
-          </Chip>
-          <Chip>
-            <img src={Cafe} alt="Cafe" />
-          </Chip>
-          <Chip>
-            <img src={Parking} alt="Parking" />
-          </Chip>
-          <Chip>
-            <img src={Hotel} alt="Hotel" />
-          </Chip>
-          <Chip>
-            <img src={Toilet} alt="Toilet" />
-          </Chip>
-        </ChipContainer>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            overflowY: "scroll",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 1000,
+          }}
+        >
+          <ChipContainer>
+            <Chip>
+              <img src={Restaurant} alt="Restaurant" />
+            </Chip>
+            <Chip>
+              <img src={Cafe} alt="Cafe" />
+            </Chip>
+            <Chip>
+              <img src={Parking} alt="Parking" />
+            </Chip>
+            <Chip>
+              <img src={Hotel} alt="Hotel" />
+            </Chip>
+            <Chip>
+              <img src={Toilet} alt="Toilet" />
+            </Chip>
+          </ChipContainer>
+        </div>
+
         <div
           style={{
             position: "absolute",
@@ -228,6 +248,7 @@ const AppMap = () => {
         </div>
         {currentPosition && (
           <NaverMap
+            draggable
             zoomControl
             zoomControlOptions={{
               position: navermaps.Position.TOP_RIGHT,
