@@ -9,7 +9,6 @@ import RouteTask2 from "./AppRoute_Task2";
 import RouteTask3 from "./AppRoute_Task3";
 import RouteTask4 from "./AppRoute_Task4";
 import AppLoading from "./AppLoading";
-import { askOpenAI } from "../../../Api/RouteAPI";
 import AnswerComponent from "./AppRoute_Result";
 
 const Div = styled.div`
