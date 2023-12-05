@@ -61,6 +61,53 @@ const AppFindRoute = () => {
 
   const handleFindRouteClick = () => {};
 
+  // 거리 계산 
+  const [distance, setDistance] = useState();
+const [duration, setDuration] = useState();
+
+  useEffect(() => {
+    if (searchValue2Data) {
+      const fetchDistanceAndDuration = async () => {
+        try {
+          const directionResponse = await axios.post(
+            `http://localhost:3001/calculateDistance`, // 서버 URL에 맞게 수정해주세요.
+            {
+              startLatitude: searchValue1Data.position.y,
+              startLongitude: searchValue1Data.position.x,
+              endLatitude: searchValue2Data.position.y,
+              endLongitude: searchValue2Data.position.x,
+            }
+          );
+  
+          setDistance(directionResponse.data.distance);
+          setDuration(directionResponse.data.duration);
+        } catch (error) {
+          console.error("Error calculating distance and duration:", error);
+        }
+      };
+  
+      fetchDistanceAndDuration();
+    }
+  }, [searchValue2Data]);
+
+    // 밀리초를 시간과 분으로 변환하는 함수
+    const convertMillisecondsToTime = (milliseconds) => {
+      const seconds = Math.floor(milliseconds / 1000);
+      const hours = Math.floor(seconds / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      if(hours > 1) {
+        return `${hours}시간 ${minutes}분`;
+      } else {
+        return `${minutes}분`;
+      }
+    };
+
+    // km 계산기
+    function convertToKm(meters) {
+      const km = meters / 1000;
+      return km.toFixed(1) + "km";
+    }
+
   const LastList = [
     {
       id: 1,
@@ -266,7 +313,31 @@ const AppFindRoute = () => {
                       </FlexDiv>
                     </div>
                   </FlexDiv>
-                  <FlexDiv>ㅁㄴㅇㄹ</FlexDiv>
+                  <FlexDiv justify={"center"}>
+                    <InfoBox>
+                      <ImageDiv
+                        src={require("../../../Assets/Map/FindRoute/CarIcon.png")}
+                        width={24}
+                        height={24}
+                      />
+                      <Body2>소요시간</Body2>
+                      <Body3>{convertMillisecondsToTime(duration)}</Body3>
+                      <ImageDiv
+                        src={require("../../../Assets/Map/FindRoute/PinkLine.png")}
+                        width={1}
+                        height={20}
+                      />
+                      <Body2>이동거리</Body2>
+                      <Body3>{convertToKm(distance)}</Body3>
+                      <ImageDiv
+                        src={require("../../../Assets/Map/FindRoute/PinkLine.png")}
+                        width={1}
+                        height={20}
+                      />
+                      <Body2>난이도</Body2>
+                      <Body3>하</Body3>
+                    </InfoBox>
+                  </FlexDiv>
                 </>
               ) : (
                 <>
@@ -691,4 +762,34 @@ const ThickHR = styled.hr`
   left: 0;
   right: 0;
   z-index: 1000;
+`;
+
+const InfoBox = styled.div`
+border-radius: 4px;
+border: 1px solid #EE7A6A;
+background: #FFF7F5;
+width: 98%;
+height: 32px;
+display: flex;
+align-items: center;
+justify-content: space-around;
+padding: 0 5px;
+margin-top: 8px;
+margin-bottom: 4px;
+`;
+
+const Body2 = styled.div`
+  font-size: ${(props) => props.theme.Web_fontSizes.Body2};
+  font-weight: ${(props) => props.theme.fontWeights.Body2};
+  line-height: ${(props) => props.theme.LineHeight.Body2};
+  color: #A5A5A5;
+  font-family: "Pretendard";
+`;
+
+const Body3 = styled.div`
+  font-size: ${(props) => props.theme.Web_fontSizes.Body3};
+  font-weight: ${(props) => props.theme.fontWeights.Body3};
+  line-height: ${(props) => props.theme.LineHeight.Body3};
+  color: #EE7A6A;
+  font-family: "Pretendard";
 `;

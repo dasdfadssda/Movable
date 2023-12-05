@@ -98,7 +98,7 @@ app.post("/calculateDistance", async (req, res) => {
       {
         headers: {
           "X-NCP-APIGW-API-KEY-ID": process.env.REACT_APP_NAVER_ID,
-          "X-NCP-APIGW-API-KEY": "08pJN0ezMAvmyi7R6pbw6KoXN0yTDvcZPd59tM5u",
+          "X-NCP-APIGW-API-KEY":  process.env.REACT_APP_NAVER_MAP_API_KEY,
         },
       }
     );
