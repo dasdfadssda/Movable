@@ -15,6 +15,7 @@ import Oneimage from "../../../Assets/Map/FindRoute/FirstNum.png";
 import Twoimage from "../../../Assets/Map/FindRoute/SecondNum.png";
 import BackIcon from "../../../Assets/Map/FindRoute/BackIcon.png";
 import ActivePicker from "../../../Assets/img/_Picker=장애인 가능.png";
+import AddButton from "../../../Assets/Map/FindRoute/addIcon.png";
 
 const AppFindRoute = () => {
   const navermaps = window.naver.maps;
@@ -267,7 +268,7 @@ const [duration, setDuration] = useState();
         }}
         onInitialized={(map) => setNaverMap(map)}
       >
-        <SearchContainer>
+        <SearchContainer boxShadow={true}>
           {!isSearchClicked ? (
             <>
               {searchValue2Data ? (
@@ -309,6 +310,7 @@ const [duration, setDuration] = useState();
                           image={Twoimage}
                           onClick={handleSearchClick}
                         />
+                        <InputButton ButtonImage={AddButton}/>
                         <div style={{ width: "29px" }}></div>
                       </FlexDiv>
                     </div>
@@ -417,7 +419,7 @@ const [duration, setDuration] = useState();
           style={{
             position: "absolute",
             left: 10,
-            bottom: 10,
+            bottom: searchValue2Data ? 170 : 10,
             zIndex: 500,
           }}
         >
@@ -440,7 +442,7 @@ const [duration, setDuration] = useState();
               position={currentPosition}
               icon={{
                 url: !searchValue2Data ? currentSpot : ActivePicker,
-                scaledSize: new navermaps.Size(40, 40),
+                scaledSize: new navermaps.Size(20, 20),
                 anchor: new navermaps.Point(20, 35),
               }}
             />
@@ -451,7 +453,7 @@ const [duration, setDuration] = useState();
                 title={searchValue2Data.title}
                 icon={{
                   url: ActivePicker,
-                  scaledSize: new navermaps.Size(40, 40),
+                  scaledSize: new navermaps.Size(20, 20),
                   anchor: new navermaps.Point(23, 28),
                 }}
               />
@@ -519,6 +521,12 @@ const [duration, setDuration] = useState();
               })}
             </SearchContents>
           ))}
+          {searchValue2Data && (
+            <PlaceContainer>
+              <MakerImg src={require('../../../Assets/Map/FindRoute/FirstMaker.png')}/>
+              <Body4>{searchValue1}</Body4>
+            </PlaceContainer>
+          )}
       </MapDiv>
     </ThemeProvider>
   );
@@ -541,6 +549,8 @@ const SearchContainer = styled.div`
   background-color: white;
   height: auto;
   flex-direction: column;
+  ${(props) =>
+    props.boxShadow && `box-shadow: 0px 2px 16px 0px rgba(0, 0, 0, 0.15);`}
 `;
 
 const SearchContents = styled.div`
@@ -793,3 +803,48 @@ const Body3 = styled.div`
   color: #EE7A6A;
   font-family: "Pretendard";
 `;
+
+const Body4 = styled.div`
+  font-size: ${(props) => props.theme.Web_fontSizes.Body4};
+  font-weight: ${(props) => props.theme.fontWeights.Body4};
+  line-height: ${(props) => props.theme.LineHeight.Body4};
+  color: #1F1F1F;
+  font-family: "Pretendard";
+  margin-top: 8px;
+  height: auto;
+  word-break: keep-all;
+  width: 96%;
+`;
+
+const InputButton = styled.button`
+  width: ${(props) => props.width || 20}px;
+  height: ${(props) => props.height || 20}px;
+  background: url(${(props) => props.ButtonImage}) no-repeat center/contain;
+  border: none;
+  position: absolute;
+  left: 77%;
+`;
+
+const PlaceContainer = styled.div`
+width: 136px;
+height: 136px;
+flex-shrink: 0;
+border-radius: 8px;
+background: #FFF;
+box-shadow: 0px 0px 8px 0px rgba(238, 122, 106, 0.25);
+position: absolute;
+bottom: 5%;
+left: 5%;
+display: flex;
+flex-direction: column;
+align-items: center;
+`;
+
+const MakerImg = styled.img`
+position: absolute;
+width: 32px;
+height: 32px;
+top: -30;
+left: -16px;
+margin-top: -16px;
+`
