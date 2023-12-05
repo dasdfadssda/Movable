@@ -15,38 +15,44 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import currentLocation from "../../../Assets/img/currentPosition.svg";
 import ActivePicker from "../../../Assets/img/_Picker=장애인 가능.png";
+import InactivePicker from "../../../Assets/img/_Picker=_불가능.png";
 import currentSpot from "../../../Assets/Map/currentLocation.png";
 import Search from "../../../Assets/Map/fe_search.png";
 import Restaurant from "../../../Assets/Map/restaurant.png";
+import RestaurantActive from "../../../Assets/Map/restaurant_active.png";
 import Cafe from "../../../Assets/Map/cafe.png";
+import CafeActive from "../../../Assets/Map/cafe_active.png";
 import Parking from "../../../Assets/Map/parking.png";
+import ParkingActive from "../../../Assets/Map/parking_active.png";
 import Hotel from "../../../Assets/Map/hotel.png";
+import HotelActive from "../../../Assets/Map/hotel_active.png";
 import Toilet from "../../../Assets/Map/toilet.png";
+import ToiletActive from "../../../Assets/Map/toilet_active.png";
 import FindRoute from "../../../Assets/Map/FindRoute.png";
+import Recommendation from "../../../Assets/Map/recommendedCourse.png";
+import ChannelTalk from "../../../Assets/Map/talk.png";
+import ChannelInfo from "../../../Assets/Map/TalkInfoWindow.png";
 import AppFindRoute from "./AppFindRoute.js";
-
-// theme 파일 폰트 적용 방법 + style-components 사용
-const Header1 = styled.div`
-  font-size: ${(props) => props.theme.Web_fontSizes.Header1};
-  font-weight: ${(props) => props.theme.fontWeights.Header1};
-  line-height: ${(props) => props.theme.LineHeight.Header1};
-  color: ${(props) => props.theme.colors.primary};
-  font-family: "Pretendard";
-`;
+import { async } from "q";
 
 const SearchInput = styled.input`
-  width: calc(50% - 4px);
-  margin-right: 10px;
+  flex-grow: 1;
   border: none;
   border-radius: 8px;
   padding: 10px 40px 10px 16px;
   background-image: url(${Search});
-  background-position: 13px center;
+  background-position: center;
+  background-position-x: 16px;
+  //background-position-y: 13px;
   background-repeat: no-repeat;
-  text-indent: 20px;
+  text-indent: 28px;
 
   &::placeholder {
-    color: #a5a5a5;
+    font-size: ${(props) => props.theme.Web_fontSizes.Body5};
+    font-weight: ${(props) => props.theme.fontWeights.Body5};
+    line-height: ${(props) => props.theme.LineHeight.Body5};
+    color: ${(props) => props.theme.colors.black_50};
+    font-family: "Pretendard";
   }
   &:focus {
     background-image: none;
@@ -68,31 +74,35 @@ const AppMap = () => {
     console.log(`zoom: ${zoom}`);
   }, []);
   const [sliderVisible, setSliderVisible] = useState(false);
+  const [isSliderVisible, setIsSliderVisible] = useState(false);
   const [selectedMarkerInfo, setSelectedMarkerInfo] = useState(null);
   const [newPosition, setNewPosition] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState([]);
+  const [activeCategories, setActiveCategories] = useState([]);
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
   const handleCategoryToggle = (category) => {
-    setSelectedCategories((prevSelected) => {
-      if (prevSelected.includes(category)) {
-        return prevSelected.filter((item) => item !== category);
+    setActiveCategories((prevActive) => {
+      if (prevActive.includes(category)) {
+        return prevActive.filter((item) => item !== category);
       } else {
-        return [...prevSelected, category];
+        return [...prevActive, category];
       }
     });
   };
 
   const handleSliderClose = () => {
     setSliderVisible(false);
+    setIsSliderVisible(false);
   };
 
   const handleMarkerClick = (marker) => {
     setSelectedMarkerInfo(marker);
     setSliderVisible(true);
+    setIsSliderVisible(true);
   };
   // 현재 위치 받아오기
   const handleCurrentLocation = useCallback(() => {
@@ -148,31 +158,45 @@ const AppMap = () => {
       });
   }, [handleCurrentLocation, navermaps, dataForbstacleApi]);
 
-  const handleSearch = () => {
+  const handleSearch = async () => {
     if (!searchQuery) {
       alert("검색어를 입력해주세요.");
       return;
     }
-    axios
-      .get("/v1/search/local.json", {
+    try {
+      const response = await axios.get("/v1/search/local.json", {
+        params: {
+          query: searchQuery,
+          display: 5,
+        },
         headers: {
           "X-Naver-Client-Id": NAVER_ID,
           "X-Naver-Client-Secret": NAVER_API_KEY,
         },
-        params: {
-          query: searchQuery,
-        },
-      })
-      .then((response) => {
-        const items = response.data.items;
-        const restaurants = items.filter((item) =>
-          item.category.includes("박물관")
-        );
-        console.log("박물관:", restaurants);
-      })
-      .catch((error) => {
-        console.error("Error fetching data from Naver Search API", error);
       });
+      const { items } = response.item;
+      items.forEach((item) => {
+        console.log("Item Title:", item.title);
+      });
+    } catch (error) {
+      console.error("Error fetching data from Naver Search API", error);
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        console.error("Status Code:", error.response.status);
+        console.error("Response Data:", error.response.data);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error("No response received:", error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error("Error setting up the request:", error.message);
+      }
+      alert("검색 중 오류가 발생했습니다.");
+    }
+  };
+
+  const handleRecommendationClick = () => {
+    navigate("/Route");
   };
 
   return (
@@ -181,11 +205,10 @@ const AppMap = () => {
         style={{
           position: "relative",
           width: "100%",
-          height: "730px",
+          height: "100vh",
           display: "flex",
           backgroundColor: "#fff",
           alignItems: "center",
-          overflow: "hidden",
         }}
         onInitialized={(map) => setNaverMap(map)}
       >
@@ -198,42 +221,68 @@ const AppMap = () => {
           />
           <FindRouteButton onClick={handleSearch} />
         </SearchContainer>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            overflowY: "scroll",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            zIndex: 1000,
-          }}
-        >
-          <ChipContainer>
-            <Chip>
-              <img src={Restaurant} alt="Restaurant" />
+
+        <ChipContainer>
+          <ChipWrapper>
+            <Chip onClick={() => handleCategoryToggle("restaurant")}>
+              <img
+                src={
+                  activeCategories.includes("restaurant")
+                    ? RestaurantActive
+                    : Restaurant
+                }
+                alt="Restaurant"
+              />
             </Chip>
-            <Chip>
-              <img src={Cafe} alt="Cafe" />
+            <Chip onClick={() => handleCategoryToggle("cafe")}>
+              <img
+                src={activeCategories.includes("cafe") ? CafeActive : Cafe}
+                alt="Cafe"
+              />
             </Chip>
-            <Chip>
-              <img src={Parking} alt="Parking" />
+            <Chip onClick={() => handleCategoryToggle("parking")}>
+              <img
+                src={
+                  activeCategories.includes("parking") ? ParkingActive : Parking
+                }
+                alt="Parking"
+              />
             </Chip>
-            <Chip>
-              <img src={Hotel} alt="Hotel" />
+            <Chip onClick={() => handleCategoryToggle("hotel")}>
+              <img
+                src={activeCategories.includes("hotel") ? HotelActive : Hotel}
+                alt="Hotel"
+              />
             </Chip>
-            <Chip>
-              <img src={Toilet} alt="Toilet" />
+            <Chip onClick={() => handleCategoryToggle("toilet")}>
+              <img
+                src={
+                  activeCategories.includes("toilet") ? ToiletActive : Toilet
+                }
+                alt="Toilet"
+              />
             </Chip>
-          </ChipContainer>
-        </div>
+          </ChipWrapper>
+        </ChipContainer>
+        <ChannelWindow
+          style={{ bottom: isSliderVisible ? "284px" : "100px" }}
+          src={ChannelInfo}
+          alt="Channel Info"
+        />
+        <ChannelTalkBtn
+          style={{ bottom: isSliderVisible ? "244px" : "60px" }}
+          onClick={handleRecommendationClick}
+        />
+        <RecommendationButton
+          style={{ bottom: isSliderVisible ? "200px" : "16px" }}
+          onClick={handleRecommendationClick}
+        />
+
         <div
           style={{
             position: "absolute",
             left: 10,
-            bottom: 10,
+            bottom: isSliderVisible ? "190px" : "10px",
             zIndex: 500,
           }}
         >
@@ -248,7 +297,7 @@ const AppMap = () => {
         {currentPosition && (
           <NaverMap
             draggable
-            zoomControl
+            zoomControl={false}
             zoomControlOptions={{
               position: navermaps.Position.TOP_RIGHT,
             }}
@@ -300,9 +349,12 @@ const Slider = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+  height: 150px;
   background-color: white;
   padding: 20px;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
+  border-top-left-radius: 18px;
+  border-top-right-radius: 18px;
 `;
 const SliderContent = styled.div`
   display: flex;
@@ -319,27 +371,30 @@ const CloseButton = styled.button`
 `;
 const ChipContainer = styled.div`
   display: flex;
+  position: fixed;
   position: absolute;
   align-items: center;
-  margin-top: 12px;
-  width: 50px;
-  top: 72px;
-  height: 25px;
+  width: calc(100% - 32px);
+  top: 104px;
   margin-left: 16px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  z-index: 1000;
 `;
-
+const ChipWrapper = styled.div`
+  display: flex;
+`;
 const Chip = styled.div`
-  margin-right: 4px;
   cursor: pointer;
 `;
 const SearchContainer = styled.div`
   position: absolute;
   top: 0;
-  left: 6px;
-  right: 16px;
-  padding: 10px;
+  left: 0;
+  right: 0;
+  justify-content: center;
+  padding: 44px 16px 12px 16px;
   display: flex;
-  flex-direction: row;
   z-index: 1000;
 `;
 const FindRouteButton = styled.button`
@@ -352,4 +407,37 @@ const FindRouteButton = styled.button`
   border: none;
   padding: 0;
   margin-left: 8px;
+`;
+const RecommendationButton = styled.button`
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  width: 101px;
+  height: 36px;
+  cursor: pointer;
+  background: none;
+  background-image: url(${Recommendation});
+  background-size: cover;
+  border: none;
+  padding: 0;
+`;
+const ChannelTalkBtn = styled.button`
+  position: absolute;
+  bottom: 60px;
+  right: 16px;
+  width: 101px;
+  height: 36px;
+  cursor: pointer;
+  background: none;
+  background-image: url(${ChannelTalk});
+  background-size: cover;
+  border: none;
+  padding: 0;
+`;
+const ChannelWindow = styled.img`
+  position: absolute;
+  bottom: 100px;
+  right: 13px;
+  width: 143px;
+  height: 45px;
 `;
