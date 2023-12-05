@@ -131,18 +131,19 @@ app.post("/reverseGeocoding", async (req, res) => {
 
     const addressData = reverseGeocodeResponse.data.results[0].region;
     const addressResult = reverseGeocodeResponse.data;
-    const address =
+    const addressBuildingData = reverseGeocodeResponse.data.results[2]?.land?.addition0?.value;
+    let address =
       addressData.area1.name +
       " " +
       addressData.area2.name +
       " " +
       addressData.area3.name +
       " " +
-      addressData.area3.name +
-      " " +
-      reverseGeocodeResponse.data.results[2].land.addition0.value;
-    const addressBuildingData =
-      reverseGeocodeResponse.data.results[2].land.addition0.value;
+      addressData.area3.name;
+    
+    if (addressBuildingData) {
+      address += " " + addressBuildingData;
+    }
 
     res.json({ address, addressData, addressResult, addressBuildingData });
   } catch (error) {

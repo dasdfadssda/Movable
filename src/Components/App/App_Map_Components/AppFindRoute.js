@@ -153,9 +153,12 @@ const AppFindRoute = () => {
             );
             setSearchValue1(address);
             const positionData = {
-              key: -1, 
-              position: new navermaps.LatLng(position.coords.latitude, position.coords.longitude),
-              title: address 
+              key: -1,
+              position: new navermaps.LatLng(
+                position.coords.latitude,
+                position.coords.longitude
+              ),
+              title: address,
             };
             setSearchValue1Data(positionData);
           } catch (error) {
@@ -220,36 +223,89 @@ const AppFindRoute = () => {
         <SearchContainer>
           {!isSearchClicked ? (
             <>
-              <FlexDiv bottom={8}>
-                <ImageDiv
-                  src={require("../../../Assets/Map/FindRoute/Frame1.png")}
-                  right={10}
-                  width={16}
-                  height={16}
-                />
-                <SearchInput
-                  value={searchValue1}
-                  onChange={handleSearchChange1}
-                  image={Oneimage}
-                />
-                <CancelButton ButtonImage={CancelIcon} left={12} right={-8} />
-              </FlexDiv>
-              <FlexDiv>
-                <ImageDiv
-                  src={require("../../../Assets/Map/FindRoute/Frame1.png")}
-                  right={10}
-                  width={16}
-                  height={16}
-                />
-                <SearchInput
-                  value={searchValue2}
-                  onChange={handleSearchChange2}
-                  placeholder="도착지 입력"
-                  image={Twoimage}
-                  onClick={handleSearchClick}
-                />
-                <div style={{ width: "29px" }}></div>
-              </FlexDiv>
+              {searchValue2Data ? (
+                <>
+                  <FlexDiv bottom={8}>
+                    <ImageDiv
+                      src={require("../../../Assets/Map/FindRoute/ChangeIcon.png")}
+                      right={6}
+                      width={24}
+                      height={24}
+                      left={-6}
+                      onClick={() => {
+                        const tempValue = searchValue1;
+                        const tempData = searchValue1Data;
+                        setSearchValue1(searchValue2);
+                        setSearchValue1Data(searchValue2Data);
+                        setSearchValue2(tempValue);
+                        setSearchValue2Data(tempData);
+                      }}
+                    />
+                    <div style={{ width: "100%" }}>
+                      <FlexDiv bottom={8}>
+                        <SearchInput
+                          value={searchValue1}
+                          onChange={handleSearchChange1}
+                          image={Oneimage}
+                        />
+                        <CancelButton
+                          ButtonImage={CancelIcon}
+                          left={12}
+                          right={-8}
+                        />
+                      </FlexDiv>
+                      <FlexDiv>
+                        <SearchInput
+                          value={searchValue2}
+                          onChange={handleSearchChange2}
+                          placeholder="도착지 입력"
+                          image={Twoimage}
+                          onClick={handleSearchClick}
+                        />
+                        <div style={{ width: "29px" }}></div>
+                      </FlexDiv>
+                    </div>
+                  </FlexDiv>
+                  <FlexDiv>ㅁㄴㅇㄹ</FlexDiv>
+                </>
+              ) : (
+                <>
+                  <FlexDiv bottom={8}>
+                    <ImageDiv
+                      src={require("../../../Assets/Map/FindRoute/Frame1.png")}
+                      right={10}
+                      width={16}
+                      height={16}
+                    />
+                    <SearchInput
+                      value={searchValue1}
+                      onChange={handleSearchChange1}
+                      image={Oneimage}
+                    />
+                    <CancelButton
+                      ButtonImage={CancelIcon}
+                      left={12}
+                      right={-8}
+                    />
+                  </FlexDiv>
+                  <FlexDiv>
+                    <ImageDiv
+                      src={require("../../../Assets/Map/FindRoute/Frame1.png")}
+                      right={10}
+                      width={16}
+                      height={16}
+                    />
+                    <SearchInput
+                      value={searchValue2}
+                      onChange={handleSearchChange2}
+                      placeholder="도착지 입력"
+                      image={Twoimage}
+                      onClick={handleSearchClick}
+                    />
+                    <div style={{ width: "29px" }}></div>
+                  </FlexDiv>
+                </>
+              )}
             </>
           ) : (
             <>
@@ -325,7 +381,7 @@ const AppFindRoute = () => {
                 icon={{
                   url: ActivePicker,
                   scaledSize: new navermaps.Size(40, 40),
-                  anchor: new navermaps.Point(23, 28)
+                  anchor: new navermaps.Point(23, 28),
                 }}
               />
             )}
