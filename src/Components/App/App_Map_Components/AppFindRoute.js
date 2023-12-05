@@ -4,6 +4,7 @@ import {
   Marker,
   Polyline,
 } from "react-naver-maps";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import React, { useState, useCallback, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "../../../Style/theme";
@@ -13,9 +14,11 @@ import currentSpot from "../../../Assets/Map/currentLocation.png";
 import CancelIcon from "../../../Assets/Map/FindRoute/Cancel_Icon.png";
 import Oneimage from "../../../Assets/Map/FindRoute/FirstNum.png";
 import Twoimage from "../../../Assets/Map/FindRoute/SecondNum.png";
+import Thirdimage from "../../../Assets/Map/FindRoute/ThirdNum.png";
 import BackIcon from "../../../Assets/Map/FindRoute/BackIcon.png";
 import ActivePicker from "../../../Assets/img/_Picker=장애인 가능.png";
 import AddButton from "../../../Assets/Map/FindRoute/addIcon.png";
+import RemoveButton from "../../../Assets/Map/FindRoute/removeIcon.png";
 
 const AppFindRoute = () => {
   const navermaps = window.naver.maps;
@@ -29,14 +32,19 @@ const AppFindRoute = () => {
 
   // 검색어 관련 코드
   const [searchValue1, setSearchValue1] = useState("");
-  const [searchValue2, setSearchValue2] = useState();
   const [searchValueNum1, setSearchValueNum1] = useState(4.33);
-  const [searchValueNum2, setSearchValueNum2] = useState(3.7);
   const [searchValueText1, setSearchValueText1] = useState("중");
-  const [searchValueText2, setSearchValueText2] = useState("하");
   const [searchValue1Data, setSearchValue1Data] = useState();
+  const [searchValue2, setSearchValue2] = useState();
+  const [searchValueNum2, setSearchValueNum2] = useState(3.7);
+  const [searchValueText2, setSearchValueText2] = useState("하");
   const [searchValue2Data, setSearchValue2Data] = useState();
+  const [searchValue3, setSearchValue3] = useState();
+  const [searchValueNum3, setSearchValueNum3] = useState(4.5);
+  const [searchValueText3, setSearchValueText3] = useState("상");
+  const [searchValue3Data, setSearchValue3Data] = useState();
   const [isSearchClicked, setIsSearchClicked] = useState(false);
+  const [isSearchClicked2, setIsSearchClicked2] = useState(false);
   const [isFindRoute, setIsFindRoute] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [result, setResult] = useState();
@@ -83,7 +91,6 @@ const AppFindRoute = () => {
               endLongitude: searchValue2Data.position.x,
             }
           );
-
           setDistance(directionResponse.data.distance);
           setDuration(directionResponse.data.duration);
         } catch (error) {
@@ -94,6 +101,33 @@ const AppFindRoute = () => {
       fetchDistanceAndDuration();
     }
   }, [searchValue2Data]);
+
+  useEffect(() => {
+    if (searchValue3Data) {
+      const fetchDistanceAndDuration = async () => {
+        try {
+          const directionResponse = await axios.post(
+            `http://localhost:3001/calculateDistance`, // 서버 URL에 맞게 수정해주세요.
+            {
+              startLatitude: searchValue2Data.position.y,
+              startLongitude: searchValue2Data.position.x,
+              endLatitude: searchValue3Data.position.y,
+              endLongitude: searchValue3Data.position.x,
+            }
+          );
+          const beforeDistance = distance;
+          const beforeDuration = duration;
+
+          setDistance(directionResponse.data.distance + beforeDistance);
+          setDuration(directionResponse.data.duration + beforeDuration);
+        } catch (error) {
+          console.error("Error calculating distance and duration:", error);
+        }
+      };
+
+      fetchDistanceAndDuration();
+    }
+  }, [searchValue3Data]);
 
   // 밀리초를 시간과 분으로 변환하는 함수
   const convertMillisecondsToTime = (milliseconds) => {
@@ -258,6 +292,34 @@ const AppFindRoute = () => {
       });
   }, [handleCurrentLocation, navermaps, dataForbstacleApi]);
 
+  // 드레그 관련 코드
+  const [flexDivs, setFlexDivs] = useState([
+    {
+      id: "1",
+      searchValue: searchValue2,
+      searchValueNum: searchValueNum2,
+      searchValueText: searchValueText2,
+      searchValueData: searchValue2Data,
+    },
+    {
+      id: "2",
+      searchValue: searchValue3,
+      searchValueNum: searchValueNum3,
+      searchValueText: searchValueText3,
+      searchValueData: searchValue3Data,
+    },
+  ]);
+
+  const handleOnDragEnd = (result) => {
+    if (!result.destination) return;
+
+    const items = Array.from(flexDivs);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+
+    setFlexDivs(items);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <MapDiv
@@ -277,84 +339,190 @@ const AppFindRoute = () => {
             <>
               {searchValue2Data ? (
                 <>
-                  <FlexDiv bottom={8}>
-                    <ImageDiv
-                      src={require("../../../Assets/Map/FindRoute/ChangeIcon.png")}
-                      right={6}
-                      width={24}
-                      height={24}
-                      left={-6}
-                      onClick={() => {
-                        const tempValue = searchValue1;
-                        const tempData = searchValue1Data;
-                        const tempNum1 = searchValueNum1;
-                        const tempNum2 = searchValueNum2;
-                        const tempText1 = searchValueText1;
-                        const tempText2 = searchValueText2;
-
-                        setSearchValue1(searchValue2);
-                        setSearchValue1Data(searchValue2Data);
-                        setSearchValueNum1(tempNum2);
-                        setSearchValueText1(tempText2);
-
-                        setSearchValue2(tempValue);
-                        setSearchValue2Data(tempData);
-                        setSearchValueNum2(tempNum1);
-                        setSearchValueText2(tempText1);
-                      }}
-                    />
-
-                    <div style={{ width: "100%" }}>
+                  {searchValue3Data ? (
+                    <>
                       <FlexDiv bottom={8}>
-                        <SearchInput
-                          value={searchValue1}
-                          onChange={handleSearchChange1}
-                          image={Oneimage}
-                        />
-                        <CancelButton
-                          ButtonImage={CancelIcon}
-                          left={12}
-                          right={-8}
-                        />
+                        <div style={{ width: "100%" }}>
+                          <FlexDiv bottom={8}>
+                            <ImageDiv
+                              src={require("../../../Assets/Map/FindRoute/Frame1.png")}
+                              right={10}
+                              width={16}
+                              height={16}
+                            />
+                            <SearchInput
+                              value={searchValue1}
+                              onChange={handleSearchChange1}
+                              image={Oneimage}
+                            />
+                            <CancelButton
+                              ButtonImage={CancelIcon}
+                              left={12}
+                              right={-8}
+                            />
+                          </FlexDiv>
+                          <FlexDiv bottom={8}>
+                            <ImageDiv
+                              src={require("../../../Assets/Map/FindRoute/Frame1.png")}
+                              right={10}
+                              width={16}
+                              height={16}
+                            />
+                            <SearchInput
+                              value={searchValue2}
+                              onChange={handleSearchChange2}
+                              placeholder="도착지 입력"
+                              image={Twoimage}
+                              onClick={handleSearchClick}
+                            />
+                            <InputButton
+                              ButtonImage={RemoveButton}
+                              onClick={() => {
+                                setIsSearchClicked(true);
+                              }}
+                            />
+                            <div style={{ width: "29px" }}></div>
+                          </FlexDiv>
+                          <FlexDiv>
+                            <ImageDiv
+                              src={require("../../../Assets/Map/FindRoute/Frame1.png")}
+                              right={10}
+                              width={16}
+                              height={16}
+                            />
+                            <SearchInput
+                              value={searchValue3}
+                              onChange={handleSearchChange2}
+                              placeholder="도착지 입력"
+                              image={Thirdimage}
+                              onClick={handleSearchClick}
+                            />
+                            <InputButton
+                              ButtonImage={AddButton}
+                              onClick={() => {
+                                setIsSearchClicked(true);
+                                setIsSearchClicked2(true);
+                              }}
+                            />
+                            <div style={{ width: "29px" }}></div>
+                          </FlexDiv>
+                        </div>
                       </FlexDiv>
-                      <FlexDiv>
-                        <SearchInput
-                          value={searchValue2}
-                          onChange={handleSearchChange2}
-                          placeholder="도착지 입력"
-                          image={Twoimage}
-                          onClick={handleSearchClick}
-                        />
-                        <InputButton ButtonImage={AddButton} />
-                        <div style={{ width: "29px" }}></div>
+                      <FlexDiv justify={"center"}>
+                        <InfoBox>
+                          <ImageDiv
+                            src={require("../../../Assets/Map/FindRoute/CarIcon.png")}
+                            width={24}
+                            height={24}
+                          />
+                          <Body2>소요시간</Body2>
+                          <Body3>{convertMillisecondsToTime(duration)}</Body3>
+                          <ImageDiv
+                            src={require("../../../Assets/Map/FindRoute/PinkLine.png")}
+                            width={1}
+                            height={20}
+                          />
+                          <Body2>이동거리</Body2>
+                          <Body3>{convertToKm(distance)}</Body3>
+                          <ImageDiv
+                            src={require("../../../Assets/Map/FindRoute/PinkLine.png")}
+                            width={1}
+                            height={20}
+                          />
+                          <Body2>난이도</Body2>
+                          <Body3>하</Body3>
+                        </InfoBox>
                       </FlexDiv>
-                    </div>
-                  </FlexDiv>
-                  <FlexDiv justify={"center"}>
-                    <InfoBox>
-                      <ImageDiv
-                        src={require("../../../Assets/Map/FindRoute/CarIcon.png")}
-                        width={24}
-                        height={24}
-                      />
-                      <Body2>소요시간</Body2>
-                      <Body3>{convertMillisecondsToTime(duration)}</Body3>
-                      <ImageDiv
-                        src={require("../../../Assets/Map/FindRoute/PinkLine.png")}
-                        width={1}
-                        height={20}
-                      />
-                      <Body2>이동거리</Body2>
-                      <Body3>{convertToKm(distance)}</Body3>
-                      <ImageDiv
-                        src={require("../../../Assets/Map/FindRoute/PinkLine.png")}
-                        width={1}
-                        height={20}
-                      />
-                      <Body2>난이도</Body2>
-                      <Body3>하</Body3>
-                    </InfoBox>
-                  </FlexDiv>
+                    </>
+                  ) : (
+                    <>
+                      <FlexDiv bottom={8}>
+                        <ImageDiv
+                          src={require("../../../Assets/Map/FindRoute/ChangeIcon.png")}
+                          right={6}
+                          width={24}
+                          height={24}
+                          left={-6}
+                          onClick={() => {
+                            const tempValue = searchValue1;
+                            const tempData = searchValue1Data;
+                            const tempNum1 = searchValueNum1;
+                            const tempNum2 = searchValueNum2;
+                            const tempText1 = searchValueText1;
+                            const tempText2 = searchValueText2;
+
+                            setSearchValue1(searchValue2);
+                            setSearchValue1Data(searchValue2Data);
+                            setSearchValueNum1(tempNum2);
+                            setSearchValueText1(tempText2);
+
+                            setSearchValue2(tempValue);
+                            setSearchValue2Data(tempData);
+                            setSearchValueNum2(tempNum1);
+                            setSearchValueText2(tempText1);
+                            setCurrentPosition(searchValue2Data.position);
+                          }}
+                        />
+
+                        <div style={{ width: "100%" }}>
+                          <FlexDiv bottom={8}>
+                            <SearchInput
+                              value={searchValue1}
+                              onChange={handleSearchChange1}
+                              image={Oneimage}
+                            />
+                            <CancelButton
+                              ButtonImage={CancelIcon}
+                              left={12}
+                              right={-8}
+                            />
+                          </FlexDiv>
+                          <FlexDiv>
+                            <SearchInput
+                              value={searchValue2}
+                              onChange={handleSearchChange2}
+                              placeholder="도착지 입력"
+                              image={Twoimage}
+                              onClick={handleSearchClick}
+                            />
+                            <InputButton
+                              ButtonImage={AddButton}
+                              onClick={() => {
+                                setIsSearchClicked(true);
+                                setIsSearchClicked2(true);
+                              }}
+                            />
+                            <div style={{ width: "29px" }}></div>
+                          </FlexDiv>
+                        </div>
+                      </FlexDiv>
+                      <FlexDiv justify={"center"}>
+                        <InfoBox>
+                          <ImageDiv
+                            src={require("../../../Assets/Map/FindRoute/CarIcon.png")}
+                            width={24}
+                            height={24}
+                          />
+                          <Body2>소요시간</Body2>
+                          <Body3>{convertMillisecondsToTime(duration)}</Body3>
+                          <ImageDiv
+                            src={require("../../../Assets/Map/FindRoute/PinkLine.png")}
+                            width={1}
+                            height={20}
+                          />
+                          <Body2>이동거리</Body2>
+                          <Body3>{convertToKm(distance)}</Body3>
+                          <ImageDiv
+                            src={require("../../../Assets/Map/FindRoute/PinkLine.png")}
+                            width={1}
+                            height={20}
+                          />
+                          <Body2>난이도</Body2>
+                          <Body3>하</Body3>
+                        </InfoBox>
+                      </FlexDiv>
+                    </>
+                  )}
                 </>
               ) : (
                 <>
@@ -450,11 +618,11 @@ const AppFindRoute = () => {
           <NaverMap
             // draggable
             defaultCenter={currentPosition}
-            defaultZoom={13}
+            defaultZoom={11}
             onZoomChanged={handleZoomChanged}
           >
             <Marker
-              position={searchValue1Data.position}
+              position={currentPosition}
               icon={{
                 url: !searchValue2Data ? currentSpot : ActivePicker,
                 scaledSize: new navermaps.Size(40, 40),
@@ -469,13 +637,33 @@ const AppFindRoute = () => {
                 icon={{
                   url: ActivePicker,
                   scaledSize: new navermaps.Size(40, 40),
-                  anchor: new navermaps.Point(23, 28),
+                  anchor: new navermaps.Point(20, 35),
+                }}
+              />
+            )}
+            {searchValue3Data && (
+              <Marker
+                key={searchValue3Data.key}
+                position={searchValue3Data.position}
+                title={searchValue3Data.title}
+                icon={{
+                  url: ActivePicker,
+                  scaledSize: new navermaps.Size(40, 40),
+                  anchor: new navermaps.Point(20, 35),
                 }}
               />
             )}
             {searchValue2Data && (
               <Polyline
                 path={[searchValue1Data.position, searchValue2Data.position]}
+                strokeColor={"#EE7A6A"}
+                strokeOpacity={0.6}
+                strokeWeight={5}
+              />
+            )}
+            {searchValue3Data && (
+              <Polyline
+                path={[searchValue2Data.position, searchValue3Data.position]}
                 strokeColor={"#EE7A6A"}
                 strokeOpacity={0.6}
                 strokeWeight={5}
@@ -503,98 +691,231 @@ const AppFindRoute = () => {
             </SearchContents>
           ) : (
             <SearchContents>
-              {result.map((item) => {
-                const currentPosition = {
-                  lat: newPosition.lat(),
-                  lng: newPosition.lng(),
-                };
-                const itemPosition = {
-                  lat: item.position.y,
-                  lng: item.position.x,
-                };
-                const distance = calcDistanceHaversine(
-                  currentPosition,
-                  itemPosition
-                );
-                return (
-                  <ListItem2
-                    key={item.key}
-                    onClick={() => {
-                      setIsSearchClicked(false);
-                      setIsFindRoute(false);
-                      console.log("클릭 : ", item);
-                      setSearchValue2(item.title);
-                      setSearchValue2Data(item);
-                    }}
-                  >
-                    {item.title}
-                    <ListDiv justify={"flex-end"} flex={"center"}>
-                      {distance.toFixed(2)}km
-                    </ListDiv>
-                  </ListItem2>
-                );
-              })}
+              {!isSearchClicked2 ? (
+                <>
+                  {result.map((item) => {
+                    const currentPosition = {
+                      lat: newPosition.lat(),
+                      lng: newPosition.lng(),
+                    };
+                    const itemPosition = {
+                      lat: item.position.y,
+                      lng: item.position.x,
+                    };
+                    const distance = calcDistanceHaversine(
+                      currentPosition,
+                      itemPosition
+                    );
+                    return (
+                      <ListItem2
+                        key={item.key}
+                        onClick={() => {
+                          setIsSearchClicked(false);
+                          setIsFindRoute(false);
+                          console.log("클릭 : ", item);
+                          setSearchValue2(item.title);
+                          setSearchValue2Data(item);
+                        }}
+                      >
+                        {item.title}
+                        <ListDiv justify={"flex-end"} flex={"center"}>
+                          {distance.toFixed(2)}km
+                        </ListDiv>
+                      </ListItem2>
+                    );
+                  })}
+                </>
+              ) : (
+                <>
+                  {result.map((item) => {
+                    const currentPosition = {
+                      lat: newPosition.lat(),
+                      lng: newPosition.lng(),
+                    };
+                    const itemPosition = {
+                      lat: item.position.y,
+                      lng: item.position.x,
+                    };
+                    const distance = calcDistanceHaversine(
+                      currentPosition,
+                      itemPosition
+                    );
+                    return (
+                      <ListItem2
+                        key={item.key}
+                        onClick={() => {
+                          setIsSearchClicked(false);
+                          setIsFindRoute(false);
+                          console.log("클릭 : ", item);
+                          setSearchValue3(item.title);
+                          setSearchValue3Data(item);
+                        }}
+                      >
+                        {item.title}
+                        <ListDiv justify={"flex-end"} flex={"center"}>
+                          {distance.toFixed(2)}km
+                        </ListDiv>
+                      </ListItem2>
+                    );
+                  })}
+                </>
+              )}
             </SearchContents>
           ))}
         {searchValue2Data && (
-          <FlexDiv>
-            <PlaceContainer>
-              <MakerImg
-                src={require("../../../Assets/Map/FindRoute/FirstMaker.png")}
-              />
-              <Body4>{searchValue1}</Body4>
-              <FlexDiv width={78} flex={"center"}>
-                <ImageDiv
-                  src={require("../../../Assets/Map/FindRoute/StartIcon.png")}
-                  width={14}
-                  height={14}
-                  top={-1.5}
-                />
-                <PlaceText>
-                  &nbsp;{searchValueNum1}&nbsp;&nbsp;
-                  <ColorfulText color="#A5A5A5">
-                    난이도&nbsp;&nbsp;
-                  </ColorfulText>
-                </PlaceText>
-                <PlaceDiffText>{searchValueText1}</PlaceDiffText>
-              </FlexDiv>
-              <ImageDiv
-                src={require("../../../Assets/Map/FindRoute/StartLine.png")}
-                width={119}
-                height={4}
-                top={8}
-                right={-10}
-              />
-            </PlaceContainer>
-            <PlaceContainer left={45}>
-              <MakerImg
-                src={require("../../../Assets/Map/FindRoute/SecondMarker.png")}
-              />
-              <Body4>{searchValue2}</Body4>
-              <FlexDiv width={78} flex={"center"}>
-                <ImageDiv
-                  src={require("../../../Assets/Map/FindRoute/StartIcon.png")}
-                  width={14}
-                  height={14}
-                  top={-1.5}
-                />
-                <PlaceText>
-                  &nbsp;{searchValueNum2}&nbsp;&nbsp;
-                  <ColorfulText color="#A5A5A5">
-                    {searchValueText2}&nbsp;&nbsp;
-                  </ColorfulText>
-                </PlaceText>
-                <PlaceDiffText>하</PlaceDiffText>
-              </FlexDiv>
-              <ImageDiv
-                src={require("../../../Assets/Map/FindRoute/LastMaker.png")}
-                width={68}
-                height={4}
-                top={8}
-                left={-56}
-              />
-            </PlaceContainer>
-          </FlexDiv>
+          <>
+            {searchValue3Data ? (
+              <>
+                <FlexDiv>
+                  <PlaceContainer>
+                    <MakerImg
+                      src={require("../../../Assets/Map/FindRoute/FirstMaker.png")}
+                    />
+                    <Body4>{searchValue1}</Body4>
+                    <FlexDiv width={78} flex={"center"}>
+                      <ImageDiv
+                        src={require("../../../Assets/Map/FindRoute/StartIcon.png")}
+                        width={14}
+                        height={14}
+                        top={-1.5}
+                      />
+                      <PlaceText>
+                        &nbsp;{searchValueNum1}&nbsp;&nbsp;
+                        <ColorfulText color="#A5A5A5">
+                          난이도&nbsp;&nbsp;
+                        </ColorfulText>
+                      </PlaceText>
+                      <PlaceDiffText>{searchValueText1}</PlaceDiffText>
+                    </FlexDiv>
+                    <ImageDiv
+                      src={require("../../../Assets/Map/FindRoute/StartLine.png")}
+                      width={119}
+                      height={4}
+                      top={8}
+                      right={-10}
+                    />
+                  </PlaceContainer>
+                  <PlaceContainer left={45}>
+                    <MakerImg
+                      src={require("../../../Assets/Map/FindRoute/SecondMarker.png")}
+                    />
+                    <Body4>{searchValue2}</Body4>
+                    <FlexDiv width={78} flex={"center"}>
+                      <ImageDiv
+                        src={require("../../../Assets/Map/FindRoute/StartIcon.png")}
+                        width={14}
+                        height={14}
+                        top={-1.5}
+                      />
+                      <PlaceText>
+                        &nbsp;{searchValueNum2}&nbsp;&nbsp;
+                        <ColorfulText color="#A5A5A5">
+                          난이도&nbsp;&nbsp;
+                        </ColorfulText>
+                      </PlaceText>
+                      <PlaceDiffText>{searchValueText2}</PlaceDiffText>
+                    </FlexDiv>
+                    <ImageDiv
+                      src={require("../../../Assets/Map/FindRoute/LastMaker.png")}
+                      width={68}
+                      height={4}
+                      top={8}
+                      left={-56}
+                    />
+                  </PlaceContainer>
+                  <PlaceContainer left={86}>
+                    <MakerImg
+                      src={require("../../../Assets/Map/FindRoute/ThirdMaker.png")}
+                    />
+                    <Body4>{searchValue3}</Body4>
+                    <FlexDiv width={78} flex={"center"}>
+                      <ImageDiv
+                        src={require("../../../Assets/Map/FindRoute/StartIcon.png")}
+                        width={14}
+                        height={14}
+                        top={-1.5}
+                      />
+                      <PlaceText>
+                        &nbsp;{searchValueNum3}&nbsp;&nbsp;
+                        <ColorfulText color="#A5A5A5">
+                          난이도&nbsp;&nbsp;
+                        </ColorfulText>
+                      </PlaceText>
+                      <PlaceDiffText>{searchValueText3}</PlaceDiffText>
+                    </FlexDiv>
+                    <ImageDiv
+                      src={require("../../../Assets/Map/FindRoute/LastMaker.png")}
+                      width={68}
+                      height={4}
+                      top={8}
+                      left={-56}
+                    />
+                  </PlaceContainer>
+                </FlexDiv>
+              </>
+            ) : (
+              <>
+                <FlexDiv>
+                  <PlaceContainer>
+                    <MakerImg
+                      src={require("../../../Assets/Map/FindRoute/FirstMaker.png")}
+                    />
+                    <Body4>{searchValue1}</Body4>
+                    <FlexDiv width={78} flex={"center"}>
+                      <ImageDiv
+                        src={require("../../../Assets/Map/FindRoute/StartIcon.png")}
+                        width={14}
+                        height={14}
+                        top={-1.5}
+                      />
+                      <PlaceText>
+                        &nbsp;{searchValueNum1}&nbsp;&nbsp;
+                        <ColorfulText color="#A5A5A5">
+                          난이도&nbsp;&nbsp;
+                        </ColorfulText>
+                      </PlaceText>
+                      <PlaceDiffText>{searchValueText1}</PlaceDiffText>
+                    </FlexDiv>
+                    <ImageDiv
+                      src={require("../../../Assets/Map/FindRoute/StartLine.png")}
+                      width={119}
+                      height={4}
+                      top={8}
+                      right={-10}
+                    />
+                  </PlaceContainer>
+                  <PlaceContainer left={45}>
+                    <MakerImg
+                      src={require("../../../Assets/Map/FindRoute/SecondMarker.png")}
+                    />
+                    <Body4>{searchValue2}</Body4>
+                    <FlexDiv width={78} flex={"center"}>
+                      <ImageDiv
+                        src={require("../../../Assets/Map/FindRoute/StartIcon.png")}
+                        width={14}
+                        height={14}
+                        top={-1.5}
+                      />
+                      <PlaceText>
+                        &nbsp;{searchValueNum2}&nbsp;&nbsp;
+                        <ColorfulText color="#A5A5A5">
+                          {searchValueText2}&nbsp;&nbsp;
+                        </ColorfulText>
+                      </PlaceText>
+                      <PlaceDiffText>하</PlaceDiffText>
+                    </FlexDiv>
+                    <ImageDiv
+                      src={require("../../../Assets/Map/FindRoute/LastMaker.png")}
+                      width={68}
+                      height={4}
+                      top={8}
+                      left={-56}
+                    />
+                  </PlaceContainer>
+                </FlexDiv>
+              </>
+            )}
+          </>
         )}
       </MapDiv>
     </ThemeProvider>

@@ -16,6 +16,7 @@
     "http-proxy-middleware": "^2.0.6",
     "lottie-react": "^2.4.0",
     "react": "^18.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-kakao-login": "^2.1.1",
     "react-naver-maps": "^0.1.3",
