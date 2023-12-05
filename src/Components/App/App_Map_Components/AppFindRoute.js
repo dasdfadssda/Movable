@@ -1,5 +1,4 @@
 import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
-
 import React, { useState, useCallback, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "../../../Style/theme";
@@ -10,6 +9,7 @@ import CancelIcon from "../../../Assets/Map/FindRoute/Cancel_Icon.png";
 import Oneimage from "../../../Assets/Map/FindRoute/FirstNum.png";
 import Twoimage from "../../../Assets/Map/FindRoute/SecondNum.png";
 import BackIcon from "../../../Assets/Map/FindRoute/BackIcon.png";
+import ActivePicker from "../../../Assets/img/_Picker=장애인 가능.png";
 
 const AppFindRoute = () => {
   const navermaps = window.naver.maps;
@@ -23,7 +23,8 @@ const AppFindRoute = () => {
 
   // 검색어 관련 코드
   const [searchValue1, setSearchValue1] = useState("");
-  const [searchValue2, setSearchValue2] = useState("");
+  const [searchValue2, setSearchValue2] = useState();
+  const [searchValue2Data, setSearchValue2Data] = useState();
   const [isSearchClicked, setIsSearchClicked] = useState(false);
   const [isFindRoute, setIsFindRoute] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -303,6 +304,17 @@ const AppFindRoute = () => {
                 scaledSize: new navermaps.Size(40, 40),
               }}
             />
+            {searchValue2Data && (
+              <Marker
+                key={searchValue2Data.key}
+                position={searchValue2Data.position}
+                title={searchValue2Data.title}
+                icon={{
+                  url: ActivePicker,
+                  scaledSize: new navermaps.Size(40, 40),
+                }}
+              />
+            )}
           </NaverMap>
         )}
         {isSearchClicked &&
@@ -331,15 +343,24 @@ const AppFindRoute = () => {
                   lng: newPosition.lng(),
                 };
                 const itemPosition = {
-                  lat: item.position.y, 
-                  lng: item.position.x
+                  lat: item.position.y,
+                  lng: item.position.x,
                 };
                 const distance = calcDistanceHaversine(
                   currentPosition,
                   itemPosition
                 );
                 return (
-                  <ListItem2 key={item.key}>
+                  <ListItem2
+                    key={item.key}
+                    onClick={() => {
+                      setIsSearchClicked(false);
+                      setIsFindRoute(false);
+                      console.log("클릭 : ", item);
+                      setSearchValue2(item.title);
+                      setSearchValue2Data(item);
+                    }}
+                  >
                     {item.title}
                     <ListDiv justify={"flex-end"} flex={"center"}>
                       {distance.toFixed(2)}km
