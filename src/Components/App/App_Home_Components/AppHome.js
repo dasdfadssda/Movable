@@ -36,6 +36,9 @@ const AppHome = () => {
           <div>
             <Link to="/AppOpenAI">ai 페이지</Link>
           </div>
+          <div>
+            <Link to="/findRoute">길찾기</Link>
+          </div>
         </div>
       )}
     </ThemeProvider>

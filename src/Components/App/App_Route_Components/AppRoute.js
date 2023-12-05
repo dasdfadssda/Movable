@@ -9,48 +9,7 @@ import RouteTask2 from "./AppRoute_Task2";
 import RouteTask3 from "./AppRoute_Task3";
 import RouteTask4 from "./AppRoute_Task4";
 import AppLoading from "./AppLoading";
-import { askOpenAI } from "../../../Api/RouteAPI";
 import AnswerComponent from "./AppRoute_Result";
-
-const Div = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: #fff;
-  height: 100vh;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-`;
-
-const PartDiv = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const NextButton = styled.button`
-  display: flex;
-  width: 94%;
-  padding: 10px 150px;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  border-radius: 4px;
-  background: ${(props) =>
-    props.disabled
-      ? props.theme.colors.black_30
-      : "var(--Primary_pink30, #fff7f5)"};
-  border: none;
-  font-size: ${(props) => props.theme.Web_fontSizes.Body3};
-  font-weight: ${(props) => props.theme.fontWeights.Body3};
-  line-height: ${(props) => props.theme.LineHeight.Body3};
-  color: ${(props) =>
-    props.disabled
-      ? props.theme.colors.black_50
-      : props.theme.colors.Primary_pink100};
-  margin-bottom: 32px;
-`;
 
 const AppRoute = () => {
   const [step, setStep] = useState(1);
@@ -138,3 +97,44 @@ const AppRoute = () => {
 };
 
 export default AppRoute;
+
+
+const Div = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  height: 100vh;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const PartDiv = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const NextButton = styled.button`
+  display: flex;
+  width: 94%;
+  padding: 10px 150px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  background: ${(props) =>
+    props.disabled
+      ? props.theme.colors.black_30
+      : "var(--Primary_pink30, #fff7f5)"};
+  border: none;
+  font-size: ${(props) => props.theme.Web_fontSizes.Body3};
+  font-weight: ${(props) => props.theme.fontWeights.Body3};
+  line-height: ${(props) => props.theme.LineHeight.Body3};
+  color: ${(props) =>
+    props.disabled
+      ? props.theme.colors.black_50
+      : props.theme.colors.Primary_pink100};
+  margin-bottom: 32px;
+`;
