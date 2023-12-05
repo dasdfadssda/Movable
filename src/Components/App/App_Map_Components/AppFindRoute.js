@@ -233,6 +233,7 @@ const AppFindRoute = () => {
                 />
                 <BookMarkText>저장한 장소</BookMarkText>
               </FlexDiv>
+              <ThickHR />
             </>
           )}
         </SearchContainer>
@@ -329,7 +330,7 @@ const SearchContainer = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: row;
-  z-index: 1000;
+  z-index: 999;
   background-color: white;
   height: auto;
   flex-direction: column;
@@ -337,14 +338,14 @@ const SearchContainer = styled.div`
 
 const SearchContents = styled.div`
   position: absolute;
-  margin-top: 110px;
+  margin-top: 108px;
   top: 0;
   right: 0;
   left: 0;
   padding-top: 20px;
   display: flex;
   flex-direction: row;
-  z-index: 1000;
+  z-index: 999;
   background-color: white;
   height: 100%;
   flex-direction: column;
@@ -542,4 +543,16 @@ const Hr = styled.hr`
   border: none;
   left: 0;
   right: 0;
+`;
+
+const ThickHR = styled.hr`
+  width: 100%;
+  height: 8px;
+  background-color: #E3E3E3;
+  margin-top: 90px;
+  position: absolute;
+  border: none;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 `;
