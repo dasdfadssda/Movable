@@ -106,7 +106,7 @@ const AppFindRoute = () => {
 
   useEffect(() => {
     // 페이지 로딩 시에 현재 위치 받아오기
-    // handleCurrentLocation();
+    handleCurrentLocation();
     // 무장애 여행 정보 API 호출
     axios
       .get(dataForbstacleApi)

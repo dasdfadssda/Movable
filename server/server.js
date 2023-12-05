@@ -102,9 +102,10 @@ app.post('/reverseGeocoding', async (req, res) => {
 
     const addressData = reverseGeocodeResponse.data.results[0].region;
     const addressResult = reverseGeocodeResponse.data;
-    const address = addressData.area1.name + ' ' + addressData.area2.name + ' ' + addressData.area3.name;
+    const address = addressData.area1.name + ' ' + addressData.area2.name + ' ' + addressData.area3.name + ' ' + addressData.area3.name + ' ' + reverseGeocodeResponse.data.results[2].land.addition0.value;
+    const addressBuildingData = reverseGeocodeResponse.data.results[2].land.addition0.value;
 
-    res.json({ address, addressData, addressResult });
+    res.json({ address, addressData, addressResult, addressBuildingData });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: '검색 실패' });
