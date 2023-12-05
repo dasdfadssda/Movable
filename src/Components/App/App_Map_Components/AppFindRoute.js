@@ -30,6 +30,10 @@ const AppFindRoute = () => {
   // 검색어 관련 코드
   const [searchValue1, setSearchValue1] = useState("");
   const [searchValue2, setSearchValue2] = useState();
+  const [searchValueNum1, setSearchValueNum1] = useState(4.33);
+  const [searchValueNum2, setSearchValueNum2] = useState(3.7);
+  const [searchValueText1, setSearchValueText1] = useState("중");
+  const [searchValueText2, setSearchValueText2] = useState("하");
   const [searchValue1Data, setSearchValue1Data] = useState();
   const [searchValue2Data, setSearchValue2Data] = useState();
   const [isSearchClicked, setIsSearchClicked] = useState(false);
@@ -62,9 +66,9 @@ const AppFindRoute = () => {
 
   const handleFindRouteClick = () => {};
 
-  // 거리 계산 
+  // 거리 계산
   const [distance, setDistance] = useState();
-const [duration, setDuration] = useState();
+  const [duration, setDuration] = useState();
 
   useEffect(() => {
     if (searchValue2Data) {
@@ -79,35 +83,35 @@ const [duration, setDuration] = useState();
               endLongitude: searchValue2Data.position.x,
             }
           );
-  
+
           setDistance(directionResponse.data.distance);
           setDuration(directionResponse.data.duration);
         } catch (error) {
           console.error("Error calculating distance and duration:", error);
         }
       };
-  
+
       fetchDistanceAndDuration();
     }
   }, [searchValue2Data]);
 
-    // 밀리초를 시간과 분으로 변환하는 함수
-    const convertMillisecondsToTime = (milliseconds) => {
-      const seconds = Math.floor(milliseconds / 1000);
-      const hours = Math.floor(seconds / 3600);
-      const minutes = Math.floor((seconds % 3600) / 60);
-      if(hours > 1) {
-        return `${hours}시간 ${minutes}분`;
-      } else {
-        return `${minutes}분`;
-      }
-    };
-
-    // km 계산기
-    function convertToKm(meters) {
-      const km = meters / 1000;
-      return km.toFixed(1) + "km";
+  // 밀리초를 시간과 분으로 변환하는 함수
+  const convertMillisecondsToTime = (milliseconds) => {
+    const seconds = Math.floor(milliseconds / 1000);
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    if (hours > 1) {
+      return `${hours}시간 ${minutes}분`;
+    } else {
+      return `${minutes}분`;
     }
+  };
+
+  // km 계산기
+  function convertToKm(meters) {
+    const km = meters / 1000;
+    return km.toFixed(1) + "km";
+  }
 
   const LastList = [
     {
@@ -283,12 +287,23 @@ const [duration, setDuration] = useState();
                       onClick={() => {
                         const tempValue = searchValue1;
                         const tempData = searchValue1Data;
+                        const tempNum1 = searchValueNum1;
+                        const tempNum2 = searchValueNum2;
+                        const tempText1 = searchValueText1;
+                        const tempText2 = searchValueText2;
+
                         setSearchValue1(searchValue2);
                         setSearchValue1Data(searchValue2Data);
+                        setSearchValueNum1(tempNum2);
+                        setSearchValueText1(tempText2);
+
                         setSearchValue2(tempValue);
                         setSearchValue2Data(tempData);
+                        setSearchValueNum2(tempNum1);
+                        setSearchValueText2(tempText1);
                       }}
                     />
+
                     <div style={{ width: "100%" }}>
                       <FlexDiv bottom={8}>
                         <SearchInput
@@ -310,7 +325,7 @@ const [duration, setDuration] = useState();
                           image={Twoimage}
                           onClick={handleSearchClick}
                         />
-                        <InputButton ButtonImage={AddButton}/>
+                        <InputButton ButtonImage={AddButton} />
                         <div style={{ width: "29px" }}></div>
                       </FlexDiv>
                     </div>
@@ -418,8 +433,8 @@ const [duration, setDuration] = useState();
         <div
           style={{
             position: "absolute",
-            left: 10,
-            bottom: searchValue2Data ? 170 : 10,
+            left: 6,
+            bottom: searchValue2Data ? 200 : 10,
             zIndex: 500,
           }}
         >
@@ -439,10 +454,10 @@ const [duration, setDuration] = useState();
             onZoomChanged={handleZoomChanged}
           >
             <Marker
-              position={currentPosition}
+              position={searchValue1Data.position}
               icon={{
                 url: !searchValue2Data ? currentSpot : ActivePicker,
-                scaledSize: new navermaps.Size(20, 20),
+                scaledSize: new navermaps.Size(40, 40),
                 anchor: new navermaps.Point(20, 35),
               }}
             />
@@ -453,14 +468,14 @@ const [duration, setDuration] = useState();
                 title={searchValue2Data.title}
                 icon={{
                   url: ActivePicker,
-                  scaledSize: new navermaps.Size(20, 20),
+                  scaledSize: new navermaps.Size(40, 40),
                   anchor: new navermaps.Point(23, 28),
                 }}
               />
             )}
             {searchValue2Data && (
               <Polyline
-                path={[currentPosition, searchValue2Data.position]}
+                path={[searchValue1Data.position, searchValue2Data.position]}
                 strokeColor={"#EE7A6A"}
                 strokeOpacity={0.6}
                 strokeWeight={5}
@@ -521,12 +536,66 @@ const [duration, setDuration] = useState();
               })}
             </SearchContents>
           ))}
-          {searchValue2Data && (
+        {searchValue2Data && (
+          <FlexDiv>
             <PlaceContainer>
-              <MakerImg src={require('../../../Assets/Map/FindRoute/FirstMaker.png')}/>
+              <MakerImg
+                src={require("../../../Assets/Map/FindRoute/FirstMaker.png")}
+              />
               <Body4>{searchValue1}</Body4>
+              <FlexDiv width={78} flex={"center"}>
+                <ImageDiv
+                  src={require("../../../Assets/Map/FindRoute/StartIcon.png")}
+                  width={14}
+                  height={14}
+                  top={-1.5}
+                />
+                <PlaceText>
+                  &nbsp;{searchValueNum1}&nbsp;&nbsp;
+                  <ColorfulText color="#A5A5A5">
+                    난이도&nbsp;&nbsp;
+                  </ColorfulText>
+                </PlaceText>
+                <PlaceDiffText>{searchValueText1}</PlaceDiffText>
+              </FlexDiv>
+              <ImageDiv
+                src={require("../../../Assets/Map/FindRoute/StartLine.png")}
+                width={119}
+                height={4}
+                top={8}
+                right={-10}
+              />
             </PlaceContainer>
-          )}
+            <PlaceContainer left={45}>
+              <MakerImg
+                src={require("../../../Assets/Map/FindRoute/SecondMarker.png")}
+              />
+              <Body4>{searchValue2}</Body4>
+              <FlexDiv width={78} flex={"center"}>
+                <ImageDiv
+                  src={require("../../../Assets/Map/FindRoute/StartIcon.png")}
+                  width={14}
+                  height={14}
+                  top={-1.5}
+                />
+                <PlaceText>
+                  &nbsp;{searchValueNum2}&nbsp;&nbsp;
+                  <ColorfulText color="#A5A5A5">
+                    {searchValueText2}&nbsp;&nbsp;
+                  </ColorfulText>
+                </PlaceText>
+                <PlaceDiffText>하</PlaceDiffText>
+              </FlexDiv>
+              <ImageDiv
+                src={require("../../../Assets/Map/FindRoute/LastMaker.png")}
+                width={68}
+                height={4}
+                top={8}
+                left={-56}
+              />
+            </PlaceContainer>
+          </FlexDiv>
+        )}
       </MapDiv>
     </ThemeProvider>
   );
@@ -632,7 +701,7 @@ const ListDiv = styled.div`
 
 const FlexDiv = styled.div`
   display: flex;
-  width: 98%;
+  width: ${(props) => props.width || 98}%;
   justify-content: ${(props) => props.justify || "flex-start"};
   margin-bottom: ${(props) => props.bottom}px;
   align-items: center;
@@ -775,24 +844,24 @@ const ThickHR = styled.hr`
 `;
 
 const InfoBox = styled.div`
-border-radius: 4px;
-border: 1px solid #EE7A6A;
-background: #FFF7F5;
-width: 98%;
-height: 32px;
-display: flex;
-align-items: center;
-justify-content: space-around;
-padding: 0 5px;
-margin-top: 8px;
-margin-bottom: 4px;
+  border-radius: 4px;
+  border: 1px solid #ee7a6a;
+  background: #fff7f5;
+  width: 98%;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 5px;
+  margin-top: 8px;
+  margin-bottom: 4px;
 `;
 
 const Body2 = styled.div`
   font-size: ${(props) => props.theme.Web_fontSizes.Body2};
   font-weight: ${(props) => props.theme.fontWeights.Body2};
   line-height: ${(props) => props.theme.LineHeight.Body2};
-  color: #A5A5A5;
+  color: #a5a5a5;
   font-family: "Pretendard";
 `;
 
@@ -800,7 +869,7 @@ const Body3 = styled.div`
   font-size: ${(props) => props.theme.Web_fontSizes.Body3};
   font-weight: ${(props) => props.theme.fontWeights.Body3};
   line-height: ${(props) => props.theme.LineHeight.Body3};
-  color: #EE7A6A;
+  color: #ee7a6a;
   font-family: "Pretendard";
 `;
 
@@ -808,12 +877,16 @@ const Body4 = styled.div`
   font-size: ${(props) => props.theme.Web_fontSizes.Body4};
   font-weight: ${(props) => props.theme.fontWeights.Body4};
   line-height: ${(props) => props.theme.LineHeight.Body4};
-  color: #1F1F1F;
+  color: #1f1f1f;
   font-family: "Pretendard";
-  margin-top: 8px;
+  margin-top: 12px;
   height: auto;
+  height: 64px;
   word-break: keep-all;
-  width: 96%;
+  width: 90%;
+  margin-left: 24px;
+  margin-bottom: 16px;
+  /* background-color: red; */
 `;
 
 const InputButton = styled.button`
@@ -826,25 +899,47 @@ const InputButton = styled.button`
 `;
 
 const PlaceContainer = styled.div`
-width: 136px;
-height: 136px;
-flex-shrink: 0;
-border-radius: 8px;
-background: #FFF;
-box-shadow: 0px 0px 8px 0px rgba(238, 122, 106, 0.25);
-position: absolute;
-bottom: 5%;
-left: 5%;
-display: flex;
-flex-direction: column;
-align-items: center;
+  width: 136px;
+  height: 136px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0px 0px 8px 0px rgba(238, 122, 106, 0.25);
+  position: absolute;
+  bottom: 5%;
+  left: ${(props) => props.left || 5}%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const MakerImg = styled.img`
-position: absolute;
-width: 32px;
-height: 32px;
-top: -30;
-left: -16px;
-margin-top: -16px;
-`
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  top: -34;
+  left: -16px;
+  margin-top: -18px;
+`;
+
+const PlaceText = styled.div`
+  color: var(--black-70, #5b5b5b);
+  font-family: "Pretendard";
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+`;
+
+const ColorfulText = styled.span`
+  color: ${(props) => props.color || "black"};
+`;
+
+const PlaceDiffText = styled.div`
+  color: #ee7a6a;
+  font-family: "Pretendard";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 140%;
+`;
