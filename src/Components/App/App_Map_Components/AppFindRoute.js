@@ -18,10 +18,9 @@ import currentSpot from "../../../Assets/Map/currentLocation.png";
 import CancelIcon from "../../../Assets/Map/FindRoute/Cancel_Icon.png";
 import Oneimage from "../../../Assets/Map/FindRoute/FirstNum.png";
 import Twoimage from "../../../Assets/Map/FindRoute/SecondNum.png";
+import BackIcon from "../../../Assets/Map/FindRoute/BackIcon.png";
 
 const AppFindRoute = () => {
-  const NAVER_API_KEY = process.env.REACT_APP_NAVER_MAP_API_KEY;
-  const NAVER_ID = process.env.REACT_APP_NAVER_ID;
   const navermaps = window.naver.maps;
   const [naverMap, setNaverMap] = useState();
   const [currentPosition, setCurrentPosition] = useState(null);
@@ -33,17 +32,6 @@ const AppFindRoute = () => {
   const [selectedMarkerInfo, setSelectedMarkerInfo] = useState(null);
   const [newPosition, setNewPosition] = useState(null);
 
-  // 검색어 관련 코드
-  const [searchValue1, setSearchValue1] = useState("");
-  const [searchValue2, setSearchValue2] = useState("");
-
-  const handleSearchChange1 = (event) => {
-    setSearchValue1(event.target.value);
-  };
-  const handleSearchChange2 = (event) => {
-    setSearchValue2(event.target.value);
-  };
-
   const handleSliderClose = () => {
     setSliderVisible(false);
   };
@@ -52,6 +40,24 @@ const AppFindRoute = () => {
     setSelectedMarkerInfo(marker);
     setSliderVisible(true);
   };
+
+  // 검색어 관련 코드
+  const [searchValue1, setSearchValue1] = useState("");
+  const [searchValue2, setSearchValue2] = useState("");
+  const [isSearchClicked, setIsSearchClicked] = useState(true);
+
+  const handleSearchChange1 = (event) => {
+    setSearchValue1(event.target.value);
+  };
+  const handleSearchChange2 = (event) => {
+    setSearchValue2(event.target.value);
+  };
+
+  const handleSearchClick = () => {
+    // 검색을 눌렀을 때의 동작
+    setIsSearchClicked(true);
+  };
+
   // 현재 위치 받아오기
   const handleCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
@@ -140,31 +146,48 @@ const AppFindRoute = () => {
         onInitialized={(map) => setNaverMap(map)}
       >
         <SearchContainer>
-          <FlexDiv bottom={8}>
-            <ImageDiv
-              src={require("../../../Assets/Map/FindRoute/Frame1.png")}
-              right={10}
-              width={16}
-              height={16}
-            />
-            <SearchInput value={searchValue1} onChange={handleSearchChange1} image={Oneimage}/>
-            <CancelButton ButtonImage={CancelIcon} />
-          </FlexDiv>
-          <FlexDiv>
-            <ImageDiv
-              src={require("../../../Assets/Map/FindRoute/Frame1.png")}
-              right={10}
-              width={16}
-              height={16}
-            />
-            <SearchInput
-              value={searchValue2}
-              onChange={handleSearchChange2}
-              placeholder="도착지 입력"
-              image={Twoimage}
-            />
-            <CancelButton ButtonImage={CancelIcon} />
-          </FlexDiv>
+          {!isSearchClicked ? (
+            <>
+              <FlexDiv bottom={8}>
+                <ImageDiv
+                  src={require("../../../Assets/Map/FindRoute/Frame1.png")}
+                  right={10}
+                  width={16}
+                  height={16}
+                />
+                <SearchInput
+                  value={searchValue1}
+                  onChange={handleSearchChange1}
+                  image={Oneimage}
+                />
+                <CancelButton ButtonImage={CancelIcon} />
+              </FlexDiv>
+              <FlexDiv>
+                <ImageDiv
+                  src={require("../../../Assets/Map/FindRoute/Frame1.png")}
+                  right={10}
+                  width={16}
+                  height={16}
+                />
+                <SearchInput
+                  value={searchValue2}
+                  onChange={handleSearchChange2}
+                  placeholder="도착지 입력"
+                  image={Twoimage}
+                  onClick={handleSearchClick}
+                />
+                <CancelButton ButtonImage={CancelIcon} />
+              </FlexDiv>
+            </>
+          ) : (
+            <>
+              <FlexDiv>
+                <CancelButton ButtonImage={BackIcon} />
+                <FinRouteInput placeholder="어디로 가볼까요?" />
+                <SearchButton>검색</SearchButton>
+              </FlexDiv>
+            </>
+          )}
         </SearchContainer>
         <div
           style={{
@@ -271,7 +294,7 @@ const SearchInput = styled.input`
   height: 32px;
   background-image: url(${(props) => props.image});
   background-position: left 10px center;
-  background-repeat: no-repeat; 
+  background-repeat: no-repeat;
   background-size: 16px;
   padding-left: 16px;
 
@@ -303,6 +326,49 @@ const CancelButton = styled.button`
   width: 24px;
   height: 24px;
   background: url(${(props) => props.ButtonImage}) no-repeat center/contain;
-  margin-left: 24px;
   border: none;
+  background-size: 32px;
+  margin-right: 12px;
+`;
+
+const SearchButton = styled.button`
+  width: 49px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: ${(props) => props.theme.colors.Primary_pink100};
+  color: var(--White, #fff);
+  font-family: "Pretendard";
+  font-style: normal;
+  font-size: ${(props) => props.theme.Web_fontSizes.Body3};
+  font-weight: ${(props) => props.theme.fontWeights.Body3};
+  line-height: ${(props) => props.theme.LineHeight.Body3};
+  border: none;
+`;
+
+const FinRouteInput = styled.input`
+  border: none;
+  width: calc(90%);
+
+  &::placeholder {
+    color: var(--black-50, #a5a5a5);
+    font-family: "Pretendard";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+  }
+
+  &:focus {
+    outline: none;
+
+    &::placeholder {
+      color: var(--black-90, #1f1f1f);
+      font-family: "Pretendard";
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 140%;
+    }
+  }
 `;
