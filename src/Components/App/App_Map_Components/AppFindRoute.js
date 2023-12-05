@@ -1,4 +1,9 @@
-import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
+import {
+  Container as MapDiv,
+  NaverMap,
+  Marker,
+  Polyline,
+} from "react-naver-maps";
 import React, { useState, useCallback, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { theme } from "../../../Style/theme";
@@ -24,6 +29,7 @@ const AppFindRoute = () => {
   // 검색어 관련 코드
   const [searchValue1, setSearchValue1] = useState("");
   const [searchValue2, setSearchValue2] = useState();
+  const [searchValue1Data, setSearchValue1Data] = useState();
   const [searchValue2Data, setSearchValue2Data] = useState();
   const [isSearchClicked, setIsSearchClicked] = useState(false);
   const [isFindRoute, setIsFindRoute] = useState(false);
@@ -146,6 +152,12 @@ const AppFindRoute = () => {
               reverseGeocodeResponse.data.addressResult
             );
             setSearchValue1(address);
+            const positionData = {
+              key: -1, 
+              position: new navermaps.LatLng(position.coords.latitude, position.coords.longitude),
+              title: address 
+            };
+            setSearchValue1Data(positionData);
           } catch (error) {
             console.error("Error getting address from coordinates:", error);
           }
@@ -300,8 +312,9 @@ const AppFindRoute = () => {
             <Marker
               position={currentPosition}
               icon={{
-                url: currentSpot,
+                url: !searchValue2Data ? currentSpot : ActivePicker,
                 scaledSize: new navermaps.Size(40, 40),
+                anchor: new navermaps.Point(20, 35),
               }}
             />
             {searchValue2Data && (
@@ -312,7 +325,16 @@ const AppFindRoute = () => {
                 icon={{
                   url: ActivePicker,
                   scaledSize: new navermaps.Size(40, 40),
+                  anchor: new navermaps.Point(23, 28)
                 }}
+              />
+            )}
+            {searchValue2Data && (
+              <Polyline
+                path={[currentPosition, searchValue2Data.position]}
+                strokeColor={"#EE7A6A"}
+                strokeOpacity={0.6}
+                strokeWeight={5}
               />
             )}
           </NaverMap>
