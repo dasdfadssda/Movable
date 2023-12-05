@@ -1,8 +1,4 @@
-import {
-  Container as MapDiv,
-  NaverMap,
-  Marker,
-} from "react-naver-maps";
+import { Container as MapDiv, NaverMap, Marker } from "react-naver-maps";
 
 import React, { useState, useCallback, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
@@ -49,15 +45,14 @@ const AppFindRoute = () => {
   const handleInputChange = (event) => {
     setSearchTerm(event.target.value);
     const results = markers.filter((marker) =>
-    marker.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-  setResult(results);
-  console.log("검색중인건 : ",results);
-  setIsFindRoute(true);
+      marker.title.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setResult(results);
+    console.log("검색중인건 : ", results);
+    setIsFindRoute(true);
   };
 
-  const handleFindRouteClick = () => {
-  };
+  const handleFindRouteClick = () => {};
 
   const LastList = [
     {
@@ -92,6 +87,34 @@ const AppFindRoute = () => {
   const handleDelete = (id) => {
     const newList = list.filter((item) => item.id !== id);
     setList(newList);
+  };
+
+  // 직선 거리계산
+  const calcDistanceHaversine = (curObj, destObj) => {
+    const currX = curObj["lat"]; // 출발지 위도
+    const currY = curObj["lng"]; // 출발지 경도
+    const destX = destObj["lat"]; // 목적지 위도
+    const destY = destObj["lng"]; // 목적지 경도
+
+    const radius = 6371; // 지구 반지름(km)
+    const toRadian = Math.PI / 180;
+
+    const deltaLat = Math.abs(currX - destX) * toRadian;
+    const deltaLng = Math.abs(currY - destY) * toRadian;
+
+    const squareSinDeltLat = Math.pow(Math.sin(deltaLat / 2), 2);
+    const squareSinDeltLng = Math.pow(Math.sin(deltaLng / 2), 2);
+
+    const squareRoot = Math.sqrt(
+      squareSinDeltLat +
+        Math.cos(currX * toRadian) *
+          Math.cos(destX * toRadian) *
+          squareSinDeltLng
+    );
+
+    const result = 2 * radius * Math.asin(squareRoot);
+
+    return result;
   };
 
   // 현재 위치 받아오기
@@ -196,7 +219,7 @@ const AppFindRoute = () => {
                   onChange={handleSearchChange1}
                   image={Oneimage}
                 />
-                <CancelButton ButtonImage={CancelIcon} left={12} right={-8}/>
+                <CancelButton ButtonImage={CancelIcon} left={12} right={-8} />
               </FlexDiv>
               <FlexDiv>
                 <ImageDiv
@@ -212,7 +235,7 @@ const AppFindRoute = () => {
                   image={Twoimage}
                   onClick={handleSearchClick}
                 />
-                <div style={{width : '29px'}}></div>
+                <div style={{ width: "29px" }}></div>
               </FlexDiv>
             </>
           ) : (
@@ -302,14 +325,28 @@ const AppFindRoute = () => {
             </SearchContents>
           ) : (
             <SearchContents>
-              {result.map((item) => (
-                <ListItem2 key={item.key}>
-                  {item.title}
-                  <ListDiv justify={"flex-end"} flex={"center"}>
-                    232km
-                  </ListDiv>
-                </ListItem2>
-              ))}
+              {result.map((item) => {
+                const currentPosition = {
+                  lat: newPosition.lat(),
+                  lng: newPosition.lng(),
+                };
+                const itemPosition = {
+                  lat: item.position.y, 
+                  lng: item.position.x
+                };
+                const distance = calcDistanceHaversine(
+                  currentPosition,
+                  itemPosition
+                );
+                return (
+                  <ListItem2 key={item.key}>
+                    {item.title}
+                    <ListDiv justify={"flex-end"} flex={"center"}>
+                      {distance.toFixed(2)}km
+                    </ListDiv>
+                  </ListItem2>
+                );
+              })}
             </SearchContents>
           ))}
       </MapDiv>
@@ -320,7 +357,7 @@ const AppFindRoute = () => {
 export default AppFindRoute;
 
 const dataForbstacleApi =
-  "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=1000&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
+  "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=10000&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
 
 const SearchContainer = styled.div`
   position: absolute;
@@ -548,7 +585,7 @@ const Hr = styled.hr`
 const ThickHR = styled.hr`
   width: 100%;
   height: 8px;
-  background-color: #E3E3E3;
+  background-color: #e3e3e3;
   margin-top: 90px;
   position: absolute;
   border: none;
