@@ -58,6 +58,41 @@ const AppFindRoute = () => {
     setIsSearchClicked(true);
   };
 
+  const LastList = [
+    {
+      id: 1,
+      place: "한동대학교",
+      time: "12.3",
+    },
+    {
+      id: 2,
+      place: "서울숲",
+      time: "12.3",
+    },
+    {
+      id: 3,
+      place: "전주성",
+      time: "12.4",
+    },
+    {
+      id: 4,
+      place: "포항 해변의 꽃게",
+      time: "12.5",
+    },
+    {
+      id: 5,
+      place: "한동대학교",
+      time: "12.5",
+    },
+  ];
+
+  const [list, setList] = useState(LastList);
+
+  const handleDelete = (id) => {
+    const newList = list.filter((item) => item.id !== id);
+    setList(newList);
+  };
+
   // 현재 위치 받아오기
   const handleCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
@@ -181,10 +216,17 @@ const AppFindRoute = () => {
             </>
           ) : (
             <>
-              <FlexDiv>
+              <FlexDiv bottom={16}>
                 <CancelButton ButtonImage={BackIcon} />
                 <FinRouteInput placeholder="어디로 가볼까요?" />
                 <SearchButton>검색</SearchButton>
+              </FlexDiv>
+              <Hr />
+              <FlexDiv>
+                <BookMarkIcon
+                  src={require("../../../Assets/Map/FindRoute/BookMarkIcon.png")}
+                />
+                <BookMarkText>저장한 장소</BookMarkText>
               </FlexDiv>
             </>
           )}
@@ -245,6 +287,22 @@ const AppFindRoute = () => {
             ))}
           </NaverMap>
         )}
+        <SearchContents>
+          {list.map((item) => (
+            <ListItem key={item.id}>
+              {item.place}
+              <ListDiv justify={"flex-end"} flex={"center"}>
+                {item.time}
+                <CancelButton2
+                  onClick={() => handleDelete(item.id)}
+                  ButtonImage={CancelIcon}
+                  width={16}
+                  height={16}
+                />
+              </ListDiv>
+            </ListItem>
+          ))}
+        </SearchContents>
       </MapDiv>
     </ThemeProvider>
   );
@@ -269,10 +327,68 @@ const SearchContainer = styled.div`
   flex-direction: column;
 `;
 
+const SearchContents = styled.div`
+  position: absolute;
+  margin-top: 110px;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  z-index: 1000;
+  background-color: white;
+  height: 100%;
+  flex-direction: column;
+`;
+
+const CancelButton2 = styled.button`
+  width: ${(props) => props.width || 24}px;
+  height: ${(props) => props.height || 24}px;
+  background: url(${(props) => props.ButtonImage}) no-repeat center/contain;
+  border: none;
+  background-size: 24px;
+  margin-left: 16px;
+  margin-right: 16px;
+`;
+
+const ListItem = styled.li`
+  list-style: none;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--black-70, #5b5b5b);
+  font-family: "Pretendard";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  width: 100%;
+  border-bottom: 1px solid #E3E3E3;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  padding-left: 12px;
+`;
+
+const ListDiv = styled.div`
+  display: flex;
+  justify-content: ${(props) => props.justify || "flex-start"};
+  margin-bottom: ${(props) => props.bottom}px;
+  align-items: center;
+  align-items: ${(props) => props.flex};
+  color: var(--black-50, #a5a5a5);
+  font-family: "Pretendard";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+`;
+
 const FlexDiv = styled.div`
   display: flex;
-  width: 96%;
-  justify-content: flex-start;
+  width: 98%;
+  justify-content: ${(props) => props.justify || "flex-start"};
   margin-bottom: ${(props) => props.bottom}px;
   align-items: center;
   align-items: ${(props) => props.flex};
@@ -323,12 +439,28 @@ const SearchInput = styled.input`
 `;
 
 const CancelButton = styled.button`
-  width: 24px;
-  height: 24px;
+  width: ${(props) => props.width || 24}px;
+  height: ${(props) => props.height || 24}px;
   background: url(${(props) => props.ButtonImage}) no-repeat center/contain;
   border: none;
   background-size: 32px;
   margin-right: 12px;
+`;
+
+const BookMarkIcon = styled.img`
+  width: 32px;
+  height: 32px;
+  margin-left: 4px;
+`;
+
+const BookMarkText = styled.div`
+  color: var(--Primary_pink100, #ed685a);
+  font-family: "Pretendard";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 140%;
+  margin-left: 8px;
 `;
 
 const SearchButton = styled.button`
@@ -348,7 +480,7 @@ const SearchButton = styled.button`
 
 const FinRouteInput = styled.input`
   border: none;
-  width: calc(90%);
+  width: calc(96%);
 
   &::placeholder {
     color: var(--black-50, #a5a5a5);
@@ -371,4 +503,15 @@ const FinRouteInput = styled.input`
       line-height: 140%;
     }
   }
+`;
+
+const Hr = styled.hr`
+  width: 100%;
+  height: 0.8px;
+  background-color: #a5a5a5;
+  margin-top: 37px;
+  position: absolute;
+  border: none;
+  left: 0;
+  right: 0;
 `;
