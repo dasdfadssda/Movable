@@ -45,6 +45,7 @@ const AppFindRoute = () => {
   const [searchValue1, setSearchValue1] = useState("");
   const [searchValue2, setSearchValue2] = useState("");
   const [isSearchClicked, setIsSearchClicked] = useState(true);
+  const [isFindRoute, setIsFindRoute] = useState(false);
 
   const handleSearchChange1 = (event) => {
     setSearchValue1(event.target.value);
@@ -54,8 +55,13 @@ const AppFindRoute = () => {
   };
 
   const handleSearchClick = () => {
-    // 검색을 눌렀을 때의 동작
+    // 지도 화면서에서 검색을 눌렀을 때의 동작
     setIsSearchClicked(true);
+  };
+
+  const handleFindeRouteClick = () => {
+    // 길찾기 화면에서 검색을 눌렀을 때의 동작
+    setIsFindRoute(true);
   };
 
   const LastList = [
@@ -218,7 +224,10 @@ const AppFindRoute = () => {
             <>
               <FlexDiv bottom={16}>
                 <CancelButton ButtonImage={BackIcon} />
-                <FinRouteInput placeholder="어디로 가볼까요?" />
+                <FinRouteInput
+                  placeholder="어디로 가볼까요?"
+                  onClick={handleFindeRouteClick}
+                />
                 <SearchButton>검색</SearchButton>
               </FlexDiv>
               <Hr />
@@ -287,22 +296,24 @@ const AppFindRoute = () => {
             ))}
           </NaverMap>
         )}
-        <SearchContents>
-          {list.map((item) => (
-            <ListItem key={item.id}>
-              {item.place}
-              <ListDiv justify={"flex-end"} flex={"center"}>
-                {item.time}
-                <CancelButton2
-                  onClick={() => handleDelete(item.id)}
-                  ButtonImage={CancelIcon}
-                  width={16}
-                  height={16}
-                />
-              </ListDiv>
-            </ListItem>
-          ))}
-        </SearchContents>
+        {isSearchClicked && (
+          <SearchContents>
+            {list.map((item) => (
+              <ListItem key={item.id}>
+                {item.place}
+                <ListDiv justify={"flex-end"} flex={"center"}>
+                  {item.time}
+                  <CancelButton2
+                    onClick={() => handleDelete(item.id)}
+                    ButtonImage={CancelIcon}
+                    width={16}
+                    height={16}
+                  />
+                </ListDiv>
+              </ListItem>
+            ))}
+          </SearchContents>
+        )}
       </MapDiv>
     </ThemeProvider>
   );
@@ -365,7 +376,7 @@ const ListItem = styled.li`
   font-weight: 400;
   line-height: 140%;
   width: 100%;
-  border-bottom: 1px solid #E3E3E3;
+  border-bottom: 1px solid #e3e3e3;
   margin-bottom: 16px;
   padding-bottom: 16px;
   padding-left: 12px;
