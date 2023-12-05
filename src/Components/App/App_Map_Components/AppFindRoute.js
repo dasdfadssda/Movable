@@ -1,11 +1,7 @@
 import {
   Container as MapDiv,
   NaverMap,
-  useNavermaps,
-  Overlay,
   Marker,
-  useMap,
-  useListener,
 } from "react-naver-maps";
 
 import React, { useState, useCallback, useEffect } from "react";
@@ -13,7 +9,6 @@ import styled, { ThemeProvider } from "styled-components";
 import { theme } from "../../../Style/theme";
 import axios from "axios";
 import currentLocation from "../../../Assets/img/currentPosition.svg";
-import ActivePicker from "../../../Assets/img/_Picker=장애인 가능.png";
 import currentSpot from "../../../Assets/Map/currentLocation.png";
 import CancelIcon from "../../../Assets/Map/FindRoute/Cancel_Icon.png";
 import Oneimage from "../../../Assets/Map/FindRoute/FirstNum.png";
@@ -28,24 +23,15 @@ const AppFindRoute = () => {
   const handleZoomChanged = useCallback((zoom) => {
     console.log(`zoom: ${zoom}`);
   }, []);
-  const [sliderVisible, setSliderVisible] = useState(false);
-  const [selectedMarkerInfo, setSelectedMarkerInfo] = useState(null);
   const [newPosition, setNewPosition] = useState(null);
-
-  const handleSliderClose = () => {
-    setSliderVisible(false);
-  };
-
-  const handleMarkerClick = (marker) => {
-    setSelectedMarkerInfo(marker);
-    setSliderVisible(true);
-  };
 
   // 검색어 관련 코드
   const [searchValue1, setSearchValue1] = useState("");
   const [searchValue2, setSearchValue2] = useState("");
-  const [isSearchClicked, setIsSearchClicked] = useState(true);
+  const [isSearchClicked, setIsSearchClicked] = useState(false);
   const [isFindRoute, setIsFindRoute] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [result, setResult] = useState();
 
   const handleSearchChange1 = (event) => {
     setSearchValue1(event.target.value);
@@ -59,9 +45,18 @@ const AppFindRoute = () => {
     setIsSearchClicked(true);
   };
 
-  const handleFindeRouteClick = () => {
-    // 길찾기 화면에서 검색을 눌렀을 때의 동작
-    setIsFindRoute(true);
+  // 최종 길찾기
+  const handleInputChange = (event) => {
+    setSearchTerm(event.target.value);
+    const results = markers.filter((marker) =>
+    marker.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  setResult(results);
+  console.log("검색중인건 : ",results);
+  setIsFindRoute(true);
+  };
+
+  const handleFindRouteClick = () => {
   };
 
   const LastList = [
@@ -158,7 +153,6 @@ const AppFindRoute = () => {
     axios
       .get(dataForbstacleApi)
       .then((response) => {
-        console.log("무장애 여행정보 동기화 관광 데이터 :", response.data);
         const data = response.data.response.body.items.item;
         const newMarkers = data.map((item, index) => ({
           key: index,
@@ -166,6 +160,7 @@ const AppFindRoute = () => {
           title: item.title,
         }));
         setMarkers(newMarkers);
+        console.log("무장애 데이터 :", newMarkers);
       })
       .catch((error) => {
         console.error("Error fetching data from the API", error);
@@ -201,7 +196,7 @@ const AppFindRoute = () => {
                   onChange={handleSearchChange1}
                   image={Oneimage}
                 />
-                <CancelButton ButtonImage={CancelIcon} />
+                <CancelButton ButtonImage={CancelIcon} left={12} right={-8}/>
               </FlexDiv>
               <FlexDiv>
                 <ImageDiv
@@ -217,7 +212,7 @@ const AppFindRoute = () => {
                   image={Twoimage}
                   onClick={handleSearchClick}
                 />
-                <CancelButton ButtonImage={CancelIcon} />
+                <div style={{width : '29px'}}></div>
               </FlexDiv>
             </>
           ) : (
@@ -226,7 +221,8 @@ const AppFindRoute = () => {
                 <CancelButton ButtonImage={BackIcon} />
                 <FinRouteInput
                   placeholder="어디로 가볼까요?"
-                  onClick={handleFindeRouteClick}
+                  onClick={handleFindRouteClick}
+                  onChange={handleInputChange}
                 />
                 <SearchButton>검색</SearchButton>
               </FlexDiv>
@@ -283,37 +279,38 @@ const AppFindRoute = () => {
                 scaledSize: new navermaps.Size(40, 40),
               }}
             />
-            {markers.map((marker) => (
-              <Marker
-                key={marker.key}
-                position={marker.position}
-                title={marker.title}
-                icon={{
-                  url: ActivePicker,
-                }}
-                onClick={() => handleMarkerClick(marker)}
-              />
-            ))}
           </NaverMap>
         )}
-        {isSearchClicked && (
-          <SearchContents>
-            {list.map((item) => (
-              <ListItem key={item.id}>
-                {item.place}
-                <ListDiv justify={"flex-end"} flex={"center"}>
-                  {item.time}
-                  <CancelButton2
-                    onClick={() => handleDelete(item.id)}
-                    ButtonImage={CancelIcon}
-                    width={16}
-                    height={16}
-                  />
-                </ListDiv>
-              </ListItem>
-            ))}
-          </SearchContents>
-        )}
+        {isSearchClicked &&
+          (!isFindRoute ? (
+            <SearchContents>
+              {list.map((item) => (
+                <ListItem key={item.id}>
+                  {item.place}
+                  <ListDiv justify={"flex-end"} flex={"center"}>
+                    {item.time}
+                    <CancelButton2
+                      onClick={() => handleDelete(item.id)}
+                      ButtonImage={CancelIcon}
+                      width={16}
+                      height={16}
+                    />
+                  </ListDiv>
+                </ListItem>
+              ))}
+            </SearchContents>
+          ) : (
+            <SearchContents>
+              {result.map((item) => (
+                <ListItem2 key={item.key}>
+                  {item.title}
+                  <ListDiv justify={"flex-end"} flex={"center"}>
+                    232km
+                  </ListDiv>
+                </ListItem2>
+              ))}
+            </SearchContents>
+          ))}
       </MapDiv>
     </ThemeProvider>
   );
@@ -322,7 +319,7 @@ const AppFindRoute = () => {
 export default AppFindRoute;
 
 const dataForbstacleApi =
-  "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=500&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
+  "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=1000&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
 
 const SearchContainer = styled.div`
   position: absolute;
@@ -344,7 +341,7 @@ const SearchContents = styled.div`
   top: 0;
   right: 0;
   left: 0;
-  padding: 10px;
+  padding-top: 20px;
   display: flex;
   flex-direction: row;
   z-index: 1000;
@@ -360,7 +357,7 @@ const CancelButton2 = styled.button`
   border: none;
   background-size: 24px;
   margin-left: 16px;
-  margin-right: 16px;
+  margin-right: 22px;
 `;
 
 const ListItem = styled.li`
@@ -376,6 +373,25 @@ const ListItem = styled.li`
   font-weight: 400;
   line-height: 140%;
   width: 100%;
+  border-bottom: 1px solid #e3e3e3;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  padding-left: 12px;
+`;
+
+const ListItem2 = styled.li`
+  list-style: none;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--black-70, #5b5b5b);
+  font-family: "Pretendard";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 140%;
+  width: 94%;
   border-bottom: 1px solid #e3e3e3;
   margin-bottom: 16px;
   padding-bottom: 16px;
@@ -455,7 +471,8 @@ const CancelButton = styled.button`
   background: url(${(props) => props.ButtonImage}) no-repeat center/contain;
   border: none;
   background-size: 32px;
-  margin-right: 12px;
+  margin-right: ${(props) => props.right || 12}px;
+  margin-left: ${(props) => props.left || 0}px;
 `;
 
 const BookMarkIcon = styled.img`
@@ -520,7 +537,7 @@ const Hr = styled.hr`
   width: 100%;
   height: 0.8px;
   background-color: #a5a5a5;
-  margin-top: 37px;
+  margin-top: 39px;
   position: absolute;
   border: none;
   left: 0;
