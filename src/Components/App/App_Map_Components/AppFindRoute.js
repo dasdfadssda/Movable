@@ -29,10 +29,6 @@ const AppFindRoute = () => {
     console.log(`zoom: ${zoom}`);
   }, []);
   const [newPosition, setNewPosition] = useState(null);
-
-    // 임시 꼼수 
-    const [beforeDistance, setBeforDistance] = useState();
-    const [beforeDuration, setBeforDuration] = useState();
     
   // 검색어 관련 코드
   const [searchValue1, setSearchValue1] = useState("");
@@ -150,14 +146,8 @@ const AppFindRoute = () => {
 
             setDistance(directionResponse.data.distance + beforeDistance);
             setDuration(directionResponse.data.duration + beforeDuration);
-            console.log("두번째 위치 읽기 때 ",searchValue2Data.title, "에서",  searchValue3Data.title, "까지", duration); 
-            setBeforDistance(distance);
-            setBeforDuration(duration);
 
-            if(beforeDistance && beforeDuration) {
-              setDistance(beforeDistance);
-              setDuration(beforeDuration);
-            }
+            console.log("두번째 위치 읽기 때 ",searchValue2Data.title, "에서",  searchValue3Data.title, "까지", duration); 
           } catch (error) {
             console.error("Error calculating distance and duration:", error);
           }
