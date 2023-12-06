@@ -300,6 +300,8 @@ const AppFindRoute = () => {
       searchValueNum: searchValueNum2,
       searchValueText: searchValueText2,
       searchValueData: searchValue2Data,
+      image : Twoimage,
+      buttonImg : RemoveButton
     },
     {
       id: "2",
@@ -307,18 +309,43 @@ const AppFindRoute = () => {
       searchValueNum: searchValueNum3,
       searchValueText: searchValueText3,
       searchValueData: searchValue3Data,
+      image : Thirdimage,
+      buttonImg : AddButton
     },
   ]);
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
-
+  
     const items = Array.from(flexDivs);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
+  
+    const updatedItems = items.map((item, index) => {
+      return { ...item, id: (index + 1).toString() };
+    });
+  
+    setFlexDivs(updatedItems);
+  
+  
+    const tempValue = searchValue3;
+    const tempData = searchValue3Data;
+    const tempNum3 = searchValueNum3;
+    const tempNum2 = searchValueNum2;
+    const tempText3 = searchValueText3;
+    const tempText2 = searchValueText2;
 
-    setFlexDivs(items);
+    setSearchValue3(searchValue2);
+    setSearchValue3Data(searchValue2Data);
+    setSearchValueNum3(tempNum2);
+    setSearchValueText3(tempText2);
+
+    setSearchValue2(tempValue);
+    setSearchValue2Data(tempData);
+    setSearchValueNum2(tempNum3);
+    setSearchValueText2(tempText3);
   };
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -361,7 +388,56 @@ const AppFindRoute = () => {
                               right={-8}
                             />
                           </FlexDiv>
-                          <FlexDiv bottom={8}>
+                          <DragDropContext onDragEnd={handleOnDragEnd}>
+                            <Droppable droppableId="flexDivs">
+                              {(provided) => (
+                                <div
+                                  {...provided.droppableProps}
+                                  ref={provided.innerRef}
+                                >
+                                  {flexDivs.map((flexDiv, index) => (
+                                    <Draggable
+                                      key={flexDiv.id}
+                                      draggableId={flexDiv.id}
+                                      index={index}
+                                    >
+                                      {(provided) => (
+                                        <FlexDiv
+                                          ref={provided.innerRef}
+                                          {...provided.draggableProps}
+                                          {...provided.dragHandleProps}
+                                          bottom={8}
+                                        >
+                                          <ImageDiv
+                                            src={require("../../../Assets/Map/FindRoute/Frame1.png")}
+                                            right={10}
+                                            width={16}
+                                            height={16}
+                                          />{" "}
+                                          <SearchInput
+                                            value={flexDiv.id === "1" ? searchValue2 : searchValue3}
+                                            onChange={handleSearchChange2}
+                                            placeholder="도착지 입력"
+                                            image={flexDiv.image}
+                                            onClick={handleSearchClick}
+                                          />
+                                          <div style={{ width: "29px" }}></div>
+                                          <InputButton
+                                            ButtonImage={flexDiv.id === "2" ? AddButton : RemoveButton}
+                                            onClick={() => {
+                                              setIsSearchClicked(true);
+                                            }}
+                                          />
+                                        </FlexDiv>
+                                      )}
+                                    </Draggable>
+                                  ))}
+                                  {provided.placeholder}
+                                </div>
+                              )}
+                            </Droppable>
+                          </DragDropContext>
+                          {/* <FlexDiv bottom={8}>
                             <ImageDiv
                               src={require("../../../Assets/Map/FindRoute/Frame1.png")}
                               right={10}
@@ -405,10 +481,10 @@ const AppFindRoute = () => {
                               }}
                             />
                             <div style={{ width: "29px" }}></div>
-                          </FlexDiv>
+                          </FlexDiv> */}
                         </div>
                       </FlexDiv>
-                      <FlexDiv justify={"center"}>
+                      <FlexDiv justify={"center"} top={-8}>
                         <InfoBox>
                           <ImageDiv
                             src={require("../../../Assets/Map/FindRoute/CarIcon.png")}
@@ -618,7 +694,7 @@ const AppFindRoute = () => {
           <NaverMap
             // draggable
             defaultCenter={currentPosition}
-            defaultZoom={11}
+            defaultZoom={12}
             onZoomChanged={handleZoomChanged}
           >
             <Marker
@@ -1027,6 +1103,7 @@ const FlexDiv = styled.div`
   margin-bottom: ${(props) => props.bottom}px;
   align-items: center;
   align-items: ${(props) => props.flex};
+  margin-top: ${(props) => props.top}px;
 `;
 
 const ImageDiv = styled.img`
