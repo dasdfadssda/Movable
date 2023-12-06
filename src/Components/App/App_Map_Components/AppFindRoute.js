@@ -30,6 +30,10 @@ const AppFindRoute = () => {
   }, []);
   const [newPosition, setNewPosition] = useState(null);
 
+    // 임시 꼼수 
+    const [beforeDistance, setBeforDistance] = useState();
+    const [beforeDuration, setBeforDuration] = useState();
+    
   // 검색어 관련 코드
   const [searchValue1, setSearchValue1] = useState("");
   const [searchValueNum1, setSearchValueNum1] = useState(4.33);
@@ -104,30 +108,64 @@ const AppFindRoute = () => {
 
   useEffect(() => {
     if (searchValue3Data) {
-      const fetchDistanceAndDuration = async () => {
-        try {
-          const directionResponse = await axios.post(
-            `http://localhost:3001/calculateDistance`, // 서버 URL에 맞게 수정해주세요.
-            {
-              startLatitude: searchValue2Data.position.y,
-              startLongitude: searchValue2Data.position.x,
-              endLatitude: searchValue3Data.position.y,
-              endLongitude: searchValue3Data.position.x,
+        console.log("change일 때");
+        const fetchDistanceAndDuration1 = async () => {
+          try {
+            const directionResponse = await axios.post(
+              `http://localhost:3001/calculateDistance`, // 서버 URL에 맞게 수정해주세요.
+              {
+                startLatitude: searchValue1Data.position.y,
+                startLongitude: searchValue1Data.position.x,
+                endLatitude: searchValue2Data.position.y,
+                endLongitude: searchValue2Data.position.x,
+              }
+            );
+
+            setDistance();
+            setDuration();
+
+            setDistance(directionResponse.data.distance);
+            setDuration(directionResponse.data.duration);
+            console.log("첫 위치 읽기 때 ",searchValue1Data.title, "에서",  searchValue2Data.title, "까지", duration); 
+
+            await fetchDistanceAndDuration(); // fetchDistanceAndDuration 함수가 완료될 때까지 기다립니다.
+          } catch (error) {
+            console.error("Error calculating distance and duration:", error);
+          }
+        };
+
+        const fetchDistanceAndDuration = async () => {
+          try {
+            const directionResponse = await axios.post(
+              `http://localhost:3001/calculateDistance`, // 서버 URL에 맞게 수정해주세요.
+              {
+                startLatitude: searchValue2Data.position.y,
+                startLongitude: searchValue2Data.position.x,
+                endLatitude: searchValue3Data.position.y,
+                endLongitude: searchValue3Data.position.x,
+              }
+            );
+            const beforeDistance = distance;
+            const beforeDuration = duration;
+
+            setDistance(directionResponse.data.distance + beforeDistance);
+            setDuration(directionResponse.data.duration + beforeDuration);
+            console.log("두번째 위치 읽기 때 ",searchValue2Data.title, "에서",  searchValue3Data.title, "까지", duration); 
+            setBeforDistance(distance);
+            setBeforDuration(duration);
+
+            if(beforeDistance && beforeDuration) {
+              setDistance(beforeDistance);
+              setDuration(beforeDuration);
             }
-          );
-          const beforeDistance = distance;
-          const beforeDuration = duration;
+          } catch (error) {
+            console.error("Error calculating distance and duration:", error);
+          }
+        };
 
-          setDistance(directionResponse.data.distance + beforeDistance);
-          setDuration(directionResponse.data.duration + beforeDuration);
-        } catch (error) {
-          console.error("Error calculating distance and duration:", error);
-        }
-      };
-
-      fetchDistanceAndDuration();
+        fetchDistanceAndDuration1(); 
     }
-  }, [searchValue3Data]);
+}, [searchValue3Data]);
 
   // 밀리초를 시간과 분으로 변환하는 함수
   const convertMillisecondsToTime = (milliseconds) => {
@@ -238,6 +276,7 @@ const AppFindRoute = () => {
               reverseGeocodeResponse.data.addressResult
             );
             setSearchValue1(address);
+            console.log("data : ", address);
             const positionData = {
               key: -1,
               position: new navermaps.LatLng(
@@ -300,8 +339,8 @@ const AppFindRoute = () => {
       searchValueNum: searchValueNum2,
       searchValueText: searchValueText2,
       searchValueData: searchValue2Data,
-      image : Twoimage,
-      buttonImg : RemoveButton
+      image: Twoimage,
+      buttonImg: RemoveButton,
     },
     {
       id: "2",
@@ -309,43 +348,43 @@ const AppFindRoute = () => {
       searchValueNum: searchValueNum3,
       searchValueText: searchValueText3,
       searchValueData: searchValue3Data,
-      image : Thirdimage,
-      buttonImg : AddButton
+      image: Thirdimage,
+      buttonImg: AddButton,
     },
   ]);
 
   const handleOnDragEnd = (result) => {
     if (!result.destination) return;
-  
+
     const items = Array.from(flexDivs);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-  
+
     const updatedItems = items.map((item, index) => {
       return { ...item, id: (index + 1).toString() };
     });
-  
+
     setFlexDivs(updatedItems);
-  
-  
-    const tempValue = searchValue3;
-    const tempData = searchValue3Data;
+
+    const tempValue = searchValue2;
+    const tempData = searchValue2Data;
     const tempNum3 = searchValueNum3;
     const tempNum2 = searchValueNum2;
     const tempText3 = searchValueText3;
     const tempText2 = searchValueText2;
 
-    setSearchValue3(searchValue2);
-    setSearchValue3Data(searchValue2Data);
+    setSearchValue2(searchValue3);
+    setSearchValue2Data(searchValue3Data);
+    setSearchValueNum2(tempNum3);
+    setSearchValueText2(tempText3);
+
+    setSearchValue3(tempValue);
+    setSearchValue3Data(tempData);
     setSearchValueNum3(tempNum2);
     setSearchValueText3(tempText2);
 
-    setSearchValue2(tempValue);
-    setSearchValue2Data(tempData);
-    setSearchValueNum2(tempNum3);
-    setSearchValueText2(tempText3);
   };
-  
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -415,15 +454,25 @@ const AppFindRoute = () => {
                                             height={16}
                                           />{" "}
                                           <SearchInput
-                                            value={flexDiv.id === "1" ? searchValue2 : searchValue3}
+                                            value={
+                                              flexDiv.id === "1"
+                                                ? searchValue2
+                                                : searchValue3
+                                            }
                                             onChange={handleSearchChange2}
                                             placeholder="도착지 입력"
-                                            image={flexDiv.image}
+                                            image={ flexDiv.id === "1"
+                                            ? Twoimage
+                                            : Thirdimage}
                                             onClick={handleSearchClick}
                                           />
                                           <div style={{ width: "29px" }}></div>
                                           <InputButton
-                                            ButtonImage={flexDiv.id === "2" ? AddButton : RemoveButton}
+                                            ButtonImage={
+                                              flexDiv.id === "2"
+                                                ? AddButton
+                                                : RemoveButton
+                                            }
                                             onClick={() => {
                                               setIsSearchClicked(true);
                                             }}
@@ -437,51 +486,6 @@ const AppFindRoute = () => {
                               )}
                             </Droppable>
                           </DragDropContext>
-                          {/* <FlexDiv bottom={8}>
-                            <ImageDiv
-                              src={require("../../../Assets/Map/FindRoute/Frame1.png")}
-                              right={10}
-                              width={16}
-                              height={16}
-                            />
-                            <SearchInput
-                              value={searchValue2}
-                              onChange={handleSearchChange2}
-                              placeholder="도착지 입력"
-                              image={Twoimage}
-                              onClick={handleSearchClick}
-                            />
-                            <InputButton
-                              ButtonImage={RemoveButton}
-                              onClick={() => {
-                                setIsSearchClicked(true);
-                              }}
-                            />
-                            <div style={{ width: "29px" }}></div>
-                          </FlexDiv>
-                          <FlexDiv>
-                            <ImageDiv
-                              src={require("../../../Assets/Map/FindRoute/Frame1.png")}
-                              right={10}
-                              width={16}
-                              height={16}
-                            />
-                            <SearchInput
-                              value={searchValue3}
-                              onChange={handleSearchChange2}
-                              placeholder="도착지 입력"
-                              image={Thirdimage}
-                              onClick={handleSearchClick}
-                            />
-                            <InputButton
-                              ButtonImage={AddButton}
-                              onClick={() => {
-                                setIsSearchClicked(true);
-                                setIsSearchClicked2(true);
-                              }}
-                            />
-                            <div style={{ width: "29px" }}></div>
-                          </FlexDiv> */}
                         </div>
                       </FlexDiv>
                       <FlexDiv justify={"center"} top={-8}>

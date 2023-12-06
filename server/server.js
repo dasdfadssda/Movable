@@ -138,11 +138,9 @@ app.post("/reverseGeocoding", async (req, res) => {
       addressData.area2.name +
       " " +
       addressData.area3.name +
-      " " +
-      addressData.area3.name;
-    
+      " "     
     if (addressBuildingData) {
-      address += " " + addressBuildingData;
+      address += addressBuildingData;
     }
 
     res.json({ address, addressData, addressResult, addressBuildingData });
