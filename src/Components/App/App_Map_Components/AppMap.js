@@ -675,13 +675,14 @@ const AppMap = () => {
                       />
                     ))} */}
                     <ServiceIconsContainer>
-                      <ServiceIcon src={ParkingService} alt="ParkingService" />
+                      <ServiceIcon src={ParkingService} alt="ParkingService" style={{height : '57px', width : "55px"}} />
                       {/* <ServiceIcon src={GuideDogService} alt="HelpDogService" /> */}
-                      <ServiceIcon src={ToiletService} alt="ToiletService" />
-                      <ServiceIcon src={AudioService} alt="AudioService" />
+                      <ServiceIcon src={ToiletService} alt="ToiletService" style={{height : '57px', width : "55px"}} />
+                      <ServiceIcon src={AudioService} alt="AudioService" style={{height : '57px', width : "55px"}} />
                       <ServiceIcon
                         src={TransportService}
                         alt="TransportService"
+                        style={{height : '57px', width : "55px"}}
                       />
                     </ServiceIconsContainer>
                   </div>
@@ -755,7 +756,6 @@ const AppMap = () => {
                     />
                   </div>
                 </div>
-                <CloseButton onClick={handleSliderClose}>Close</CloseButton>
               </SliderContent>
             </Slider>
           )}
