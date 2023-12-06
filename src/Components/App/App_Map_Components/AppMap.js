@@ -67,7 +67,6 @@ const SearchInput = styled.input`
   text-indent: 28px;
   background-size: 22px;
 
-
   &::placeholder {
     font-size: ${(props) => props.theme.Web_fontSizes.Body5};
     font-weight: ${(props) => props.theme.fontWeights.Body5};
@@ -128,6 +127,29 @@ const AppMap = () => {
     };
   }, [sliderHeight]);
 
+  const handleChipClick = (category) => {
+    setActiveCategories([category]);
+
+    switch (category) {
+      case "restaurant":
+        setIsContentsType("39");
+        break;
+      case "cafe":
+        setIsContentsType("14");
+        break;
+      case "parking":
+        setIsContentsType("12");
+        break;
+      case "hotel":
+        setIsContentsType("28");
+        break;
+      case "toilet":
+        setIsContentsType("38");
+        break;
+      default:
+        setIsContentsType(null);
+    }
+  };
   const loadServiceData = async () => {
     try {
       const response = await axios.get(
@@ -150,25 +172,6 @@ const AppMap = () => {
     );
 
     setIsContainersVisible((prevVisible) => !prevVisible);
-  };
-  const filteredByRestaurant = (data) => {
-    const filteredData = [];
-    for (const item of data) {
-      if (item.contentTypeId === "39") {
-        filteredData.push(item);
-      }
-    }
-    return filteredData;
-  };
-
-  const filteredByHotel = (data) => {
-    const filteredData = [];
-    for (const item of data) {
-      if (item.contentTypeId === "32") {
-        filteredData.push(item);
-      }
-    }
-    return filteredData;
   };
 
   // const handleCategoryToggle = async (category) => {
@@ -439,13 +442,13 @@ const AppMap = () => {
     window.location.href = "/Route";
   };
 
-  // 로딩 화면 
+  // 로딩 화면
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 3000); 
+    }, 3000);
   }, []);
 
   return (
@@ -453,197 +456,212 @@ const AppMap = () => {
       {loading ? (
         <AppSpash />
       ) : (
-      <MapDiv
-        style={{
-          position: "relative",
-          width: "100%",
-          height: "100vh",
-          display: "flex",
-          backgroundColor: "#fff",
-          alignItems: "center",
-        }}
-        onInitialized={(map) => setNaverMap(map)}
-        // onClick={handleMapClick}
-      >
-        <SearchContainer visible={isContainersVisible}>
-          <SearchInput
-            type="text"
-            placeholder="어디로 가볼까요?"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          <FindRouteButton onClick={findRoute} />
-        </SearchContainer>
-
-        <ChipContainer visible={isContainersVisible}>
-          <ChipWrapper>
-            <Chip onClick={() => setIsContentsType("39")}>
-              <img
-                src={
-                  activeCategories.includes("restaurant")
-                    ? RestaurantActive
-                    : Restaurant
-                }
-                alt="Restaurant"
-                style={{width: "77px", height : "33px"}}
-              />
-            </Chip>
-            <Chip onClick={() => setIsContentsType("14")}>
-              <img
-                src={activeCategories.includes("cafe") ? CafeActive : Cafe}
-                alt="Cafe"
-                style={{width: "77px", height : "33px"}}
-              />
-            </Chip>
-            <Chip onClick={() => setIsContentsType("12")}>
-              <img
-                src={
-                  activeCategories.includes("parking") ? ParkingActive : Parking
-                }
-                alt="Parking"
-                style={{width: "77px", height : "33px"}}
-              />
-            </Chip>
-            <Chip onClick={() => setIsContentsType("28")}>
-              <img
-                src={activeCategories.includes("hotel") ? HotelActive : Hotel}
-                alt="Hotel"
-                style={{width: "77px", height : "33px"}}
-              />
-            </Chip>
-            <Chip onClick={() => setIsContentsType("38")}>
-              <img
-                src={
-                  activeCategories.includes("toilet") ? ToiletActive : Toilet
-                }
-                style={{width: "77px", height : "33px"}}
-                alt="Toilet"
-              />
-            </Chip>
-          </ChipWrapper>
-        </ChipContainer>
-        <ChannelWindow
-          style={{ bottom: isSliderVisible ? "284px" : "100px", height : "45px"}}
-          src={ChannelInfo}
-          alt="Channel Info"
-        />
-        <ChannelTalkBtn
-          style={{ bottom: isSliderVisible ? "244px" : "60px" }}
-          onClick={handleRecommendationClick}
-        />
-        <RecommendationButton
-          style={{ bottom: isSliderVisible ? "200px" : "16px" }}
-          onClick={handleRecommendationClick}
-        />
-
-        <div
+        <MapDiv
           style={{
-            position: "absolute",
-            left: 10,
-            bottom: isSliderVisible ? "190px" : "10px",
-            zIndex: 500,
-            visibility: isSliderVisible ? "hidden" : "visible",
+            position: "relative",
+            width: "100%",
+            height: "100vh",
+            display: "flex",
+            backgroundColor: "#fff",
+            alignItems: "center",
           }}
+          onInitialized={(map) => setNaverMap(map)}
+          // onClick={handleMapClick}
         >
-          <img
-            id="current"
-            src={currentLocation}
-            onClick={handleToCurrentPosition}
-            alt="Current Location"
-            style={{ cursor: "pointer" }}
-          />
-        </div>
-        {currentPosition && (
-          <NaverMap
-            draggable
-            zoomControl={false}
-            zoomControlOptions={{
-              position: navermaps.Position.TOP_RIGHT,
-            }}
-            defaultCenter={currentPosition}
-            defaultZoom={13}
-            onZoomChanged={handleZoomChanged}
-          >
-            <Marker
-              position={currentPosition}
-              icon={{
-                url: currentSpot,
-                scaledSize: new navermaps.Size(40, 40),
-              }}
+          <SearchContainer visible={isContainersVisible}>
+            <SearchInput
+              type="text"
+              placeholder="어디로 가볼까요?"
+              value={searchQuery}
+              onChange={handleSearchChange}
             />
-            {markers
-              .filter(
-                (marker) =>
-                  !contentsType || marker.contentTypeId === contentsType
-              )
-              .map((marker) => (
-                <Marker
-                  key={marker.key}
-                  position={marker.position}
-                  title={marker.title}
-                  icon={{
-                    url: ActivePicker,
-                    scaledSize: new navermaps.Size(40, 40),
-                  }}
-                  onClick={() => {
-                    console.log("컨텐츠 아이디 :", marker.contentTypeId);
-                    handleMarkerClick(marker);
-                  }}
+            <FindRouteButton onClick={findRoute} />
+          </SearchContainer>
+
+          <ChipContainer visible={isContainersVisible}>
+            <ChipWrapper>
+              <Chip onClick={() => handleChipClick("restaurant")}>
+                <img
+                  src={
+                    activeCategories.includes("restaurant")
+                      ? RestaurantActive
+                      : Restaurant
+                  }
+                  alt="Restaurant"
+                  style={{ width: "77px", height: "33px" }}
                 />
-              ))}
-          </NaverMap>
-        )}
-        {sliderVisible && selectedMarkerInfo && (
-          <Slider
-            sliderPosition={sliderPosition}
-            sliderHeight={sliderHeight}
-            handleSliderDragStart={handleSliderDragStart}
-            handleSliderDragEnd={handleSliderDragEnd}
-            handleSliderUpClick={toggleSliderHeight}
+              </Chip>
+              <Chip onClick={() => handleChipClick("cafe")}>
+                <img
+                  src={activeCategories.includes("cafe") ? CafeActive : Cafe}
+                  alt="Cafe"
+                  style={{ width: "77px", height: "33px" }}
+                />
+              </Chip>
+              <Chip onClick={() => handleChipClick("parking")}>
+                <img
+                  src={
+                    activeCategories.includes("parking")
+                      ? ParkingActive
+                      : Parking
+                  }
+                  alt="Parking"
+                  style={{ width: "77px", height: "33px" }}
+                />
+              </Chip>
+              <Chip onClick={() => handleChipClick("hotel")}>
+                <img
+                  src={activeCategories.includes("hotel") ? HotelActive : Hotel}
+                  alt="Hotel"
+                  style={{ width: "77px", height: "33px" }}
+                />
+              </Chip>
+              <Chip onClick={() => handleChipClick("toilet")}>
+                <img
+                  src={
+                    activeCategories.includes("toilet") ? ToiletActive : Toilet
+                  }
+                  style={{ width: "77px", height: "33px" }}
+                  alt="Toilet"
+                />
+              </Chip>
+            </ChipWrapper>
+          </ChipContainer>
+          <ChannelWindow
+            style={{
+              bottom: isSliderVisible ? "284px" : "100px",
+              height: "45px",
+            }}
+            src={ChannelInfo}
+            alt="Channel Info"
+          />
+          <ChannelTalkBtn
+            style={{ bottom: isSliderVisible ? "244px" : "60px" }}
+            onClick={handleRecommendationClick}
+          />
+          <RecommendationButton
+            style={{ bottom: isSliderVisible ? "200px" : "16px" }}
+            onClick={handleRecommendationClick}
+          />
+
+          <div
+            style={{
+              position: "absolute",
+              left: 10,
+              bottom: isSliderVisible ? "190px" : "10px",
+              zIndex: 500,
+              visibility: isSliderVisible ? "hidden" : "visible",
+            }}
           >
-            <SliderContent>
-              <div>
-                <Header1>{selectedMarkerInfo.title}</Header1>
-                <Body4>{selectedMarkerInfo.address}</Body4>
-                <img style={{ marginTop: "12px", width : "171px", height : "21px" }} src={LocationDetail} />
-                <div style={{ marginTop: "24px" }}>
-                  <img src={PhoneShare} style={{width : "351px", height : "44px"}} />
-                </div>
-                <div
-                  style={{
-                    marginTop: "24px",
-                    posiitoin: "relative",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <img
-                    src={Divider}
-                    style={{
-                      position: "absolute",
-                      top: 240,
-                      zIndex: 0,
-                      width : "100%"
+            <img
+              id="current"
+              src={currentLocation}
+              onClick={handleToCurrentPosition}
+              alt="Current Location"
+              style={{ cursor: "pointer" }}
+            />
+          </div>
+          {currentPosition && (
+            <NaverMap
+              draggable
+              zoomControl={false}
+              zoomControlOptions={{
+                position: navermaps.Position.TOP_RIGHT,
+              }}
+              defaultCenter={currentPosition}
+              defaultZoom={13}
+              onZoomChanged={handleZoomChanged}
+            >
+              <Marker
+                position={currentPosition}
+                icon={{
+                  url: currentSpot,
+                  scaledSize: new navermaps.Size(40, 40),
+                }}
+              />
+              {markers
+                .filter(
+                  (marker) =>
+                    !contentsType || marker.contentTypeId === contentsType
+                )
+                .map((marker) => (
+                  <Marker
+                    key={marker.key}
+                    position={marker.position}
+                    title={marker.title}
+                    icon={{
+                      url: ActivePicker,
+                      scaledSize: new navermaps.Size(40, 40),
                     }}
-                    alt="Divider"
-                  />
-                  <img
-                    src={ObstacleInfo}
-                    style={{
-                      zIndex: 1,
-                      width : "84px",
-                      height : "36px"
+                    onClick={() => {
+                      console.log("컨텐츠 아이디 :", marker.contentTypeId);
+                      handleMarkerClick(marker);
                     }}
                   />
-                </div>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  {/* {serviceData &&
+                ))}
+            </NaverMap>
+          )}
+          {sliderVisible && selectedMarkerInfo && (
+            <Slider
+              sliderPosition={sliderPosition}
+              sliderHeight={sliderHeight}
+              handleSliderDragStart={handleSliderDragStart}
+              handleSliderDragEnd={handleSliderDragEnd}
+              handleSliderUpClick={toggleSliderHeight}
+            >
+              <SliderContent>
+                <div>
+                  <Header1>{selectedMarkerInfo.title}</Header1>
+                  <Body4>{selectedMarkerInfo.address}</Body4>
+                  <img
+                    style={{
+                      marginTop: "12px",
+                      width: "171px",
+                      height: "21px",
+                    }}
+                    src={LocationDetail}
+                  />
+                  <div style={{ marginTop: "24px" }}>
+                    <img
+                      src={PhoneShare}
+                      style={{ width: "351px", height: "44px" }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      marginTop: "24px",
+                      posiitoin: "relative",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <img
+                      src={Divider}
+                      style={{
+                        position: "absolute",
+                        top: 240,
+                        zIndex: 0,
+                        width: "100%",
+                      }}
+                      alt="Divider"
+                    />
+                    <img
+                      src={ObstacleInfo}
+                      style={{
+                        zIndex: 1,
+                        width: "84px",
+                        height: "36px",
+                      }}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      flexWrap: "wrap",
+                    }}
+                  >
+                    {/* {serviceData &&
                     serviceData.map((service, index) => (
                       <img
                         key={index}
@@ -656,64 +674,92 @@ const AppMap = () => {
                         alt={service.name}
                       />
                     ))} */}
-                  <ServiceIconsContainer>
-                    <ServiceIcon src={ParkingService} alt="ParkingService" />
-                    {/* <ServiceIcon src={GuideDogService} alt="HelpDogService" /> */}
-                    <ServiceIcon src={ToiletService} alt="ToiletService" />
-                    <ServiceIcon src={AudioService} alt="AudioService" />
-                    <ServiceIcon
-                      src={TransportService}
-                      alt="TransportService"
+                    <ServiceIconsContainer>
+                      <ServiceIcon src={ParkingService} alt="ParkingService" />
+                      {/* <ServiceIcon src={GuideDogService} alt="HelpDogService" /> */}
+                      <ServiceIcon src={ToiletService} alt="ToiletService" />
+                      <ServiceIcon src={AudioService} alt="AudioService" />
+                      <ServiceIcon
+                        src={TransportService}
+                        alt="TransportService"
+                      />
+                    </ServiceIconsContainer>
+                  </div>
+                  <div
+                    style={{
+                      posiitoin: "relative",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <img
+                      src={Divider}
+                      style={{
+                        position: "absolute",
+                        top: 370,
+                        zIndex: 0,
+                        width: "100%",
+                      }}
+                      alt="Divider"
                     />
-                  </ServiceIconsContainer>
-                </div>
-                <div
-                  style={{
-                    posiitoin: "relative",
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
+                    <img
+                      src={Review}
+                      style={{
+                        zIndex: 1,
+                        width: "96px",
+                      }}
+                    />
+                  </div>
                   <img
-                    src={Divider}
                     style={{
-                      position: "absolute",
-                      top: 370,
-                      zIndex: 0,
-                      width : "100%"
+                      width: "66px",
+                      height: "21px",
+                      marginLeft: "283px",
                     }}
-                    alt="Divider"
+                    src={RegisterReview}
                   />
-                  <img
-                    src={Review}
+                  <div
                     style={{
-                      zIndex: 1,
-                      width : '96px'
+                      marginTop: "10px",
+                      display: "flex",
+                      flexDirection: "column",
                     }}
-                  />
+                  >
+                    <img
+                      src={Review1}
+                      style={{
+                        marginBottom: "8px",
+                        width: "350px",
+                        height: "37px",
+                      }}
+                    />
+                    <img
+                      src={Review2}
+                      style={{
+                        marginBottom: "8px",
+                        width: "350px",
+                        height: "37px",
+                      }}
+                    />
+                    <img
+                      src={Review3}
+                      style={{
+                        marginBottom: "8px",
+                        width: "350px",
+                        height: "37px",
+                      }}
+                    />
+                    <img
+                      src={Review4}
+                      style={{ width: "350px", height: "37px" }}
+                    />
+                  </div>
                 </div>
-                <img
-                  style={{ width: "66px", height: "21px", marginLeft: "283px" }}
-                  src={RegisterReview}
-                />
-                <div
-                  style={{
-                    marginTop: "10px",
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <img src={Review1} style={{ marginBottom: "8px", width : "350px", height: "37px" }} />
-                  <img src={Review2} style={{ marginBottom: "8px", width : "350px", height: "37px"}} />
-                  <img src={Review3} style={{ marginBottom: "8px", width : "350px", height: "37px" }} />
-                  <img src={Review4} style={{ width : "350px", height: "37px" }} />
-                </div>
-              </div>
-              <CloseButton onClick={handleSliderClose}>Close</CloseButton>
-            </SliderContent>
-          </Slider>
-        )}
-      </MapDiv>
+                <CloseButton onClick={handleSliderClose}>Close</CloseButton>
+              </SliderContent>
+            </Slider>
+          )}
+        </MapDiv>
       )}
     </ThemeProvider>
   );
