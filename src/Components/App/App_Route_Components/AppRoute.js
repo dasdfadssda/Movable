@@ -12,7 +12,7 @@ import AppLoading from "./AppLoading";
 import AnswerComponent from "./AppRoute_Result";
 
 const AppRoute = () => {
-  const [step, setStep] = useState(6);
+  const [step, setStep] = useState(1);
   const [selectedRoutes, setSelectedRoutes] = useState([
     null,
     null,
