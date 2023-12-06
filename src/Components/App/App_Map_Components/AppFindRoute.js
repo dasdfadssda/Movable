@@ -29,7 +29,7 @@ const AppFindRoute = () => {
     console.log(`zoom: ${zoom}`);
   }, []);
   const [newPosition, setNewPosition] = useState(null);
-    
+
   // 검색어 관련 코드
   const [searchValue1, setSearchValue1] = useState("");
   const [searchValueNum1, setSearchValueNum1] = useState(4.33);
@@ -104,58 +104,72 @@ const AppFindRoute = () => {
 
   useEffect(() => {
     if (searchValue3Data) {
-        console.log("change일 때");
-        const fetchDistanceAndDuration1 = async () => {
-          try {
-            const directionResponse = await axios.post(
-              `http://localhost:3001/calculateDistance`, // 서버 URL에 맞게 수정해주세요.
-              {
-                startLatitude: searchValue1Data.position.y,
-                startLongitude: searchValue1Data.position.x,
-                endLatitude: searchValue2Data.position.y,
-                endLongitude: searchValue2Data.position.x,
-              }
-            );
+      console.log("change일 때");
+      const fetchDistanceAndDuration1 = async () => {
+        try {
+          const directionResponse = await axios.post(
+            `http://localhost:3001/calculateDistance`, // 서버 URL에 맞게 수정해주세요.
+            {
+              startLatitude: searchValue1Data.position.y,
+              startLongitude: searchValue1Data.position.x,
+              endLatitude: searchValue2Data.position.y,
+              endLongitude: searchValue2Data.position.x,
+            }
+          );
 
-            setDistance();
-            setDuration();
+          setDistance();
+          setDuration();
 
-            setDistance(directionResponse.data.distance);
-            setDuration(directionResponse.data.duration);
-            console.log("첫 위치 읽기 때 ",searchValue1Data.title, "에서",  searchValue2Data.title, "까지", duration); 
+          setDistance(directionResponse.data.distance);
+          setDuration(directionResponse.data.duration);
+          console.log(
+            "첫 위치 읽기 때 ",
+            searchValue1Data.title,
+            "에서",
+            searchValue2Data.title,
+            "까지",
+            duration
+          );
 
-            await fetchDistanceAndDuration(); // fetchDistanceAndDuration 함수가 완료될 때까지 기다립니다.
-          } catch (error) {
-            console.error("Error calculating distance and duration:", error);
-          }
-        };
+          await fetchDistanceAndDuration(); // fetchDistanceAndDuration 함수가 완료될 때까지 기다립니다.
+        } catch (error) {
+          console.error("Error calculating distance and duration:", error);
+        }
+      };
 
-        const fetchDistanceAndDuration = async () => {
-          try {
-            const directionResponse = await axios.post(
-              `http://localhost:3001/calculateDistance`, // 서버 URL에 맞게 수정해주세요.
-              {
-                startLatitude: searchValue2Data.position.y,
-                startLongitude: searchValue2Data.position.x,
-                endLatitude: searchValue3Data.position.y,
-                endLongitude: searchValue3Data.position.x,
-              }
-            );
-            const beforeDistance = distance;
-            const beforeDuration = duration;
+      const fetchDistanceAndDuration = async () => {
+        try {
+          const directionResponse = await axios.post(
+            `http://localhost:3001/calculateDistance`, // 서버 URL에 맞게 수정해주세요.
+            {
+              startLatitude: searchValue2Data.position.y,
+              startLongitude: searchValue2Data.position.x,
+              endLatitude: searchValue3Data.position.y,
+              endLongitude: searchValue3Data.position.x,
+            }
+          );
+          const beforeDistance = distance;
+          const beforeDuration = duration;
 
-            setDistance(directionResponse.data.distance + beforeDistance);
-            setDuration(directionResponse.data.duration + beforeDuration);
+          setDistance(directionResponse.data.distance + beforeDistance);
+          setDuration(directionResponse.data.duration + beforeDuration);
 
-            console.log("두번째 위치 읽기 때 ",searchValue2Data.title, "에서",  searchValue3Data.title, "까지", duration); 
-          } catch (error) {
-            console.error("Error calculating distance and duration:", error);
-          }
-        };
+          console.log(
+            "두번째 위치 읽기 때 ",
+            searchValue2Data.title,
+            "에서",
+            searchValue3Data.title,
+            "까지",
+            duration
+          );
+        } catch (error) {
+          console.error("Error calculating distance and duration:", error);
+        }
+      };
 
-        fetchDistanceAndDuration1(); 
+      fetchDistanceAndDuration1();
     }
-}, [searchValue3Data]);
+  }, [searchValue3Data]);
 
   // 밀리초를 시간과 분으로 변환하는 함수
   const convertMillisecondsToTime = (milliseconds) => {
@@ -241,50 +255,61 @@ const AppFindRoute = () => {
   // 현재 위치 받아오기
   const handleCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const newPosition = new navermaps.LatLng(
-            position.coords.latitude,
-            position.coords.longitude
-          );
-          setCurrentPosition(newPosition);
-          setNewPosition(newPosition);
-          console.log("My current location: ", newPosition);
-          // 위도와 경도를 주소로 변환하는 API 호출
-          try {
-            const reverseGeocodeResponse = await axios.post(
-              `http://localhost:3001/reverseGeocoding`, // 서버 URL에 맞게 수정해주세요.
-              {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              }
-            );
+      setSearchValue1("성수동 카페거리");
+      console.log("data : ", "성수동 카페거리");
+      const positionData = {
+        key: 3745,
+        position: new navermaps.LatLng(37.5432527996, 127.0566145649),
+        title: "성수동 카페거리",
+      };
+      setSearchValue1Data(positionData);
+      console.log("My current location: ", positionData.position);
+      setCurrentPosition(positionData.position);
+          setNewPosition(positionData.position);
+      // navigator.geolocation.getCurrentPosition(
+      //   async (position) => {
+      //     const newPosition = new navermaps.LatLng(
+      //       position.coords.latitude,
+      //       position.coords.longitude
+      //     );
+      //     setCurrentPosition(newPosition);
+      //     setNewPosition(newPosition);
+      //     console.log("My current location: ", newPosition);
+      //     // 위도와 경도를 주소로 변환하는 API 호출
+      //     try {
+      //       const reverseGeocodeResponse = await axios.post(
+      //         `http://localhost:3001/reverseGeocoding`, // 서버 URL에 맞게 수정해주세요.
+      //         {
+      //           latitude: position.coords.latitude,
+      //           longitude: position.coords.longitude,
+      //         }
+      //       );
 
-            const address = reverseGeocodeResponse.data.address;
-            console.log(
-              "읽은 데이터 :",
-              reverseGeocodeResponse.data.addressResult
-            );
-            setSearchValue1(address);
-            console.log("data : ", address);
-            const positionData = {
-              key: -1,
-              position: new navermaps.LatLng(
-                position.coords.latitude,
-                position.coords.longitude
-              ),
-              title: address,
-            };
-            setSearchValue1Data(positionData);
-          } catch (error) {
-            console.error("Error getting address from coordinates:", error);
-          }
-        },
-        (error) => {
-          console.error("Error getting current position:", error);
-          window.alert("현재 위치를 찾을 수 없습니다.");
-        }
-      );
+      //       const address = reverseGeocodeResponse.data.address;
+      //       console.log(
+      //         "읽은 데이터 :",
+      //         reverseGeocodeResponse.data.addressResult
+      //       );
+      //       setSearchValue1(address);
+      //       console.log("data : ", address);
+      //       const positionData = {
+      //         key: -1,
+      //         position: new navermaps.LatLng(
+      //           position.coords.latitude,
+      //           position.coords.longitude
+      //         ),
+      //         title: address,
+      //       };
+      //       setSearchValue1Data(positionData);
+      //     } catch (error) {
+      //       console.error("Error getting address from coordinates:", error);
+      //     }
+      //   },
+      //   (error) => {
+      //     console.error("Error getting current position:", error);
+      //     window.alert("현재 위치를 찾을 수 없습니다.");
+      //   }
+      // );
     } else {
       window.alert("브라우저가 위치 정보를 지원하지 않습니다.");
     }
@@ -372,9 +397,7 @@ const AppFindRoute = () => {
     setSearchValue3Data(tempData);
     setSearchValueNum3(tempNum2);
     setSearchValueText3(tempText2);
-
   };
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -451,9 +474,11 @@ const AppFindRoute = () => {
                                             }
                                             onChange={handleSearchChange2}
                                             placeholder="도착지 입력"
-                                            image={ flexDiv.id === "1"
-                                            ? Twoimage
-                                            : Thirdimage}
+                                            image={
+                                              flexDiv.id === "1"
+                                                ? Twoimage
+                                                : Thirdimage
+                                            }
                                             onClick={handleSearchClick}
                                           />
                                           <div style={{ width: "29px" }}></div>
