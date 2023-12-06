@@ -32,15 +32,26 @@ import FindRoute from "../../../Assets/Map/FindRoute.png";
 import Recommendation from "../../../Assets/Map/recommendedCourse.png";
 import ChannelTalk from "../../../Assets/Map/talk.png";
 import ChannelInfo from "../../../Assets/Map/TalkInfoWindow.png";
-import AudioService from "../../../Assets/Map/audioGuide_service.svg";
-import ElevatorService from "../../../Assets/Map/elevator_service.svg";
-import GuideDogService from "../../../Assets/Map/guideDog_service.svg";
-import ParkingService from "../../../Assets/Map/parking_service.svg";
-import ScopeService from "../../../Assets/Map/scope_service.svg";
-import ToiletService from "../../../Assets/Map/toilet_service.svg";
-import TransportService from "../../../Assets/Map/transport_service.svg";
-import VideoSubService from "../../../Assets/Map/videoSub_service.svg";
-import WheelChairService from "../../../Assets/Map/wheelchair_service.svg";
+import AudioService from "../../../Assets/Map/audioGuide_service.png";
+import ElevatorService from "../../../Assets/Map/elevator_service.png";
+import GuideDogService from "../../../Assets/Map/guideDog_service.png";
+import ParkingService from "../../../Assets/Map/parking_service.png";
+import ScopeService from "../../../Assets/Map/scope_service.png";
+import ToiletService from "../../../Assets/Map/toilet_service.png";
+import TransportService from "../../../Assets/Map/transport_service.png";
+import VideoSubService from "../../../Assets/Map/videoSub_service.png";
+import WheelChairService from "../../../Assets/Map/wheelchair_service.png";
+import SliderUp from "../../../Assets/Map/sliderUp.png";
+import LocationDetail from "../../../Assets/Map/locationDetail.png";
+import PhoneShare from "../../../Assets/Map/phoneShare.png";
+import ObstacleInfo from "../../../Assets/Map/ObstacleInfo.png";
+import Divider from "../../../Assets/Map/divider.png";
+import Review from "../../../Assets/Map/Review.png";
+import RegisterReview from "../../../Assets/Map/ReviewWriting.png";
+import Review1 from "../../../Assets/Map/review1.png";
+import Review2 from "../../../Assets/Map/review2.png";
+import Review3 from "../../../Assets/Map/review3.png";
+import Review4 from "../../../Assets/Map/review4.png";
 
 import AppFindRoute from "./AppFindRoute.js";
 import { async } from "q";
@@ -71,32 +82,7 @@ const SearchInput = styled.input`
     width: calc(50% - 8px);
   }
 `;
-const Slider = ({
-  sliderPosition,
-  handleSliderDragStart,
-  handleSliderDragEnd,
-  children,
-}) => (
-  <div
-    style={{
-      position: "fixed",
-      bottom: 0,
-      left: 0,
-      right: 0,
-      height: "150px",
-      backgroundColor: "white",
-      padding: "20px",
-      boxShadow: "0px -2px 10px rgba(0, 0, 0, 0.1)",
-      borderTopLeftRadius: "18px",
-      borderTopRightRadius: "18px",
-    }}
-    onMouseDown={handleSliderDragStart}
-    onMouseUp={handleSliderDragEnd}
-    onMouseLeave={handleSliderDragEnd}
-  >
-    {children}
-  </div>
-);
+
 const AppMap = () => {
   const NAVER_API_KEY = process.env.REACT_APP_NAVER_MAP_API_KEY;
   const NAVER_ID = process.env.REACT_APP_NAVER_ID;
@@ -120,9 +106,68 @@ const AppMap = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [activeCategories, setActiveCategories] = useState([]);
   const [serviceData, setServiceData] = useState(null);
+  const [sliderHeight, setSliderHeight] = useState("167px");
+  const [isContainersVisible, setIsContainersVisible] = useState(true);
 
+  const toggleContainersVisibility = () => {
+    setIsContainersVisible(false);
+  };
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
+  };
+  const handleSliderUpClick = async () => {
+    toggleSliderHeight();
+    toggleContainersVisibility();
+    await loadServiceData();
+  };
+  useEffect(() => {
+    setIsContainersVisible(true);
+    return () => {
+      setIsContainersVisible(false);
+    };
+  }, [sliderHeight]);
+
+  const loadServiceData = async () => {
+    try {
+      const response = await axios.get(
+        "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=10000&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D"
+      );
+      const data = response.data;
+      const services = data.map((service) => ({
+        name: service.name,
+        image: service.image,
+      }));
+      setServiceData(services);
+    } catch (error) {
+      console.error("Error loading service data:", error);
+    }
+  };
+
+  const toggleSliderHeight = () => {
+    setSliderHeight((prevHeight) =>
+      prevHeight === "167px" ? "568px" : "167px"
+    );
+
+    setIsContainersVisible((prevVisible) => !prevVisible);
+  };
+  const filteredByRestaurant = (data) => {
+    const filteredData = [];
+    for (const item of data) {
+      if (item.contentTypeId === "39") {
+        filteredData.push(item);
+      }
+    }
+    return filteredData;
+  };
+
+  const filteredByHotel = (data) => {
+    const filteredData = [];
+    for (const item of data) {
+      if (item.contentTypeId === "32") {
+        filteredData.push(item);
+      }
+    }
+    return filteredData;
   };
 
   const handleCategoryToggle = async (category) => {
@@ -140,24 +185,39 @@ const AppMap = () => {
 
       switch (category) {
         case "restaurant":
-          apiUrl = dataForbstacleApi;
-          break;
-        case "cafe":
-          apiUrl = dataForbstacleApi;
-          break;
-        case "parking":
-          // Uncomment the following lines if you have specific logic for parking
-          // apiUrl = ServiceInfo;
-          // markerIcon = parkingAvailable ? ActivePicker : InactivePicker;
+          apiUrl =
+            "https://apis.data.go.kr/B551011/KorWithService1/categoryCode1?MobileOS=ETC&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
+          markerIcon =
+            category.restaurant !== "" ? ActivePicker : InactivePicker;
+
+          try {
+            const response = await axios.get(apiUrl);
+            const data = response.data;
+            const filteredRestaurantData = filteredByRestaurant(data);
+            console.log(filteredRestaurantData);
+          } catch (error) {
+            console.error("Error fetching data from the API:", error);
+          }
           break;
         case "hotel":
-          apiUrl = dataForbstacleApi;
+          apiUrl =
+            "https://apis.data.go.kr/B551011/KorWithService1/categoryCode1?MobileOS=ETC&MobileApp=asdf&contentTypeId=32&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
+          markerIcon = category.hotel !== "" ? ActivePicker : InactivePicker;
+
+          try {
+            const response = await axios.get(apiUrl);
+            const data = response.data;
+
+            // Check if data is an array before applying filter
+            const filteredHotelData = Array.isArray(data)
+              ? filteredByHotel(data)
+              : [];
+            console.log(filteredHotelData);
+          } catch (error) {
+            console.error("Error fetching hotel data from the API:", error);
+          }
           break;
-        case "toilet":
-          // Uncomment the following lines if you have specific logic for toilet
-          // apiUrl = ServiceInfo;
-          // markerIcon = restroomAvailable ? ActivePicker : InactivePicker;
-          break;
+
         default:
           break;
       }
@@ -174,7 +234,7 @@ const AppMap = () => {
             title: item.title,
             address: item.addr1,
             contentid: item.contentid,
-            contentTypeId: item.contenttypeid, // contenttypeid를 API 응답에서 가져옴
+            contentTypeId: item.contenttypeid,
             icon: {
               url: markerIcon,
             },
@@ -198,6 +258,10 @@ const AppMap = () => {
   const handleSliderDragEnd = () => {
     setSliderPosition("bottom");
   };
+  const handleMapClick = () => {
+    setSliderVisible(false);
+    setIsSliderVisible(false);
+  };
   const handleMarkerClick = async (marker) => {
     setSelectedMarkerInfo(marker);
     setSliderVisible(true);
@@ -208,34 +272,65 @@ const AppMap = () => {
       const contentTypeId = marker.contentTypeId;
       const dataset = `https://apis.data.go.kr/B551011/KorWithService1/detailWithTour1?MobileOS=ETC&MobileApp=asdf&contentId=${contentid}&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D`;
       const ServiceInfo = `https://apis.data.go.kr/B551011/KorWithService1/detailIntro1?MobileOS=ETC&MobileApp=asdf&contentId=${contentid}&contentTypeId=${contentTypeId}&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D`;
-      axios
-        .get(dataset)
-        .then((response) => {
-          console.log(
-            "무장애 관련 정보 ",
-            contentid,
-            "데이터 :",
-            response.data
-          );
-          setIntroData(response.data);
-        })
-        .catch((error) => {
-          console.error("API 호출 중 오류 발생: ", error);
-        });
-      axios
-        .get(ServiceInfo)
-        .then((response) => {
-          console.log(
-            "서비스 소개 데이터 ",
-            contentid,
-            "데이터 :",
-            response.data
-          );
-          setIntroData(response.data);
-        })
-        .catch((error) => {
-          console.error("API 호출 중 오류 발생: ", error);
-        });
+
+      const response = await axios.get(dataset);
+      const data = response.data;
+      const {
+        parking,
+        audioguide,
+        elevator,
+        helpdog,
+        exit,
+        restroom,
+        publictransport,
+        videoguide,
+        wheelchair,
+      } = data;
+
+      const services = [];
+      const addService = (name, image) => {
+        if (name && name !== "") {
+          services.push({ name, image });
+        }
+      };
+      addService("ParkingService", parking ? ParkingService : null);
+      addService("AudioService", audioguide ? AudioService : null);
+      addService("ElevatorService", elevator ? ElevatorService : null);
+      addService("GuideDogService", helpdog ? GuideDogService : null);
+      addService("ScopeService", exit ? ScopeService : null);
+      addService("ToiletService", restroom ? ToiletService : null);
+      addService("TransportService", publictransport ? TransportService : null);
+      addService("VideoSubService", videoguide ? VideoSubService : null);
+      addService("WheelChairService", wheelchair ? WheelChairService : null);
+
+      setServiceData(services);
+
+      // .then((response) => {
+      //   console.log(
+      //     "무장애 관련 정보 ",
+      //     contentid,
+      //     "데이터 :",
+      //     response.data
+      //   );
+      //   setIntroData(response.data);
+      // })
+      // .catch((error) => {
+      //   console.error("API 호출 중 오류 발생: ", error);
+      // });
+      //   axios
+      //     .get(ServiceInfo)
+      //     .then((response) => {
+      //       console.log(
+      //         "서비스 소개 데이터 ",
+      //         contentid,
+      //         "데이터 :",
+      //         response.data
+      //       );
+      //       setIntroData(response.data);
+      //     })
+      //     .catch((error) => {
+      //       console.error("API 호출 중 오류 발생: ", error);
+      //     });
     } catch (error) {
       console.error("무장애 여행 정보를 불러오는 중 오류 발생:", error);
     }
@@ -282,21 +377,23 @@ const AppMap = () => {
       .then((response) => {
         console.log("무장애 여행정보 동기화 관광 데이터 :", response.data);
         const data = response.data.response.body.items.item;
-        // const newMarkers = data.map((item, index) => ({
-        //   key: index,
-        //   position: new navermaps.LatLng(item.mapy, item.mapx),
-        //   title: item.title,
-        //   address: item.addr1,
-        //   contentid: item.contentid,
-        //   contentTypeId: item.contenttypeid,
-        // }));
-        //setMarkers(newMarkers);
+        const newMarkers = data.map((item, index) => ({
+          key: index,
+          position: new navermaps.LatLng(item.mapy, item.mapx),
+          title: item.title,
+          address: item.addr1,
+          contentid: item.contentid,
+          contentTypeId: item.contenttypeid,
+        }));
+        setMarkers(newMarkers);
       })
       .catch((error) => {
         console.error("Error fetching data from the API", error);
       });
   }, [handleCurrentLocation, navermaps, dataForbstacleApi]);
-
+  const findRoute = () => {
+    navigate("/findRoute");
+  };
   const handleSearch = async () => {
     if (!searchQuery) {
       alert("검색어를 입력해주세요.");
@@ -320,14 +417,11 @@ const AppMap = () => {
     } catch (error) {
       console.error("Error fetching data from Naver Search API", error);
       if (error.response) {
-        // The request was made and the server responded with a status code
         console.error("Status Code:", error.response.status);
         console.error("Response Data:", error.response.data);
       } else if (error.request) {
-        // The request was made but no response was received
         console.error("No response received:", error.request);
       } else {
-        // Something happened in setting up the request that triggered an Error
         console.error("Error setting up the request:", error.message);
       }
       alert("검색 중 오류가 발생했습니다.");
@@ -350,18 +444,19 @@ const AppMap = () => {
           alignItems: "center",
         }}
         onInitialized={(map) => setNaverMap(map)}
+        // onClick={handleMapClick}
       >
-        <SearchContainer>
+        <SearchContainer visible={isContainersVisible}>
           <SearchInput
             type="text"
             placeholder="어디로 가볼까요?"
             value={searchQuery}
             onChange={handleSearchChange}
           />
-          <FindRouteButton onClick={handleSearch} />
+          <FindRouteButton onClick={findRoute} />
         </SearchContainer>
 
-        <ChipContainer>
+        <ChipContainer visible={isContainersVisible}>
           <ChipWrapper>
             <Chip onClick={() => handleCategoryToggle("restaurant")}>
               <img
@@ -423,6 +518,7 @@ const AppMap = () => {
             left: 10,
             bottom: isSliderVisible ? "190px" : "10px",
             zIndex: 500,
+            visibility: isSliderVisible ? "hidden" : "visible",
           }}
         >
           <img
@@ -467,13 +563,115 @@ const AppMap = () => {
         {sliderVisible && selectedMarkerInfo && (
           <Slider
             sliderPosition={sliderPosition}
+            sliderHeight={sliderHeight}
             handleSliderDragStart={handleSliderDragStart}
             handleSliderDragEnd={handleSliderDragEnd}
+            handleSliderUpClick={toggleSliderHeight}
           >
             <SliderContent>
               <div>
-                <h3>{selectedMarkerInfo.title}</h3>
-                <h5>{selectedMarkerInfo.address}</h5>
+                <Header1>{selectedMarkerInfo.title}</Header1>
+                <Body4>{selectedMarkerInfo.address}</Body4>
+                <img style={{ marginTop: "12px" }} src={LocationDetail} />
+                <div style={{ marginTop: "24px" }}>
+                  <img src={PhoneShare} />
+                </div>
+                <div
+                  style={{
+                    marginTop: "24px",
+                    posiitoin: "relative",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <img
+                    src={Divider}
+                    style={{
+                      position: "absolute",
+                      top: 235,
+                      left: 16,
+                      zIndex: 0,
+                    }}
+                    alt="Divider"
+                  />
+                  <img
+                    src={ObstacleInfo}
+                    style={{
+                      zIndex: 1,
+                    }}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  {/* {serviceData &&
+                    serviceData.map((service, index) => (
+                      <img
+                        key={index}
+                        style={{
+                          marginTop: "24px",
+                          width: "60px",
+                          height: "60px",
+                        }}
+                        src={service.image}
+                        alt={service.name}
+                      />
+                    ))} */}
+                  <ServiceIconsContainer>
+                    <ServiceIcon src={ParkingService} alt="ParkingService" />
+                    {/* <ServiceIcon src={GuideDogService} alt="HelpDogService" /> */}
+                    <ServiceIcon src={ToiletService} alt="ToiletService" />
+                    <ServiceIcon src={AudioService} alt="AudioService" />
+                    <ServiceIcon
+                      src={TransportService}
+                      alt="TransportService"
+                    />
+                  </ServiceIconsContainer>
+                </div>
+                <div
+                  style={{
+                    posiitoin: "relative",
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
+                  <img
+                    src={Divider}
+                    style={{
+                      position: "absolute",
+                      top: 445,
+                      left: 16,
+                      zIndex: 0,
+                    }}
+                    alt="Divider"
+                  />
+                  <img
+                    src={Review}
+                    style={{
+                      zIndex: 1,
+                    }}
+                  />
+                </div>
+                <img
+                  style={{ width: "60px", height: "15px", marginLeft: "275px" }}
+                  src={RegisterReview}
+                />
+                <div
+                  style={{
+                    marginTop: "10px",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <img src={Review1} style={{ marginBottom: "8px" }} />
+                  <img src={Review2} style={{ marginBottom: "8px" }} />
+                  <img src={Review3} style={{ marginBottom: "8px" }} />
+                  <img src={Review4} />
+                </div>
               </div>
               <CloseButton onClick={handleSliderClose}>Close</CloseButton>
             </SliderContent>
@@ -483,11 +681,70 @@ const AppMap = () => {
     </ThemeProvider>
   );
 };
-
 export default AppMap;
-const dataForbstacleApi =
-  "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=500&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
 
+const Slider = ({
+  sliderPosition,
+  sliderHeight,
+  handleSliderDragStart,
+  handleSliderDragEnd,
+  handleSliderUpClick,
+  children,
+}) => (
+  <div
+    style={{
+      position: "fixed",
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: sliderHeight,
+      backgroundColor: "white",
+      padding: "20px",
+      boxShadow: "0px -2px 10px rgba(0, 0, 0, 0.1)",
+      borderTopLeftRadius: "18px",
+      borderTopRightRadius: "18px",
+    }}
+    onMouseDown={handleSliderDragStart}
+    onMouseUp={handleSliderDragEnd}
+    onMouseLeave={handleSliderDragEnd}
+  >
+    {children}
+    <button
+      style={{
+        position: "absolute",
+        top: "8px",
+        left: "50%",
+        transform: "translateX(-50%)",
+        background: "none",
+        border: "none",
+        cursor: "pointer",
+        padding: 0,
+      }}
+      onClick={handleSliderUpClick}
+    >
+      <img src={SliderUp} alt="SliderUp" />
+    </button>
+  </div>
+);
+const dataForbstacleApi =
+  "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=3000&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
+
+const Body4 = styled.div`
+  font-size: ${(props) => props.theme.Web_fontSizes.Body4};
+  font-weight: ${(props) => props.theme.fontWeights.Body4};
+  line-height: ${(props) => props.theme.LineHeight.Body4};
+  color: ${(props) => props.color};
+  font-family: "Pretendard";
+  margin-top: 8px;
+`;
+const Header1 = styled.div`
+  font-size: ${(props) => props.theme.Web_fontSizes.Header1};
+  font-weight: ${(props) => props.theme.fontWeights.Header1};
+  line-height: ${(props) => props.theme.LineHeight.Header1};
+  color: ${(props) => props.color};
+  font-family: "Pretendard";
+  margin-top: 8px;
+`;
 const SliderContent = styled.div`
   display: flex;
   justify-content: space-between;
@@ -502,7 +759,7 @@ const CloseButton = styled.button`
   cursor: pointer;
 `;
 const ChipContainer = styled.div`
-  display: flex;
+  display: ${(props) => (props.visible ? "flex" : "none")};
   position: fixed;
   position: absolute;
   align-items: center;
@@ -520,6 +777,7 @@ const Chip = styled.div`
   cursor: pointer;
 `;
 const SearchContainer = styled.div`
+  display: ${(props) => (props.visible ? "flex" : "none")};
   position: absolute;
   top: 0;
   left: 0;
@@ -539,6 +797,17 @@ const FindRouteButton = styled.button`
   border: none;
   padding: 0;
   margin-left: 8px;
+`;
+const ServiceIconsContainer = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  margin-bottom: 24px;
+`;
+const ServiceIcon = styled.img`
+  width: 50px;
+  height: 50px;
+  margin: 0 10px;
 `;
 const RecommendationButton = styled.button`
   position: absolute;
