@@ -7,6 +7,7 @@ import {
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import React, { useState, useCallback, useEffect } from "react";
 import styled, { ThemeProvider } from "styled-components";
+import { useNavigate } from "react-router-dom";
 import { theme } from "../../../Style/theme";
 import axios from "axios";
 import currentLocation from "../../../Assets/img/currentPosition.svg";
@@ -29,7 +30,8 @@ const AppFindRoute = () => {
     console.log(`zoom: ${zoom}`);
   }, []);
   const [newPosition, setNewPosition] = useState(null);
-
+  // 이동 함수
+  const navigate = useNavigate();
   // 검색어 관련 코드
   const [searchValue1, setSearchValue1] = useState("");
   const [searchValueNum1, setSearchValueNum1] = useState(4.33);
@@ -265,7 +267,7 @@ const AppFindRoute = () => {
       setSearchValue1Data(positionData);
       console.log("My current location: ", positionData.position);
       setCurrentPosition(positionData.position);
-          setNewPosition(positionData.position);
+      setNewPosition(positionData.position);
       // navigator.geolocation.getCurrentPosition(
       //   async (position) => {
       //     const newPosition = new navermaps.LatLng(
@@ -438,6 +440,7 @@ const AppFindRoute = () => {
                               ButtonImage={CancelIcon}
                               left={12}
                               right={-8}
+                              onClick={() => navigate("/")}
                             />
                           </FlexDiv>
                           <DragDropContext onDragEnd={handleOnDragEnd}>
@@ -570,6 +573,7 @@ const AppFindRoute = () => {
                               ButtonImage={CancelIcon}
                               left={12}
                               right={-8}
+                              onClick={() => navigate("/")}
                             />
                           </FlexDiv>
                           <FlexDiv>
@@ -637,6 +641,7 @@ const AppFindRoute = () => {
                       ButtonImage={CancelIcon}
                       left={12}
                       right={-8}
+                      onClick={() => navigate("/")}
                     />
                   </FlexDiv>
                   <FlexDiv>

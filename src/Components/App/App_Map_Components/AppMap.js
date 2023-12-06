@@ -14,7 +14,7 @@ import { theme } from "../../../Style/theme";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import currentLocation from "../../../Assets/img/currentPosition.svg";
-import ActivePicker from "../../../Assets/img/_Picker=장애인 가능.png";
+import ActivePicker from "../../../Assets/Map/Makers.png";
 import InactivePicker from "../../../Assets/img/_Picker=_불가능.png";
 import currentSpot from "../../../Assets/Map/currentLocation.png";
 import Search from "../../../Assets/Map/fe_search.png";
@@ -52,18 +52,21 @@ import Review1 from "../../../Assets/Map/review1.png";
 import Review2 from "../../../Assets/Map/review2.png";
 import Review3 from "../../../Assets/Map/review3.png";
 import Review4 from "../../../Assets/Map/review4.png";
+import AppSpash from "../App_Splash_Components/AppSplash";
 
 const SearchInput = styled.input`
   flex-grow: 1;
   border: none;
   border-radius: 8px;
-  padding: 10px 40px 10px 16px;
+  padding: 10px 50px 10px 16px;
   background-image: url(${Search});
   background-position: center;
   background-position-x: 16px;
   //background-position-y: 13px;
   background-repeat: no-repeat;
   text-indent: 28px;
+  background-size: 22px;
+
 
   &::placeholder {
     font-size: ${(props) => props.theme.Web_fontSizes.Body5};
@@ -433,11 +436,23 @@ const AppMap = () => {
   };
 
   const handleRecommendationClick = () => {
-    navigate("/Route");
+    window.location.href = "/Route";
   };
+
+  // 로딩 화면 
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000); 
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
+      {loading ? (
+        <AppSpash />
+      ) : (
       <MapDiv
         style={{
           position: "relative",
@@ -470,12 +485,14 @@ const AppMap = () => {
                     : Restaurant
                 }
                 alt="Restaurant"
+                style={{width: "77px", height : "33px"}}
               />
             </Chip>
             <Chip onClick={() => setIsContentsType("14")}>
               <img
                 src={activeCategories.includes("cafe") ? CafeActive : Cafe}
                 alt="Cafe"
+                style={{width: "77px", height : "33px"}}
               />
             </Chip>
             <Chip onClick={() => setIsContentsType("12")}>
@@ -484,12 +501,14 @@ const AppMap = () => {
                   activeCategories.includes("parking") ? ParkingActive : Parking
                 }
                 alt="Parking"
+                style={{width: "77px", height : "33px"}}
               />
             </Chip>
             <Chip onClick={() => setIsContentsType("28")}>
               <img
                 src={activeCategories.includes("hotel") ? HotelActive : Hotel}
                 alt="Hotel"
+                style={{width: "77px", height : "33px"}}
               />
             </Chip>
             <Chip onClick={() => setIsContentsType("38")}>
@@ -497,13 +516,14 @@ const AppMap = () => {
                 src={
                   activeCategories.includes("toilet") ? ToiletActive : Toilet
                 }
+                style={{width: "77px", height : "33px"}}
                 alt="Toilet"
               />
             </Chip>
           </ChipWrapper>
         </ChipContainer>
         <ChannelWindow
-          style={{ bottom: isSliderVisible ? "284px" : "100px" }}
+          style={{ bottom: isSliderVisible ? "284px" : "100px", height : "45px"}}
           src={ChannelInfo}
           alt="Channel Info"
         />
@@ -563,6 +583,7 @@ const AppMap = () => {
                   title={marker.title}
                   icon={{
                     url: ActivePicker,
+                    scaledSize: new navermaps.Size(40, 40),
                   }}
                   onClick={() => {
                     console.log("컨텐츠 아이디 :", marker.contentTypeId);
@@ -584,9 +605,9 @@ const AppMap = () => {
               <div>
                 <Header1>{selectedMarkerInfo.title}</Header1>
                 <Body4>{selectedMarkerInfo.address}</Body4>
-                <img style={{ marginTop: "12px" }} src={LocationDetail} />
+                <img style={{ marginTop: "12px", width : "171px", height : "21px" }} src={LocationDetail} />
                 <div style={{ marginTop: "24px" }}>
-                  <img src={PhoneShare} />
+                  <img src={PhoneShare} style={{width : "351px", height : "44px"}} />
                 </div>
                 <div
                   style={{
@@ -600,9 +621,9 @@ const AppMap = () => {
                     src={Divider}
                     style={{
                       position: "absolute",
-                      top: 235,
-                      left: 16,
+                      top: 240,
                       zIndex: 0,
+                      width : "100%"
                     }}
                     alt="Divider"
                   />
@@ -610,6 +631,8 @@ const AppMap = () => {
                     src={ObstacleInfo}
                     style={{
                       zIndex: 1,
+                      width : "84px",
+                      height : "36px"
                     }}
                   />
                 </div>
@@ -655,9 +678,9 @@ const AppMap = () => {
                     src={Divider}
                     style={{
                       position: "absolute",
-                      top: 445,
-                      left: 16,
+                      top: 370,
                       zIndex: 0,
+                      width : "100%"
                     }}
                     alt="Divider"
                   />
@@ -665,11 +688,12 @@ const AppMap = () => {
                     src={Review}
                     style={{
                       zIndex: 1,
+                      width : '96px'
                     }}
                   />
                 </div>
                 <img
-                  style={{ width: "60px", height: "15px", marginLeft: "275px" }}
+                  style={{ width: "66px", height: "21px", marginLeft: "283px" }}
                   src={RegisterReview}
                 />
                 <div
@@ -679,10 +703,10 @@ const AppMap = () => {
                     flexDirection: "column",
                   }}
                 >
-                  <img src={Review1} style={{ marginBottom: "8px" }} />
-                  <img src={Review2} style={{ marginBottom: "8px" }} />
-                  <img src={Review3} style={{ marginBottom: "8px" }} />
-                  <img src={Review4} />
+                  <img src={Review1} style={{ marginBottom: "8px", width : "350px", height: "37px" }} />
+                  <img src={Review2} style={{ marginBottom: "8px", width : "350px", height: "37px"}} />
+                  <img src={Review3} style={{ marginBottom: "8px", width : "350px", height: "37px" }} />
+                  <img src={Review4} style={{ width : "350px", height: "37px" }} />
                 </div>
               </div>
               <CloseButton onClick={handleSliderClose}>Close</CloseButton>
@@ -690,6 +714,7 @@ const AppMap = () => {
           </Slider>
         )}
       </MapDiv>
+      )}
     </ThemeProvider>
   );
 };
