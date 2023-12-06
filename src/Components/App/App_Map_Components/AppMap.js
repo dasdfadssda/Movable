@@ -810,7 +810,7 @@ const Slider = ({
   </div>
 );
 const dataForbstacleApi =
-  "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=3000&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
+  "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=1000&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
 
 const Body4 = styled.div`
   font-size: ${(props) => props.theme.Web_fontSizes.Body4};
