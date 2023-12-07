@@ -342,26 +342,26 @@ const AppMap = () => {
   // 현재 위치 받아오기
   const handleCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
-      // navigator.geolocation.getCurrentPosition(
-      //   (position) => {
-      //     const newPosition = new navermaps.LatLng(
-      //       position.coords.latitude,
-      //       position.coords.longitude
-      //     );
-      const positionData = {
-        key: 3745,
-        position: new navermaps.LatLng(37.5432527996, 127.0566145649),
-        title: "성수동 카페거리",
-      };
+            // const positionData = {
+      //   key: 3745,
+      //   position: new navermaps.LatLng(37.5432527996, 127.0566145649),
+      //   title: "성수동 카페거리",
+      // };
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const newPosition = new navermaps.LatLng(
+            position.coords.latitude,
+            position.coords.longitude
+          );ㄴ
       setCurrentPosition(positionData.position);
       setNewPosition(positionData.position);
-      //     console.log("My current location: ", newPosition);
-      //   },
-      //   (error) => {
-      //     console.error("Error getting current position:", error);
-      //     window.alert("현재 위치를 찾을 수 없습니다.");
-      //   }
-      // );
+          console.log("My current location: ", newPosition);
+        },
+        (error) => {
+          console.error("Error getting current position:", error);
+          window.alert("현재 위치를 찾을 수 없습니다.");
+        }
+      );
     } else {
       window.alert("브라우저가 위치 정보를 지원하지 않습니다.");
     }
