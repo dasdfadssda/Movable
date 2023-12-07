@@ -442,7 +442,7 @@ const AppMap = () => {
     window.location.href = "/Route";
   };
 
-  // 로딩 화면
+  // 로딩 화면 시간 3초 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
