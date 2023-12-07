@@ -267,7 +267,7 @@ const AppFindRoute = () => {
       // setSearchValue1Data(positionData);
       // console.log("My current location: ", positionData.position);
       // setCurrentPosition(positionData.position);
-      // setNewPosition(positionData.position);
+      // setNewPosition(positionData.position);s
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const newPosition = new navermaps.LatLng(
