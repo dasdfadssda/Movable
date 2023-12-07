@@ -257,61 +257,61 @@ const AppFindRoute = () => {
   // 현재 위치 받아오기
   const handleCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
-      setSearchValue1("성수동 카페거리");
-      console.log("data : ", "성수동 카페거리");
-      const positionData = {
-        key: 3745,
-        position: new navermaps.LatLng(37.5432527996, 127.0566145649),
-        title: "성수동 카페거리",
-      };
-      setSearchValue1Data(positionData);
-      console.log("My current location: ", positionData.position);
-      setCurrentPosition(positionData.position);
-      setNewPosition(positionData.position);
-      // navigator.geolocation.getCurrentPosition(
-      //   async (position) => {
-      //     const newPosition = new navermaps.LatLng(
-      //       position.coords.latitude,
-      //       position.coords.longitude
-      //     );
-      //     setCurrentPosition(newPosition);
-      //     setNewPosition(newPosition);
-      //     console.log("My current location: ", newPosition);
-      //     // 위도와 경도를 주소로 변환하는 API 호출
-      //     try {
-      //       const reverseGeocodeResponse = await axios.post(
-      //         `http://localhost:3001/reverseGeocoding`, // 서버 URL에 맞게 수정해주세요.
-      //         {
-      //           latitude: position.coords.latitude,
-      //           longitude: position.coords.longitude,
-      //         }
-      //       );
+      // setSearchValue1("성수동 카페거리");
+      // console.log("data : ", "성수동 카페거리");
+      // const positionData = {
+      //   key: 3745,
+      //   position: new navermaps.LatLng(37.5432527996, 127.0566145649),
+      //   title: "성수동 카페거리",
+      // };
+      // setSearchValue1Data(positionData);
+      // console.log("My current location: ", positionData.position);
+      // setCurrentPosition(positionData.position);
+      // setNewPosition(positionData.position);
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const newPosition = new navermaps.LatLng(
+            position.coords.latitude,
+            position.coords.longitude
+          );
+          setCurrentPosition(newPosition);
+          setNewPosition(newPosition);
+          console.log("My current location: ", newPosition);
+          // 위도와 경도를 주소로 변환하는 API 호출
+          try {
+            const reverseGeocodeResponse = await axios.post(
+              `http://localhost:3001/reverseGeocoding`, // 서버 URL에 맞게 수정해주세요.
+              {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+              }
+            );
 
-      //       const address = reverseGeocodeResponse.data.address;
-      //       console.log(
-      //         "읽은 데이터 :",
-      //         reverseGeocodeResponse.data.addressResult
-      //       );
-      //       setSearchValue1(address);
-      //       console.log("data : ", address);
-      //       const positionData = {
-      //         key: -1,
-      //         position: new navermaps.LatLng(
-      //           position.coords.latitude,
-      //           position.coords.longitude
-      //         ),
-      //         title: address,
-      //       };
-      //       setSearchValue1Data(positionData);
-      //     } catch (error) {
-      //       console.error("Error getting address from coordinates:", error);
-      //     }
-      //   },
-      //   (error) => {
-      //     console.error("Error getting current position:", error);
-      //     window.alert("현재 위치를 찾을 수 없습니다.");
-      //   }
-      // );
+            const address = reverseGeocodeResponse.data.address;
+            console.log(
+              "읽은 데이터 :",
+              reverseGeocodeResponse.data.addressResult
+            );
+            setSearchValue1(address);
+            console.log("data : ", address);
+            const positionData = {
+              key: -1,
+              position: new navermaps.LatLng(
+                position.coords.latitude,
+                position.coords.longitude
+              ),
+              title: address,
+            };
+            setSearchValue1Data(positionData);
+          } catch (error) {
+            console.error("Error getting address from coordinates:", error);
+          }
+        },
+        (error) => {
+          console.error("Error getting current position:", error);
+          window.alert("현재 위치를 찾을 수 없습니다.");
+        }
+      );
     } else {
       window.alert("브라우저가 위치 정보를 지원하지 않습니다.");
     }
