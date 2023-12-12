@@ -98,7 +98,7 @@ app.post("/calculateDistance", async (req, res) => {
       {
         headers: {
           "X-NCP-APIGW-API-KEY-ID": process.env.REACT_APP_NAVER_ID,
-          "X-NCP-APIGW-API-KEY":  process.env.REACT_APP_NAVER_MAP_API_KEY,
+          "X-NCP-APIGW-API-KEY": process.env.REACT_APP_NAVER_MAP_API_KEY,
         },
       }
     );
@@ -131,14 +131,15 @@ app.post("/reverseGeocoding", async (req, res) => {
 
     const addressData = reverseGeocodeResponse.data.results[0].region;
     const addressResult = reverseGeocodeResponse.data;
-    const addressBuildingData = reverseGeocodeResponse.data.results[2]?.land?.addition0?.value;
+    const addressBuildingData =
+      reverseGeocodeResponse.data.results[2]?.land?.addition0?.value;
     let address =
       addressData.area1.name +
       " " +
       addressData.area2.name +
       " " +
       addressData.area3.name +
-      " "     
+      " ";
     if (addressBuildingData) {
       address += addressBuildingData;
     }
@@ -154,15 +155,3 @@ app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
 
-const httpProxy = require("http-proxy");
-
-// module.exports = function (app) {
-//   const proxy = httpProxy.createProxyServer({
-//     target: "https://openapi.naver.com",
-//     changeOrigin: true,
-//   });
-
-//   app.use((req, res) => {
-//     proxy.web(req, res);
-//   });
-// }
