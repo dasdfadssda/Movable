@@ -11,7 +11,7 @@ app.post('/ask', async (req, res) => {
   const { question } = req.body;
 
   // OpenAI API 호출
-  const openaiApiKey = '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';
+  const openaiApiKey = '';
   const apiUrl = 'https://api.openai.com/v1/answers'; // OpenAI API 엔드포인트에 따라 변경 필요
 
   try {
