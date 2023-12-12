@@ -14,4 +14,18 @@
 | 김유진 | 개발자 |  Open API 통신 및 Naver api를 통한 지도 연동 담당, 화면 UI 개발|
 
 
+## **프로젝트 소개**
+
+
+### 기술 스텍
+<div style={display:flex}>
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
+    <img src="https://img.shields.io/badge/firebase-ffca28?style=for-the-badge&logo=firebase&logoColor=black"/>
+ <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white"/>
+<img src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white"/>
+
+  </div>
+
+### 구현 영상
+[Movble 영상](https://drive.google.com/file/d/1c8_n9W5iIrf6ksLfsj7UB__OB9nI5z7a/view?usp=drive_web)
 
