@@ -257,17 +257,6 @@ const AppFindRoute = () => {
   // 현재 위치 받아오기
   const handleCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
-      // setSearchValue1("성수동 카페거리");
-      // console.log("data : ", "성수동 카페거리");
-      // const positionData = {
-      //   key: 3745,
-      //   position: new navermaps.LatLng(37.5432527996, 127.0566145649),
-      //   title: "성수동 카페거리",
-      // };
-      // setSearchValue1Data(positionData);
-      // console.log("My current location: ", positionData.position);
-      // setCurrentPosition(positionData.position);
-      // setNewPosition(positionData.position);s
       navigator.geolocation.getCurrentPosition(
         async (position) => {
           const newPosition = new navermaps.LatLng(
