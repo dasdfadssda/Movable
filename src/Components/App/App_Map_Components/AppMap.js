@@ -15,7 +15,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import currentLocation from "../../../Assets/img/currentPosition.svg";
 import ActivePicker from "../../../Assets/Map/Makers.png";
-import InactivePicker from "../../../Assets/img/_Picker=_불가능.png";
 import currentSpot from "../../../Assets/Map/currentLocation.png";
 import Search from "../../../Assets/Map/fe_search.png";
 import Restaurant from "../../../Assets/Map/restaurant.png";
