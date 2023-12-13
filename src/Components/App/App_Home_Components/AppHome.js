@@ -19,7 +19,7 @@ const AppHome = () => {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 3000); // 3초 후 스플래시 화면 사라짐
+    }, 3000); // 3초 스플래시 화면 
   }, []);
 
   return (
