@@ -262,7 +262,7 @@ const AppMap = () => {
           const newPosition = new navermaps.LatLng(
             position.coords.latitude,
             position.coords.longitude
-          );ㄴ
+          );
       setCurrentPosition(positionData.position);
       setNewPosition(positionData.position);
           console.log("My current location: ", newPosition);

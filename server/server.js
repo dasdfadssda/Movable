@@ -10,6 +10,8 @@ const port = 3001;
 
 app.use(bodyParser.json());
 app.use(cors());
+
+
 // Naver 검색 API 호출을 처리하는 라우트
 app.get("/searchLocal", async (req, res) => {
   const { query, display, start, sort } = req.query;
@@ -36,6 +38,7 @@ app.get("/searchLocal", async (req, res) => {
     res.status(500).json({ error: "검색 실패" });
   }
 });
+
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPEN_AI_KEY,
 });
