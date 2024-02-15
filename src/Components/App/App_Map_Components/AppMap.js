@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import currentLocation from "../../../Assets/img/currentPosition.svg";
 import ActivePicker from "../../../Assets/Map/Makers.png";
+import InactivePicker from "../../../Assets/img/_Picker=_불가능.png";
 import currentSpot from "../../../Assets/Map/currentLocation.png";
 import Search from "../../../Assets/Map/fe_search.png";
 import Restaurant from "../../../Assets/Map/restaurant.png";
@@ -173,6 +174,87 @@ const AppMap = () => {
     setIsContainersVisible((prevVisible) => !prevVisible);
   };
 
+  // const handleCategoryToggle = async (category) => {
+  //   setActiveCategories((prevActive) => {
+  //     if (prevActive.includes(category)) {
+  //       return [];
+  //     } else {
+  //       return [category];
+  //     }
+  //   });
+
+  //   try {
+  //     let apiUrl = "";
+  //     let markerIcon = ActivePicker;
+
+  //     switch (category) {
+  //       case "restaurant":
+  //         apiUrl =
+  //           "https://apis.data.go.kr/B551011/KorWithService1/categoryCode1?MobileOS=ETC&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
+  //         markerIcon =
+  //           category.restaurant !== "" ? ActivePicker : InactivePicker;
+
+  //         try {
+  //           const response = await axios.get(apiUrl);
+  //           const data = response.data;
+  //           const filteredRestaurantData = filteredByRestaurant(data);
+  //           console.log(filteredRestaurantData);
+  //         } catch (error) {
+  //           console.error("Error fetching data from the API:", error);
+  //         }
+  //         break;
+  //       case "hotel":
+  //         apiUrl =
+  //           "https://apis.data.go.kr/B551011/KorWithService1/categoryCode1?MobileOS=ETC&MobileApp=asdf&contentTypeId=32&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
+  //         markerIcon = category.hotel !== "" ? ActivePicker : InactivePicker;
+
+  //         try {
+  //           const response = await axios.get(apiUrl);
+  //           const data = response.data;
+
+  //           // Check if data is an array before applying filter
+  //           const filteredHotelData = Array.isArray(data)
+  //             ? filteredByHotel(data)
+  //             : [];
+  //           console.log(filteredHotelData);
+  //         } catch (error) {
+  //           console.error("Error fetching hotel data from the API:", error);
+  //         }
+  //         break;
+
+  //       default:
+  //         break;
+  //     }
+
+  //     if (apiUrl) {
+  //       const response = await axios.get(apiUrl);
+  //       const data = response.data.response.body.items.item;
+
+  //       const newMarkers = data
+  //         .filter((item) => activeCategories.includes(item.category))
+  //         .map((item, index) => ({
+  //           key: index,
+  //           position: new navermaps.LatLng(item.mapy, item.mapx),
+  //           title: item.title,
+  //           address: item.addr1,
+  //           contentid: item.contentid,
+  //           contentTypeId: item.contenttypeid,
+  //           icon: {
+  //             url: markerIcon,
+  //           },
+  //         }));
+
+  //       setMarkers(newMarkers);
+  //     }
+  //   } catch (error) {
+  //     console.error(`Error fetching ${category} data from the API`, error);
+  //   }
+  // };
+
+  const handleSliderClose = () => {
+    setSliderVisible(false);
+    setIsSliderVisible(false);
+  };
   const handleSliderDragStart = () => {
     setSliderPosition("visible");
   };
@@ -180,7 +262,10 @@ const AppMap = () => {
   const handleSliderDragEnd = () => {
     setSliderPosition("bottom");
   };
-
+  const handleMapClick = () => {
+    setSliderVisible(false);
+    setIsSliderVisible(false);
+  };
   const handleMarkerClick = async (marker) => {
     setSelectedMarkerInfo(marker);
     setSliderVisible(true);
@@ -263,8 +348,8 @@ const AppMap = () => {
             position.coords.latitude,
             position.coords.longitude
           );
-      setCurrentPosition(positionData.position);
-      setNewPosition(positionData.position);
+          setCurrentPosition(newPosition);
+          setNewPosition(newPosition);
           console.log("My current location: ", newPosition);
         },
         (error) => {
@@ -352,7 +437,7 @@ const AppMap = () => {
     window.location.href = "/Route";
   };
 
-  // 로딩 화면 시간 3초 
+  // 로딩 화면
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
