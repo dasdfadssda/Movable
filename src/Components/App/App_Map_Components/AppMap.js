@@ -342,14 +342,19 @@ const AppMap = () => {
   // 현재 위치 받아오기
   const handleCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
+            const positionData = {
+        key: 3745,
+        position: new navermaps.LatLng(37.5432527996, 127.0566145649),
+        title: "성수동 카페거리",
+      };
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const newPosition = new navermaps.LatLng(
             position.coords.latitude,
             position.coords.longitude
           );
-          setCurrentPosition(newPosition);
-          setNewPosition(newPosition);
+      setCurrentPosition(positionData.position);
+      setNewPosition(positionData.position);
           console.log("My current location: ", newPosition);
         },
         (error) => {
@@ -437,7 +442,7 @@ const AppMap = () => {
     window.location.href = "/Route";
   };
 
-  // 로딩 화면
+  // 로딩 화면 시간 3초 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -445,6 +450,12 @@ const AppMap = () => {
       setLoading(false);
     }, 3000);
   }, []);
+  useEffect(() => {
+    if (naverMap && currentPosition) {
+      naverMap.setCenter(currentPosition);
+    }
+  }, [naverMap, currentPosition]);
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -460,7 +471,6 @@ const AppMap = () => {
             backgroundColor: "#fff",
             alignItems: "center",
           }}
-          onInitialized={(map) => setNaverMap(map)}
           // onClick={handleMapClick}
         >
           <SearchContainer visible={isContainersVisible}>
