@@ -13,12 +13,7 @@ import AnswerComponent from "./AppRoute_Result";
 
 const AppRoute = () => {
   const [step, setStep] = useState(1);
-  const [selectedRoutes, setSelectedRoutes] = useState([
-    null,
-    null,
-    null,
-    null,
-  ]);
+  const [selectedRoutes, setSelectedRoutes] = useState([null, null, null, null]);
   const [answer, setAnswer] = useState(null);
 
   const handleRouteSelect = (route) => {
@@ -69,7 +64,7 @@ const AppRoute = () => {
             />
           )}
           {step === 5 && <AppLoading />}
-          {step === 6 && <AnswerComponent answer={answer} />}
+          {step === 6 && <AnswerComponent answer={answer} selectedRoutes={selectedRoutes} />}
         </PartDiv>
         {step < 5 && (
           <NextButton
@@ -78,9 +73,6 @@ const AppRoute = () => {
               setStep((prevStep) => prevStep + 1);
               console.log("현재 step: ", step);
               if (step === 4) {
-                // const response = await askOpenAI(selectedRoutes);
-                // console.log("입력 받은 대답 : ", response);
-                // setAnswer(response.answer);
                 setTimeout(() => {
                   setAnswer("값들어감");
                   console.log("ai 연동: ", step);
@@ -97,7 +89,6 @@ const AppRoute = () => {
 };
 
 export default AppRoute;
-
 
 const Div = styled.div`
   display: flex;

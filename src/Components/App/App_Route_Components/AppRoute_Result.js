@@ -12,22 +12,167 @@ import TwoDay2Img from "../../../Assets/Route/왕가수라청.png";
 import TwoDay3Img from "../../../Assets/Route/갤러리오스.png";
 import TwoDay4Img from "../../../Assets/Route/알펜시아 리조트.png";
 import TwoDay5Img from "../../../Assets/Route/까치둥지.png";
+import OneJeju1Img from "../../../Assets/Route/jejuairport.jpeg";
+import OneJejuDay2Img from "../../../Assets/Route/ollenoodle.webp";
+import OneJejuDay3Img from "../../../Assets/Route/Mongsangd.jpeg";
+import OneJejuDay4Img from "../../../Assets/Route/awolsea.png";
+import OneJejuDay5Img from "../../../Assets/Route/blackpig.jpeg";
+import OneJejuDay6Img from "../../../Assets/Route/숙소.png";
+import TwoJejuDay1Img from "../../../Assets/Route/jejumarket.jpeg";
+import TwoJejuDay2Img from "../../../Assets/Route/osulluck.jpeg";
+import TwoJejuDay3Img from "../../../Assets/Route/fishshop.jpeg";
+import TwoJejuDay4Img from "../../../Assets/Route/jejushop.jpeg";
 
-const AnswerComponent = ({ answer }) => {
+
+const AnswerComponent = ({ answer, selectedRoutes }) => {
   const [activeButton, setActiveButton] = useState("1");
   const [mainPlace, setMainPlace] = useState("강원도 태백시");
   const [duringTime, setDuringTime] = useState("2시간 30분");
   const daysToShow = 2;
 
   useEffect(() => {
-    if (activeButton === "2") {
-      setMainPlace("강원도 원주시");
-      setDuringTime("30분");
-    } else if (activeButton === "1") {
-      setMainPlace("강원도 태백시");
-      setDuringTime("2시간 30분");
-    }
+if(selectedRoutes[0] === 3){
+  if (activeButton === "1") {
+    setMainPlace("제주도 제주시");
+    setDuringTime("40분");
+  } else if (activeButton === "2") {
+    setMainPlace("제주 애월동");
+    setDuringTime("30분");
+  }
+}else {
+  if (activeButton === "2") {
+    setMainPlace("강원도 원주시");
+    setDuringTime("30분");
+  } else if (activeButton === "1") {
+    setMainPlace("강원도 태백시");
+    setDuringTime("2시간 30분");
+  }
+}
   }, [activeButton]);
+
+  const JejuPackage = [
+    {
+      id: 1,
+      day: 1,
+      Category: "공항",
+      Title: "제주 국제공항",
+      position: "공항",
+      Image: OneJeju1Img,
+      time: "0분",
+      difficulty: "하",
+      difficultynum: 1.00,
+    },
+    {
+      id: 2,
+      day: 1,
+      Category: "점심",
+      Title: "올래 국수 본점",
+      position: "한식",
+      Image: OneJejuDay2Img,
+      time: "10분",
+      difficulty: "하",
+      difficultynum: 2.00,
+    },
+    {
+      id: 3,
+      day: 1,
+      Category: "카페",
+      Title: "몽상 드 애월",
+      position: "카페",
+      Image: OneJejuDay3Img,
+      time: "15분",
+      difficulty: "중",
+      difficultynum: 3.00,
+    },
+    {
+      id: 4,
+      day: 1,
+      Category: "드라이브 코스",
+      Title: "애월 해안 도로",
+      position: "드라이브 코스",
+      Image: OneJejuDay4Img,
+      time: "25분",
+      difficulty: "하",
+      difficultynum: 1.00,
+    },
+    {
+      id: 5,
+      day: 1,
+      Category: "저녁",
+      Title: "흑돈가",
+      position: "고기",
+      Image: OneJejuDay5Img,
+      time: "18분",
+      difficulty: "상",
+      difficultynum: 3.77,
+    },
+    {
+      id: 6,
+      day: 1,
+      Category: "숙소",
+      Title: "한림리조트",
+      position: "숙소",
+      Image: OneJejuDay6Img,
+      time: "30분",
+      difficulty: "중",
+      difficultynum: 2.22,
+    },
+    {
+      id: 8,
+      day: 2,
+      Category: "점심",
+      Title: "서귀포 매일 올레 시장",
+      position: "한식",
+      Image: TwoJejuDay1Img,
+      time: "10분",
+      difficulty: "하",
+      difficultynum: 3.79,
+    },
+    {
+      id: 9,
+      day: 2,
+      Category: "관광 명소",
+      Title: "오설록 티 뮤지엄",
+      position: "박물관",
+      Image: TwoJejuDay2Img,
+      time: "1분",
+      difficulty: "중",
+      difficultynum: 4.66,
+    },
+    {
+      id: 10,
+      day: 2,
+      Category: "저녁",
+      Title: "제갈양 제주협재점",
+      position: "한식",
+      Image: TwoJejuDay3Img,
+      time: "23분",
+      difficulty: "중",
+      difficultynum: 2.32,
+    },
+    {
+      id: 12,
+      day: 2,
+      Category: "관광 명소",
+      Title: "선물고팡 공항점",
+      position: "쇼핑몰",
+      Image: TwoJejuDay4Img,
+      time: "50분",
+      difficulty: "중",
+      difficultynum: 3.4,
+    },
+    {
+      id: 3,
+      day: 2,
+      Category: "공항",
+      Title: "제주 국제공항",
+      position: "공항",
+      Image: OneJeju1Img,
+      time: "10분",
+      difficulty: "하",
+      difficultynum: 1.00,
+    },
+  ];
   
   const TravelPackage = [
     {
@@ -166,6 +311,8 @@ const AnswerComponent = ({ answer }) => {
     );
   }
 
+  const currentPackage = selectedRoutes[0] === 3 ? JejuPackage : TravelPackage;
+
   return (
     <ThemeProvider theme={theme}>
       <Div>
@@ -199,7 +346,7 @@ const AnswerComponent = ({ answer }) => {
           <ColumnDiv>
             <FlexDiv>
               <Body1 color={theme.colors.black_70} top={-5}>
-                자동차
+                {selectedRoutes[0] === 3 && activeButton == "1" ? "비행기" : "자동차" }
               </Body1>
               <Body1 color={theme.colors.black_30} top={-5}>
                 &nbsp;|&nbsp;
@@ -207,7 +354,7 @@ const AnswerComponent = ({ answer }) => {
               </Body1>
             </FlexDiv>
             <PackageDiv>
-              {TravelPackage.filter(
+              {currentPackage.filter(
                 (item) => item.day.toString() === activeButton
               ).map((item) => (
                 <PackageItem key={item.id}>
