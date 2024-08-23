@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import MessageList from './MessageList';
-import MessageInput from './MessageInput';
-import BackIcon from '../../../Assets/img/back_icon.png';
-import { sendQuestionToServer } from '../../../Api/ChatBotApi';
+import React, { useState, useCallback } from "react";
+import styled from "styled-components";
+import MessageList from "./MessageList";
+import MessageInput from "./MessageInput";
+import BackIcon from "../../../Assets/img/back_icon.png";
+import { sendQuestionToServer } from "../../../Api/ChatBotApi";
 
 // ChatWindow를 감싸는 컨테이너
 const ChatWindowContainer = styled.div`
@@ -22,7 +22,7 @@ const Header = styled.div`
   align-items: center;
   padding: 10px;
   background-color: white;
-  color: #5B5B5B;
+  color: #5b5b5b;
   border-bottom: 1px solid #ccc;
 `;
 
@@ -41,42 +41,54 @@ const BackIconImage = styled.img`
 
 const Title = styled.h1`
   font-size: 18px;
-  color: #5B5B5B;
+  color: #5b5b5b;
   margin: 0 auto;
   flex-grow: 1;
   text-align: center;
 `;
 
 const ChatWindow = () => {
-    const [messages, setMessages] = useState([]);  // messages와 setMessages 상태를 정의
-    
-    const sendMessage = async (text) => {
-        const newMessage = { sender: 'user', text };
-        setMessages([...messages, newMessage]);  // 사용자의 메시지를 먼저 추가
+  const [messages, setMessages] = useState([]);
 
-        // 챗봇의 응답 메시지를 추가
-        const botAnswer = await sendQuestionToServer(text);  // 서버에 질문을 보내고 응답을 기다림
-        const botResponse = { sender: 'bot', text: botAnswer };
-        setMessages((prevMessages) => [...prevMessages, botResponse]);
-    };
+  const sendMessage = useCallback(async (text) => {
+    // 사용자 메시지 추가
+    const userMessage = { sender: "user", text };
+    setMessages((prevMessages) => [...prevMessages, userMessage]);
 
+    try {
+      // 서버에 요청 보내기
+      const botAnswer = await sendQuestionToServer(text);
 
-    const handleBackClick = () => {
-        window.history.back();  // 뒤로가기 기능을 구현
-    };
+      // 봇 메시지 추가
+      const botMessage = { sender: "bot", text: botAnswer };
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
+    } catch (error) {
+      console.error("Error getting bot response:", error);
+      // 에러 메시지 추가
+      const errorMessage = {
+        sender: "bot",
+        text: "죄송합니다. 응답을 받아오는 데 문제가 발생했습니다.",
+      };
+      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+    }
+  }, []);
 
-    return (
-        <ChatWindowContainer>
-            <Header>
-                <BackButton onClick={handleBackClick}>
-                    <BackIconImage src={BackIcon} alt="뒤로가기" />
-                </BackButton>
-                <Title>무블챗봇</Title>
-            </Header>
-            <MessageList messages={messages} />
-            <MessageInput onSend={sendMessage} />
-        </ChatWindowContainer>
-    );
+  const handleBackClick = () => {
+    window.history.back();
+  };
+
+  return (
+    <ChatWindowContainer>
+      <Header>
+        <BackButton onClick={handleBackClick}>
+          <BackIconImage src={BackIcon} alt="뒤로가기" />
+        </BackButton>
+        <Title>무블챗봇</Title>
+      </Header>
+      <MessageList messages={messages} />
+      <MessageInput onSend={sendMessage} />
+    </ChatWindowContainer>
+  );
 };
 
 export default ChatWindow;
