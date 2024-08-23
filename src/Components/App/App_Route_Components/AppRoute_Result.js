@@ -346,7 +346,7 @@ if(selectedRoutes[0] === 3){
           <ColumnDiv>
             <FlexDiv>
               <Body1 color={theme.colors.black_70} top={-5}>
-                {selectedRoutes[0] === 3 && activeButton == "1" ? "비행기" : "자동차" }
+                {selectedRoutes[0] === 3 && activeButton === "1" ? "비행기" : "자동차" }
               </Body1>
               <Body1 color={theme.colors.black_30} top={-5}>
                 &nbsp;|&nbsp;

@@ -15,7 +15,6 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import currentLocation from "../../../Assets/img/currentPosition.svg";
 import ActivePicker from "../../../Assets/Map/Makers.png";
-import InactivePicker from "../../../Assets/img/_Picker=_불가능.png";
 import currentSpot from "../../../Assets/Map/currentLocation.png";
 import Search from "../../../Assets/Map/fe_search.png";
 import Restaurant from "../../../Assets/Map/restaurant.png";
@@ -29,9 +28,6 @@ import HotelActive from "../../../Assets/Map/hotel_active.png";
 import Toilet from "../../../Assets/Map/toilet.png";
 import ToiletActive from "../../../Assets/Map/toilet_active.png";
 import FindRoute from "../../../Assets/Map/FindRoute.png";
-import Recommendation from "../../../Assets/Map/recommendedCourse.png";
-import ChannelTalk from "../../../Assets/Map/talk.png";
-import ChannelInfo from "../../../Assets/Map/TalkInfoWindow.png";
 import AudioService from "../../../Assets/Map/audioGuide_service.png";
 import ElevatorService from "../../../Assets/Map/elevator_service.png";
 import GuideDogService from "../../../Assets/Map/guideDog_service.png";
@@ -53,6 +49,7 @@ import Review2 from "../../../Assets/Map/review2.png";
 import Review3 from "../../../Assets/Map/review3.png";
 import Review4 from "../../../Assets/Map/review4.png";
 import AppSpash from "../App_Splash_Components/AppSplash";
+import FloatingActionButton from "./AppFloatingActionButton";
 
 const SearchInput = styled.input`
   flex-grow: 1;
@@ -532,23 +529,7 @@ const AppMap = () => {
               </Chip>
             </ChipWrapper>
           </ChipContainer>
-          <ChannelWindow
-            style={{
-              bottom: isSliderVisible ? "284px" : "100px",
-              height: "45px",
-            }}
-            src={ChannelInfo}
-            alt="Channel Info"
-          />
-          <ChannelTalkBtn
-            style={{ bottom: isSliderVisible ? "244px" : "60px" }}
-            onClick={handleRecommendationClick}
-          />
-          <RecommendationButton
-            style={{ bottom: isSliderVisible ? "200px" : "16px" }}
-            onClick={handleRecommendationClick}
-          />
-
+          <FloatingActionButton/>
           <div
             style={{
               position: "absolute",
@@ -896,37 +877,4 @@ const ServiceIcon = styled.img`
   width: 50px;
   height: 50px;
   margin: 0 10px;
-`;
-const RecommendationButton = styled.button`
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-  width: 101px;
-  height: 36px;
-  cursor: pointer;
-  background: none;
-  background-image: url(${Recommendation});
-  background-size: cover;
-  border: none;
-  padding: 0;
-`;
-const ChannelTalkBtn = styled.button`
-  position: absolute;
-  bottom: 60px;
-  right: 16px;
-  width: 101px;
-  height: 36px;
-  cursor: pointer;
-  background: none;
-  background-image: url(${ChannelTalk});
-  background-size: cover;
-  border: none;
-  padding: 0;
-`;
-const ChannelWindow = styled.img`
-  position: absolute;
-  bottom: 100px;
-  right: 13px;
-  width: 143px;
-  height: 45px;
 `;
