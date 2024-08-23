@@ -1,17 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import InfoDialog from "./InfoDialog"; // 추가된 InfoDialog 컴포넌트
 
 const Dialog = ({ item, onClose }) => {
-  return (
-    <DialogOverlay onClick={onClose}>
-      <DialogContent onClick={(e) => e.stopPropagation()}>
-        <img src={item.Image} alt={item.Title} />
-        <h2>{item.Title}</h2>
-        <p>{item.Description}</p>
-        <CloseButton onClick={onClose}>닫기</CloseButton>
-      </DialogContent>
-    </DialogOverlay>
-  );
+    const [isInfoDialogOpen, setIsInfoDialogOpen] = useState(false);
+
+    const handleInfoClick = () => {
+        setIsInfoDialogOpen(true);
+    };
+
+    const handleCloseInfoDialog = () => {
+        setIsInfoDialogOpen(false);
+    };
+
+    return (
+        <DialogOverlay onClick={onClose}>
+            <DialogContainer onClick={(e) => e.stopPropagation()}>
+                <DialogContent>
+                    <Title>{item.Title}</Title>
+                    <Image src={item.Image} alt={item.Title} />
+                    <Description>{item.Description}</Description>
+
+                    <DetailsContainer>
+                        <DetailItem>
+                            <DetailLabel>
+                                방문 난이도
+                                <InfoIcon onClick={handleInfoClick}>?</InfoIcon>
+                            </DetailLabel>
+                            <DetailValue>중</DetailValue>
+                        </DetailItem>
+                        <DetailItem>
+                            <DetailLabel>평점</DetailLabel>
+                            <DetailValue>4.25</DetailValue>
+                        </DetailItem>
+                        <DetailItem>
+                            <DetailLabel>소요 시간</DetailLabel>
+                            <DetailValue>20분</DetailValue>
+                        </DetailItem>
+                    </DetailsContainer>
+
+                    {isInfoDialogOpen && (
+                        <InfoDialog 
+                            onClose={handleCloseInfoDialog} 
+                            icons={item.Icons}  // Icons 배열 전달
+                        />
+                    )}
+
+                    <Button>더 알아보기</Button>
+                </DialogContent>
+            </DialogContainer>
+        </DialogOverlay>
+    );
 };
 
 export default Dialog;
@@ -29,45 +68,87 @@ const DialogOverlay = styled.div`
   z-index: 1000;
 `;
 
-const DialogContent = styled.div`
+const DialogContainer = styled.div`
   background-color: #fff;
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
   border-radius: 16px 16px 0 0;
-  padding: 24px;
+  padding: 16px;
   box-shadow: 0px -2px 10px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-
-  img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-    margin-bottom: 16px;
-  }
-
-  h2 {
-    font-size: 1.5rem;
-    color: ${(props) => props.theme.colors.Primary_pink100};
-    margin-bottom: 16px;
-  }
-
-  p {
-    font-size: 1rem;
-    color: #5b5b5b;
-    line-height: 1.5;
-    margin-bottom: 16px;
-  }
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
 `;
 
-const CloseButton = styled.button`
-  background-color: ${(props) => props.theme.colors.Primary_pink100};
-  color: #fff;
+const DialogContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+`;
+
+const Title = styled.h2`
+  font-size: 1.5rem;
+  color: #ed685a;
+  margin-bottom: 16px;
+  text-align: center;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  object-fit: cover;
+  max-height: 200px;
+`;
+
+const Description = styled.p`
+  font-size: 1rem;
+  color: #5b5b5b;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 16px;
+`;
+
+const DetailsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 16px;
+`;
+
+const DetailItem = styled.div`
+  text-align: center;
+`;
+
+const DetailLabel = styled.div`
+  font-size: 0.875rem;
+  color: #5b5b5b;
+  position: relative;
+`;
+
+const DetailValue = styled.div`
+  font-size: 1.25rem;
+  color: #ed685a;
+  margin-top: 5px;
+`;
+
+const InfoIcon = styled.span`
+  font-size: 0.75rem;
+  color: #ed685a;
+  cursor: pointer;
+  margin-left: 5px;
+`;
+
+const Button = styled.button`
+  width: 100%;
+  padding: 12px;
+  background-color: #ffe3e3;
+  color: #ed685a;
   border: none;
   border-radius: 8px;
-  padding: 8px 16px;
+  font-size: 1rem;
   cursor: pointer;
-  margin-top: 16px;
-  font-size: 16px;
-  font-weight: bold;
-  align-self: flex-end;
+  margin-top: auto;
 `;

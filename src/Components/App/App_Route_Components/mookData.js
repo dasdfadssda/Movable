@@ -31,6 +31,8 @@ export const JejuPackage = [
       time: "0분",
       difficulty: "하",
       difficultynum: 1.00,
+      Description : "설명이다.설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다",
+      Icons: ["휠체어 이용", "장애인 화장실", "보조견 동반", "오디오 가이드"]
     },
     {
       id: 2,
@@ -42,6 +44,8 @@ export const JejuPackage = [
       time: "10분",
       difficulty: "하",
       difficultynum: 2.00,
+      Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
+       Description : "설명이다.설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다"
     },
     {
       id: 3,
@@ -53,6 +57,8 @@ export const JejuPackage = [
       time: "15분",
       difficulty: "중",
       difficultynum: 3.00,
+      Icons: ["휠체어 이용", "접근로 낮음", "보조견 동반", "오디오 가이드"],
+      Description : "설명이다.설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다"
     },
     {
       id: 4,
@@ -64,6 +70,8 @@ export const JejuPackage = [
       time: "25분",
       difficulty: "하",
       difficultynum: 1.00,
+      Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
     },
     {
       id: 5,
@@ -75,6 +83,8 @@ export const JejuPackage = [
       time: "18분",
       difficulty: "상",
       difficultynum: 3.77,
+      Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
     },
     {
       id: 6,
@@ -86,6 +96,9 @@ export const JejuPackage = [
       time: "30분",
       difficulty: "중",
       difficultynum: 2.22,
+      Icons: ["휠체어 이용", "접근로 낮음", "주차시설", "오디오 가이드"],
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 8,
@@ -97,6 +110,9 @@ export const JejuPackage = [
       time: "10분",
       difficulty: "하",
       difficultynum: 3.79,
+      Icons: ["휠체어 이용", "장애인 화장실", "접근로 낮음", "오디오 가이드"],
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 9,
@@ -108,6 +124,9 @@ export const JejuPackage = [
       time: "1분",
       difficulty: "중",
       difficultynum: 4.66,
+      Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드", "접근로 낮음"],
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 10,
@@ -119,6 +138,9 @@ export const JejuPackage = [
       time: "23분",
       difficulty: "중",
       difficultynum: 2.32,
+      Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 12,
@@ -130,6 +152,9 @@ export const JejuPackage = [
       time: "50분",
       difficulty: "중",
       difficultynum: 3.4,
+      Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 3,
@@ -141,6 +166,9 @@ export const JejuPackage = [
       time: "10분",
       difficulty: "하",
       difficultynum: 1.00,
+      Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
   ];
   
@@ -155,6 +183,8 @@ export const JejuPackage = [
       time: "20분",
       difficulty: "중",
       difficultynum: 4.25,
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 2,
@@ -166,6 +196,8 @@ export const JejuPackage = [
       time: "5분",
       difficulty: "하",
       difficultynum: 3.93,
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 3,
@@ -177,6 +209,8 @@ export const JejuPackage = [
       time: "1분",
       difficulty: "중",
       difficultynum: 4.43,
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 4,
@@ -188,6 +222,8 @@ export const JejuPackage = [
       time: "18분",
       difficulty: "상",
       difficultynum: 4.03,
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 5,
@@ -199,6 +235,8 @@ export const JejuPackage = [
       time: "18분",
       difficulty: "상",
       difficultynum: 4.77,
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 6,
@@ -210,6 +248,8 @@ export const JejuPackage = [
       time: "18분",
       difficulty: "중",
       difficultynum: 3.22,
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 7,
@@ -221,6 +261,8 @@ export const JejuPackage = [
       time: "15분",
       difficulty: "하",
       difficultynum: 4.8,
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 8,
@@ -232,6 +274,8 @@ export const JejuPackage = [
       time: "10분",
       difficulty: "하",
       difficultynum: 3.79,
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 9,
@@ -243,6 +287,8 @@ export const JejuPackage = [
       time: "1분",
       difficulty: "중",
       difficultynum: 4.66,
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 10,
@@ -254,6 +300,8 @@ export const JejuPackage = [
       time: "18분",
       difficulty: "상",
       difficultynum: 3.59,
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
     {
       id: 11,
@@ -265,5 +313,7 @@ export const JejuPackage = [
       time: "23분",
       difficulty: "중",
       difficultynum: 4.32,
+      Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+
     },
   ];
