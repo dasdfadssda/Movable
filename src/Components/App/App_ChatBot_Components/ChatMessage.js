@@ -43,7 +43,7 @@ const MessageContentContainer = styled.div`
 const MessageBubble = styled.div`
   padding: 10px;
   border-radius: 10px;
-  max-width: 70%;
+  max-width: 100%;
   background-color: ${props => props.isUser ? '#ED685A' : '#f1f1f1'};
   color: ${props => props.isUser ? 'white' : 'black'};
 `;
