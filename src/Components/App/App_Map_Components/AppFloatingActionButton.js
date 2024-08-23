@@ -21,8 +21,8 @@ const ButtonBase = styled.button`
   background-color: white; 
   border: none;
   border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  width: 48px;
+  height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -30,21 +30,14 @@ const ButtonBase = styled.button`
   padding: 0; /* 내부 패딩 제거 */
 `;
 
-// 닫기 버튼 스타일링
-const CloseButton = styled(ButtonBase)`
-  background-color: white;
-display: ${props => (props.visible ? 'flex' : 'none')}; 
-`;
-
 const IconButton = styled(ButtonBase)`
-  background-color: transparent;
     display: ${props => (props.visible ? 'flex' : 'none')}; 
 `;
 
 // 아이콘 이미지 스타일링
 const CloseIconImage = styled.img`
-  width: 28px; // 이미지 크기 고정
-  height: 28px; // 이미지 크기 고정
+  width: 20px; // 이미지 크기 고정
+  height: 20px; // 이미지 크기 고정
   opacity: ${props => (props.loaded ? 1 : 0)};
   transition: opacity 0.3s ease-in;
 `;
@@ -66,56 +59,56 @@ const OptionsMenu = styled.div`
 `;
 
 const FloatingActionButton = () => {
-    const [menuVisible, setMenuVisible] = useState(false);
-    const [imageLoaded, setImageLoaded] = useState(false);
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
-    const toggleMenu = () => {
-        setMenuVisible(!menuVisible);
-    };
+  const toggleMenu = () => {
+    setMenuVisible(!menuVisible);
+  };
 
-    const handleImageLoaded = () => {
-        setImageLoaded(true);
-    };
+  const handleImageLoaded = () => {
+    setImageLoaded(true);
+  };
 
-    const handleNavigation = (url) => {
-        window.location.href = url;
-    };
+  const handleNavigation = (url) => {
+    window.location.href = url;
+  };
 
-    return (
-        <Container>
-            <IconButton onClick={toggleMenu} visible={!menuVisible}>
-                <IconImage
-                    src={require('../../../Assets/img/bot_icon.png')}
-                    alt="main icon"
-                    loaded={imageLoaded}
-                    onLoad={handleImageLoaded}
-                />
-            </IconButton>
-            <CloseButton onClick={toggleMenu} visible={menuVisible}>
-                <CloseIconImage
-                    src={CloseIcon}
-                    alt="Close icon"
-                    loaded={imageLoaded}
-                    onLoad={handleImageLoaded}
-                />
-            </CloseButton>
-            <OptionsMenu visible={menuVisible}>
-                <ChannelWindow
-                    src={ChannelInfo}
-                    alt="Channel Info"
-                />
-                <ChannelTalkBtn
-                    onClick={() => handleNavigation('https://www.naver.com')}
-                />
-                <ChannelChatBot
-                    onClick={() => handleNavigation('/chatBot')}
-                />
-                <RecommendationButton
-                    onClick={() => handleNavigation('/Route')}
-                />
-            </OptionsMenu>
-        </Container>
-    );
+  return (
+    <Container>
+      <IconButton onClick={toggleMenu} visible={!menuVisible}>
+        <IconImage
+          src={require('../../../Assets/img/bot_icon.png')}
+          alt="main icon"
+          loaded={imageLoaded}
+          onLoad={handleImageLoaded}
+        />
+      </IconButton>
+      <IconButton onClick={toggleMenu} visible={menuVisible}>
+        <CloseIconImage
+          src={CloseIcon}
+          alt="Close icon"
+          loaded={imageLoaded}
+          onLoad={handleImageLoaded}
+        />
+      </IconButton>
+      <OptionsMenu visible={menuVisible}>
+        <ChannelWindow
+          src={ChannelInfo}
+          alt="Channel Info"
+        />
+        <ChannelTalkBtn
+          onClick={() => handleNavigation('https://www.naver.com')}
+        />
+        <ChannelChatBot
+          onClick={() => handleNavigation('/chatBot')}
+        />
+        <RecommendationButton
+          onClick={() => handleNavigation('/Route')}
+        />
+      </OptionsMenu>
+    </Container>
+  );
 };
 
 export default FloatingActionButton;
