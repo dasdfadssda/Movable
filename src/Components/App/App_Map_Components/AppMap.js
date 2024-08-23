@@ -490,14 +490,14 @@ const AppMap = () => {
                       : Restaurant
                   }
                   alt="Restaurant"
-                  style={{ width: "77px", height: "33px" }}
+                  style={{ width: "77px", height: "42px" }}
                 />
               </Chip>
               <Chip onClick={() => handleChipClick("cafe")}>
                 <img
                   src={activeCategories.includes("cafe") ? CafeActive : Cafe}
                   alt="Cafe"
-                  style={{ width: "77px", height: "33px" }}
+                  style={{ width: "77px", height: "42px" }}
                 />
               </Chip>
               <Chip onClick={() => handleChipClick("parking")}>
@@ -508,14 +508,14 @@ const AppMap = () => {
                       : Parking
                   }
                   alt="Parking"
-                  style={{ width: "77px", height: "33px" }}
+                  style={{ width: "77px", height: "42px" }}
                 />
               </Chip>
               <Chip onClick={() => handleChipClick("hotel")}>
                 <img
                   src={activeCategories.includes("hotel") ? HotelActive : Hotel}
                   alt="Hotel"
-                  style={{ width: "77px", height: "33px" }}
+                  style={{ width: "77px", height: "42px" }}
                 />
               </Chip>
               <Chip onClick={() => handleChipClick("toilet")}>
@@ -523,7 +523,7 @@ const AppMap = () => {
                   src={
                     activeCategories.includes("toilet") ? ToiletActive : Toilet
                   }
-                  style={{ width: "77px", height: "33px" }}
+                  style={{ width: "77px", height: "42px" }}
                   alt="Toilet"
                 />
               </Chip>
@@ -833,7 +833,7 @@ const ChipContainer = styled.div`
   position: absolute;
   align-items: center;
   width: calc(100% - 32px);
-  top: 104px;
+  top: 75px;
   margin-left: 16px;
   overflow-x: auto;
   overflow-y: hidden;
@@ -852,7 +852,7 @@ const SearchContainer = styled.div`
   left: 0;
   right: 0;
   justify-content: center;
-  padding: 44px 16px 12px 16px;
+  padding: 20px 16px 12px 16px;
   display: flex;
   z-index: 1000;
 `;
