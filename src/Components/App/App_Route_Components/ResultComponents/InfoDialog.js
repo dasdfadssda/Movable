@@ -35,7 +35,6 @@ const DialogOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center; /* 화면 중앙에 위치 */
@@ -47,7 +46,6 @@ const DialogContent = styled.div`
   max-width: 400px;
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 크기를 조정하여 더 중앙에 부각 */
   overflow-y: auto;
 `;
 
