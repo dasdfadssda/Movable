@@ -4,6 +4,7 @@ import Recommendation from "../../../Assets/Map/recommendedCourse.png";
 import ChannelTalk from "../../../Assets/Map/talk.png";
 import ChannelInfo from "../../../Assets/Map/TalkInfoWindow.png";
 import ChannelBot from "../../../Assets/Map/chatBot_icon.png";
+import CloseIcon from "../../../Assets/Map/close_icon.png"; // Close 아이콘 이미지 경로
 
 // 컨테이너 스타일링
 const Container = styled.div`
@@ -15,30 +16,37 @@ const Container = styled.div`
   justify-content: center;
 `;
 
-// 아이콘 버튼 스타일링
-const IconButton = styled.button`
-  background-color: transparent; 
-  border: none;
-  border-radius: 50%;
-  width: 60px; 
-  height: 60px;
-  display: ${props => (props.visible ? 'flex' : 'none')}; 
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-
-// 닫기 버튼 스타일링 (IconButton과 동일한 위치에 대체됨)
-const CloseButton = styled.button`
+// 공통 버튼 스타일링
+const ButtonBase = styled.button`
   background-color: white; 
   border: none;
   border-radius: 50%;
   width: 60px;
   height: 60px;
-  display: ${props => (props.visible ? 'flex' : 'none')}; 
+  display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  padding: 0; /* 내부 패딩 제거 */
+`;
+
+// 닫기 버튼 스타일링
+const CloseButton = styled(ButtonBase)`
+  background-color: white;
+display: ${props => (props.visible ? 'flex' : 'none')}; 
+`;
+
+const IconButton = styled(ButtonBase)`
+  background-color: transparent;
+    display: ${props => (props.visible ? 'flex' : 'none')}; 
+`;
+
+// 아이콘 이미지 스타일링
+const CloseIconImage = styled.img`
+  width: 28px; // 이미지 크기 고정
+  height: 28px; // 이미지 크기 고정
+  opacity: ${props => (props.loaded ? 1 : 0)};
+  transition: opacity 0.3s ease-in;
 `;
 
 const IconImage = styled.img`
@@ -69,6 +77,10 @@ const FloatingActionButton = () => {
         setImageLoaded(true);
     };
 
+    const handleNavigation = (url) => {
+        window.location.href = url;
+    };
+
     return (
         <Container>
             <IconButton onClick={toggleMenu} visible={!menuVisible}>
@@ -80,7 +92,12 @@ const FloatingActionButton = () => {
                 />
             </IconButton>
             <CloseButton onClick={toggleMenu} visible={menuVisible}>
-                X
+                <CloseIconImage
+                    src={CloseIcon}
+                    alt="Close icon"
+                    loaded={imageLoaded}
+                    onLoad={handleImageLoaded}
+                />
             </CloseButton>
             <OptionsMenu visible={menuVisible}>
                 <ChannelWindow
@@ -88,12 +105,13 @@ const FloatingActionButton = () => {
                     alt="Channel Info"
                 />
                 <ChannelTalkBtn
-                    onClick={toggleMenu}
+                    onClick={() => handleNavigation('https://www.naver.com')}
                 />
-                <ChannelChatBot />
-
+                <ChannelChatBot
+                    onClick={() => handleNavigation('/chatBot')}
+                />
                 <RecommendationButton
-                    onClick={toggleMenu}
+                    onClick={() => handleNavigation('/Route')}
                 />
             </OptionsMenu>
         </Container>
@@ -114,6 +132,7 @@ const RecommendationButton = styled.button`
   border: none;
   padding: 0;
 `;
+
 const ChannelTalkBtn = styled.button`
   margin-top: 6px;
   width: 101px;
@@ -137,6 +156,7 @@ const ChannelChatBot = styled.button`
   border: none;
   padding: 0;
 `;
+
 const ChannelWindow = styled.img`
   width: 143px;
   height: 45px;
