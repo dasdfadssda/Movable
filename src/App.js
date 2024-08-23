@@ -7,6 +7,7 @@ import AppLoginPage from "./Components/App/App_Login_Components/AppLoigin";
 import RoutePage from "./Page/RoutePage";
 import AppOpenAI from "./Components/App/App_AI_Components/OpenAI.js";
 import AppFindRoute from "./Components/App/App_Map_Components/AppFindRoute.js";
+import ChatWindow from "./Components/App/App_ChatBot_Components/ChatWindow.js";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/Login" element={<AppLoginPage />} />
           <Route path="/AppOpenAI" element={<AppOpenAI />} />
           <Route path="/findRoute" element={<AppFindRoute />} />
+          <Route path="/chatBot" element={<ChatWindow />} />
         </Routes>
       </Router>
     </ThemeProvider>

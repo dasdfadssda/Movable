@@ -6,13 +6,13 @@ import { getStorage } from "firebase/storage";
 
 
 const firebaseConfig = {
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGIN_ID,
-  appId: process.env.REACT_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+  apiKey: "AIzaSyD9NNbihBlO0fVluBNDTJaumfZTxR43mLU",
+  authDomain: "movble.firebaseapp.com",
+  projectId: "movble",
+  storageBucket: "movble.appspot.com",
+  messagingSenderId: "70426787900",
+  appId: "1:70426787900:web:49c511ad76c9ddaaf90339",
+  measurementId: "G-KPZJTJLLFG"
 };
 
 const app = initializeApp(firebaseConfig);
