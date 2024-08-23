@@ -39,57 +39,6 @@ app.get("/searchLocal", async (req, res) => {
   }
 });
 
-// const openai = new OpenAI({
-//   apiKey: process.env.REACT_APP_OPEN_AI_KEY,
-// });
-
-// 대기 시간을 적용하는 함수
-const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-// // OpenAI API 호출을 처리하는 라우트
-// app.post("/ask", async (req, res) => {
-//   const { question } = req.body;
-
-//   try {
-//     let chatCompletion;
-//     let retryCount = 0;
-
-//     // Retry-After 헤더가 오지 않을 때까지 반복
-//     do {
-//       if (retryCount > 0) {
-//         // 대기 시간 추가 (초 단위)
-//         await sleep(3);
-//       }
-
-//       chatCompletion = await openai.chat.completions.create({
-//         model: "gpt-3.5-turbo",
-//         messages: [
-//           { role: "system", content: "You are a helpful assistant." },
-//           { role: "user", content: question },
-//         ],
-//       });
-
-//       // Retry-After 헤더 확인
-//       const retryAfter =
-//         chatCompletion.headers && chatCompletion.headers["retry-after"];
-//       if (retryAfter) {
-//         // 대기 시간 추가 (초 단위)
-//         await sleep(retryAfter * 1000);
-//       }
-
-//       retryCount++;
-//     } while (chatCompletion.headers && chatCompletion.headers["retry-after"]);
-
-//     // chatCompletion.data 확인
-//     const choices = chatCompletion.choices;
-//     const answer = choices?.[0]?.message?.content;
-
-//     res.json({ answer, chatCompletion });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: "Internal Server Error" });
-//   }
-// });
 
 // Naver 지도 API 거리 계산 호출을 처리하는 라우트
 app.post("/calculateDistance", async (req, res) => {

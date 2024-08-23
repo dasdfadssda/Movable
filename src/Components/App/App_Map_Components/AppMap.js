@@ -89,6 +89,48 @@ const AppMap = () => {
   const [markers, setMarkers] = useState([]);
   const [infoobstacle, setInfoobstacle] = useState(null);
 
+  // 현재 위치 받아오기
+  const handleCurrentLocation = useCallback(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const newPosition = new navermaps.LatLng(
+            position.coords.latitude,
+            position.coords.longitude
+          );
+          setCurrentPosition(newPosition);
+          setNewPosition(newPosition);
+          console.log("My current location: ", newPosition);
+        },
+        (error) => {
+          console.error("Error getting current position:", error);
+          window.alert("현재 위치를 찾을 수 없습니다.");
+        }
+      );
+    } else {
+      window.alert("브라우저가 위치 정보를 지원하지 않습니다.");
+    }
+  }, [navermaps]);
+
+  const handleToCurrentPosition = () => {
+    if (naverMap) {
+      naverMap.panTo(newPosition);
+    } else {
+      console.log("NaverMap is not initialized yet.");
+    }
+  };
+
+  useEffect(() => {
+    // 페이지 로딩 시에 현재 위치 받아오기
+    handleCurrentLocation();
+  }, [handleCurrentLocation]);
+
+  useEffect(() => {
+    if (naverMap && currentPosition) {
+      naverMap.setCenter(currentPosition);
+    }
+  }, [naverMap, currentPosition]);
+
   const handleZoomChanged = useCallback((zoom) => {
     console.log(`zoom: ${zoom}`);
   }, []);
@@ -150,7 +192,7 @@ const AppMap = () => {
   const loadServiceData = async () => {
     try {
       const response = await axios.get(
-        "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=10000&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D"
+        "https://apis.data.go.kr/B551011/KorWithService1/areaBasedSyncList1?numOfRows=1000&MobileOS=ETC&MobileApp=asdf&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D"
       );
       const data = response.data;
       const services = data.map((service) => ({
@@ -171,87 +213,7 @@ const AppMap = () => {
     setIsContainersVisible((prevVisible) => !prevVisible);
   };
 
-  // const handleCategoryToggle = async (category) => {
-  //   setActiveCategories((prevActive) => {
-  //     if (prevActive.includes(category)) {
-  //       return [];
-  //     } else {
-  //       return [category];
-  //     }
-  //   });
 
-  //   try {
-  //     let apiUrl = "";
-  //     let markerIcon = ActivePicker;
-
-  //     switch (category) {
-  //       case "restaurant":
-  //         apiUrl =
-  //           "https://apis.data.go.kr/B551011/KorWithService1/categoryCode1?MobileOS=ETC&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
-  //         markerIcon =
-  //           category.restaurant !== "" ? ActivePicker : InactivePicker;
-
-  //         try {
-  //           const response = await axios.get(apiUrl);
-  //           const data = response.data;
-  //           const filteredRestaurantData = filteredByRestaurant(data);
-  //           console.log(filteredRestaurantData);
-  //         } catch (error) {
-  //           console.error("Error fetching data from the API:", error);
-  //         }
-  //         break;
-  //       case "hotel":
-  //         apiUrl =
-  //           "https://apis.data.go.kr/B551011/KorWithService1/categoryCode1?MobileOS=ETC&MobileApp=asdf&contentTypeId=32&_type=json&serviceKey=jY6dYXyUO1l9FcTho0NZvdOzVGZDgBV3%2BiJXkviw%2BB8J1yRS%2BfNP%2FH7gAcUyJ4PbM8JG0Mf3YtXmgKfUg3AqdA%3D%3D";
-  //         markerIcon = category.hotel !== "" ? ActivePicker : InactivePicker;
-
-  //         try {
-  //           const response = await axios.get(apiUrl);
-  //           const data = response.data;
-
-  //           // Check if data is an array before applying filter
-  //           const filteredHotelData = Array.isArray(data)
-  //             ? filteredByHotel(data)
-  //             : [];
-  //           console.log(filteredHotelData);
-  //         } catch (error) {
-  //           console.error("Error fetching hotel data from the API:", error);
-  //         }
-  //         break;
-
-  //       default:
-  //         break;
-  //     }
-
-  //     if (apiUrl) {
-  //       const response = await axios.get(apiUrl);
-  //       const data = response.data.response.body.items.item;
-
-  //       const newMarkers = data
-  //         .filter((item) => activeCategories.includes(item.category))
-  //         .map((item, index) => ({
-  //           key: index,
-  //           position: new navermaps.LatLng(item.mapy, item.mapx),
-  //           title: item.title,
-  //           address: item.addr1,
-  //           contentid: item.contentid,
-  //           contentTypeId: item.contenttypeid,
-  //           icon: {
-  //             url: markerIcon,
-  //           },
-  //         }));
-
-  //       setMarkers(newMarkers);
-  //     }
-  //   } catch (error) {
-  //     console.error(`Error fetching ${category} data from the API`, error);
-  //   }
-  // };
-
-  const handleSliderClose = () => {
-    setSliderVisible(false);
-    setIsSliderVisible(false);
-  };
   const handleSliderDragStart = () => {
     setSliderPosition("visible");
   };
@@ -259,10 +221,7 @@ const AppMap = () => {
   const handleSliderDragEnd = () => {
     setSliderPosition("bottom");
   };
-  const handleMapClick = () => {
-    setSliderVisible(false);
-    setIsSliderVisible(false);
-  };
+
   const handleMarkerClick = async (marker) => {
     setSelectedMarkerInfo(marker);
     setSliderVisible(true);
@@ -305,72 +264,8 @@ const AppMap = () => {
       addService("WheelChairService", wheelchair ? WheelChairService : null);
 
       setServiceData(services);
-
-      // .then((response) => {
-      //   console.log(
-      //     "무장애 관련 정보 ",
-      //     contentid,
-      //     "데이터 :",
-      //     response.data
-      //   );
-      //   setIntroData(response.data);
-      // })
-      // .catch((error) => {
-      //   console.error("API 호출 중 오류 발생: ", error);
-      // });
-      //   axios
-      //     .get(ServiceInfo)
-      //     .then((response) => {
-      //       console.log(
-      //         "서비스 소개 데이터 ",
-      //         contentid,
-      //         "데이터 :",
-      //         response.data
-      //       );
-      //       setIntroData(response.data);
-      //     })
-      //     .catch((error) => {
-      //       console.error("API 호출 중 오류 발생: ", error);
-      //     });
     } catch (error) {
       console.error("무장애 여행 정보를 불러오는 중 오류 발생:", error);
-    }
-  };
-  // 현재 위치 받아오기
-  const handleCurrentLocation = useCallback(() => {
-    if (navigator.geolocation) {
-            const positionData = {
-        key: 3745,
-        position: new navermaps.LatLng(37.5432527996, 127.0566145649),
-        title: "성수동 카페거리",
-      };
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const newPosition = new navermaps.LatLng(
-            position.coords.latitude,
-            position.coords.longitude
-          );
-      setCurrentPosition(positionData.position);
-      setNewPosition(positionData.position);
-          console.log("My current location: ", newPosition);
-        },
-        (error) => {
-          console.error("Error getting current position:", error);
-          window.alert("현재 위치를 찾을 수 없습니다.");
-        }
-      );
-    } else {
-      window.alert("브라우저가 위치 정보를 지원하지 않습니다.");
-    }
-  }, [navermaps, setCurrentPosition]);
-
-  const handleToCurrentPosition = () => {
-    console.log("Trying to pan to current position", newPosition);
-
-    if (naverMap) {
-      naverMap.panTo(newPosition);
-    } else {
-      console.log("NaverMap is not initialized yet.");
     }
   };
 
@@ -452,7 +347,7 @@ const AppMap = () => {
       naverMap.setCenter(currentPosition);
     }
   }, [naverMap, currentPosition]);
-  
+
 
   return (
     <ThemeProvider theme={theme}>
@@ -468,7 +363,7 @@ const AppMap = () => {
             backgroundColor: "#fff",
             alignItems: "center",
           }}
-          // onClick={handleMapClick}
+        // onClick={handleMapClick}
         >
           <SearchContainer visible={isContainersVisible}>
             <SearchInput
@@ -529,7 +424,7 @@ const AppMap = () => {
               </Chip>
             </ChipWrapper>
           </ChipContainer>
-          <FloatingActionButton/>
+          <FloatingActionButton />
           <div
             style={{
               position: "absolute",
@@ -661,14 +556,14 @@ const AppMap = () => {
                       />
                     ))} */}
                     <ServiceIconsContainer>
-                      <ServiceIcon src={ParkingService} alt="ParkingService" style={{height : '57px', width : "55px"}} />
+                      <ServiceIcon src={ParkingService} alt="ParkingService" style={{ height: '57px', width: "55px" }} />
                       {/* <ServiceIcon src={GuideDogService} alt="HelpDogService" /> */}
-                      <ServiceIcon src={ToiletService} alt="ToiletService" style={{height : '57px', width : "55px"}} />
-                      <ServiceIcon src={AudioService} alt="AudioService" style={{height : '57px', width : "55px"}} />
+                      <ServiceIcon src={ToiletService} alt="ToiletService" style={{ height: '57px', width: "55px" }} />
+                      <ServiceIcon src={AudioService} alt="AudioService" style={{ height: '57px', width: "55px" }} />
                       <ServiceIcon
                         src={TransportService}
                         alt="TransportService"
-                        style={{height : '57px', width : "55px"}}
+                        style={{ height: '57px', width: "55px" }}
                       />
                     </ServiceIconsContainer>
                   </div>
