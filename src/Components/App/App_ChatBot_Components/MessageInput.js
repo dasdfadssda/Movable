@@ -74,6 +74,7 @@ const MessageInput = ({ onSend }) => {
   const [text, setText] = useState(""); // 입력된 텍스트를 관리
   const [isListening, setIsListening] = useState(false); // 음성 인식 상태를 관리
   const [error, setError] = useState(""); // 오류 메시지를 관리
+  const [lastVoiceText, setLastVoiceText] = useState(""); // 음성 인식으로 입력된 마지막 텍스트를 저장
 
   // useRef를 사용하여 음성 인식 객체와 타임아웃을 관리
   const recognitionRef = useRef(null);
@@ -127,6 +128,11 @@ const MessageInput = ({ onSend }) => {
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current);
         }
+        // 음성 인식이 끝났을 때 자동 전송
+        if (text.trim() && text !== lastVoiceText) {
+          handleSend();
+          setLastVoiceText(text);
+        }
       };
 
       // 음성 인식 결과 처리
@@ -161,14 +167,7 @@ const MessageInput = ({ onSend }) => {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [resetTimeout]);
-
-  // 음성 인식 종료 시 자동 전송
-  useEffect(() => {
-    if (isListening === false && text.trim()) {
-      handleSend();
-    }
-  }, [isListening, text, handleSend]);
+  }, [resetTimeout, handleSend, text, lastVoiceText]);
 
   // 음성 인식 토글 함수
   const toggleListening = useCallback(() => {
