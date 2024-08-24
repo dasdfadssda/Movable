@@ -47,7 +47,7 @@ const PackageItem = ({ item, onClick }) => {
                     <FlexDiv flex={"center"}>
                         <TravelTime>
                             <span style={{ color: '#5B5B5B' }}>예상금액</span> <span style={{ color: '#E3E3E3' }}>&nbsp;|&nbsp;</span>
-                            <span style={{ color: '#A5A5A5' }}>{item.time}</span>
+                            <span style={{ color: '#A5A5A5' }}>{item.price.toLocaleString()}원</span>
                         </TravelTime>
                     </FlexDiv>
                 </PackageInfo>
