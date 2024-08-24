@@ -385,14 +385,14 @@ const AppMap = () => {
                       : Restaurant
                   }
                   alt="Restaurant"
-                  style={{ width: "77px", height: "42px" }}
+                  style={{ width: "77px", height: "36px" }}
                 />
               </Chip>
               <Chip onClick={() => handleChipClick("cafe")}>
                 <img
                   src={activeCategories.includes("cafe") ? CafeActive : Cafe}
                   alt="Cafe"
-                  style={{ width: "77px", height: "42px" }}
+                  style={{ width: "77px", height: "36px" }}
                 />
               </Chip>
               <Chip onClick={() => handleChipClick("parking")}>
@@ -403,14 +403,14 @@ const AppMap = () => {
                       : Parking
                   }
                   alt="Parking"
-                  style={{ width: "77px", height: "42px" }}
+                  style={{ width: "77px", height: "36px" }}
                 />
               </Chip>
               <Chip onClick={() => handleChipClick("hotel")}>
                 <img
                   src={activeCategories.includes("hotel") ? HotelActive : Hotel}
                   alt="Hotel"
-                  style={{ width: "77px", height: "42px" }}
+                  style={{ width: "77px", height: "36px" }}
                 />
               </Chip>
               <Chip onClick={() => handleChipClick("toilet")}>
@@ -418,7 +418,7 @@ const AppMap = () => {
                   src={
                     activeCategories.includes("toilet") ? ToiletActive : Toilet
                   }
-                  style={{ width: "77px", height: "42px" }}
+                  style={{ width: "77px", height: "36px" }}
                   alt="Toilet"
                 />
               </Chip>
