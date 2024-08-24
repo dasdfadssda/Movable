@@ -70,6 +70,7 @@ const ChatMessage = ({ message }) => {
     if ("speechSynthesis" in window && !isUser) {
       const speech = new SpeechSynthesisUtterance(message.text);
       speech.lang = "ko-KR";
+      speech.rate = 1.4;
       speech.onend = () => setIsSpeaking(false);
       speech.onerror = () => setIsSpeaking(false);
       speechRef.current = speech;
