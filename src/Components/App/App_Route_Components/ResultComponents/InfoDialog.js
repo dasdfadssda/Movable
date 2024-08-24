@@ -33,7 +33,7 @@ export default InfoDialog;
 
 const DialogOverlay = styled.div`
   position: fixed;
-  top: 3%;
+  top: -5%;
   left: 19%;
   right: 0;
   bottom: 0;
@@ -48,6 +48,7 @@ const DialogContent = styled.div`
   max-width: 280px;
   border-radius: 16px;
   padding: 24px;
+  padding-top : 0px;
   overflow-y: auto;
 `;
 
