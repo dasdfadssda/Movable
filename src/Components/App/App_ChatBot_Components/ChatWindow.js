@@ -76,7 +76,12 @@ const LoadingBar = styled.div`
 `;
 
 const ChatWindow = () => {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([
+    {
+      sender: "bot",
+      text: "안녕녕하세요! 저는 무블의 AI 도우미입니다!\n장애인 여행 상품, 정부 지원 프로그램 등\n\n궁금하신 점에 대해서 질문해주시면\n제가 구체적으로 답변 드리겠습니다!",
+    },
+  ]);
   const [isLoading, setIsLoading] = useState(false);
 
   const sendMessage = useCallback(async (text) => {
