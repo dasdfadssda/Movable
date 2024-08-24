@@ -70,28 +70,21 @@ const ErrorMessage = styled.div`
 `;
 
 const MessageInput = ({ onSend }) => {
-  // 상태 관리
-  const [text, setText] = useState(""); // 입력된 텍스트를 관리
-  const [isListening, setIsListening] = useState(false); // 음성 인식 상태를 관리
-  const [error, setError] = useState(""); // 오류 메시지를 관리
-  const [lastVoiceText, setLastVoiceText] = useState(""); // 음성 인식으로 입력된 마지막 텍스트를 저장
-
-  // useRef를 사용하여 음성 인식 객체와 타임아웃을 관리
+  const [text, setText] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [error, setError] = useState("");
   const recognitionRef = useRef(null);
   const timeoutRef = useRef(null);
+  const lastTranscriptRef = useRef("");
 
-  // 메시지 전송 함수
   const handleSend = useCallback(() => {
     if (text.trim()) {
       onSend(text);
       setText("");
-      if (isListening && recognitionRef.current) {
-        recognitionRef.current.stop();
-      }
+      lastTranscriptRef.current = "";
     }
-  }, [text, onSend, isListening]);
+  }, [text, onSend]);
 
-  // 타임아웃 리셋 함수 (음성 인식 중 일정 시간 동안 입력이 없으면 종료)
   const resetTimeout = useCallback(() => {
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
@@ -101,11 +94,25 @@ const MessageInput = ({ onSend }) => {
         recognitionRef.current.stop();
         setError("음성 입력 시간이 초과되었습니다.");
       }
-      // TODO: 타임아웃 왜 안 쳐먹음?
-    }, 10000); // 10초 타임아웃
+    }, 10000);
   }, [isListening]);
 
-  // 음성 인식 초기화 및 이벤트 핸들러 설정
+  const handleSpeechEnd = useCallback(() => {
+    setIsListening(false);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    if (lastTranscriptRef.current.trim()) {
+      setText(lastTranscriptRef.current);
+      if (onSend) {
+        onSend(lastTranscriptRef.current);
+      } else {
+        console.warn("onSend prop is not defined");
+      }
+      setText("");
+    }
+  }, [onSend]);
+
   useEffect(() => {
     if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
       const SpeechRecognition =
@@ -115,41 +122,28 @@ const MessageInput = ({ onSend }) => {
       recog.interimResults = true;
       recog.lang = "ko-KR";
 
-      // 음성 인식 시작 시 호출
       recog.onstart = () => {
         setIsListening(true);
         setError("");
         resetTimeout();
+        lastTranscriptRef.current = "";
       };
 
-      // 음성 인식 종료 시 호출
-      recog.onend = () => {
-        setIsListening(false);
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current);
-        }
-        // 음성 인식이 끝났을 때 자동 전송
-        if (text.trim() && text !== lastVoiceText) {
-          handleSend();
-          setLastVoiceText(text);
-        }
-      };
+      recog.onend = handleSpeechEnd;
 
-      // 음성 인식 결과 처리
       recog.onresult = (event) => {
         const transcript = Array.from(event.results)
           .map((result) => result[0].transcript)
           .join("");
+        lastTranscriptRef.current = transcript;
         setText(transcript);
         resetTimeout();
       };
 
-      // 음성 인식 오류 처리
       recog.onerror = (event) => {
+        console.error("Speech recognition error", event.error);
         setError(`음성 인식 오류: ${event.error}`);
-        if (recognitionRef.current) {
-          recognitionRef.current.stop();
-        }
+        setIsListening(false);
       };
 
       recognitionRef.current = recog;
@@ -158,7 +152,6 @@ const MessageInput = ({ onSend }) => {
       setError("이 브라우저는 음성 인식을 지원하지 않습니다.");
     }
 
-    // 컴포넌트 언마운트 시 정리
     return () => {
       if (recognitionRef.current) {
         recognitionRef.current.stop();
@@ -167,9 +160,8 @@ const MessageInput = ({ onSend }) => {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [resetTimeout, handleSend, text, lastVoiceText]);
+  }, [resetTimeout, handleSpeechEnd]);
 
-  // 음성 인식 토글 함수
   const toggleListening = useCallback(() => {
     if (isListening) {
       recognitionRef.current.stop();
@@ -180,14 +172,6 @@ const MessageInput = ({ onSend }) => {
     }
   }, [isListening]);
 
-  // 엔터 키 입력 시 메시지 전송
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      handleSend();
-    }
-  };
-
-  // 버튼 아이콘 결정 함수
   const getIconSrc = () => {
     if (text.trim() && !isListening) {
       return require("../../../Assets/img/send_icon.png");
@@ -198,14 +182,13 @@ const MessageInput = ({ onSend }) => {
     }
   };
 
-  // UI 렌더링
   return (
     <InputContainer>
       <TextInput
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        onKeyPress={handleKeyPress}
+        onKeyPress={(e) => e.key === "Enter" && !isListening && handleSend()}
         placeholder="무블 AI 도우미에게 질문해 주세요."
       />
       {isListening && <ListeningIndicator />}
