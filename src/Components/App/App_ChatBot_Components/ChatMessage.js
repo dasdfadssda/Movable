@@ -46,6 +46,8 @@ const MessageBubble = styled.div`
   max-width: 100%;
   background-color: ${(props) => (props.$isUser ? "#ED685A" : "#f1f1f1")};
   color: ${(props) => (props.$isUser ? "white" : "black")};
+  white-space: pre-wrap;
+  word-break: break-word;
 `;
 
 const StopTTSButton = styled.button`
