@@ -12,9 +12,9 @@ const CrowdGraph = ({ data }) => {
                 <LegendItem style={{color : "#DC5C49"}}><LegendDot color="#DC5C49" /> 외국인</LegendItem>
             </GraphLegend>
             <GraphGrid>
-                <GridLines>
+            <GridLines>
                     {[...Array(6)].map((_, i) => (
-                        <Line key={i} position={(5 - i) * 20} label={i * 5} />
+                        <Line key={i} position={(5 - i) * 20} label={(i * 0.2).toFixed(1)} />
                     ))}
                 </GridLines>
                 {data.map((day, index) => (
@@ -63,6 +63,7 @@ const LegendItem = styled.div`
     display: flex;
     align-items: center;
     font-size : 8px;
+    font-bold : bold;
 `;
 
 const LegendDot = styled.span`
@@ -94,7 +95,7 @@ const GraphColumn = styled.div`
 
 const Dot = styled.div`
     position: absolute;
-    bottom: ${({ value }) => value === 0 ? '20px' : value * 80 / 25 + 20 + 'px'}; /* Position based on value with scaling */
+    bottom: ${({ value }) => value * 80 + 20}px;
     width: 6px;
     height: 6px;
     border-radius: 50%;
