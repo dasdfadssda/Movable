@@ -82,9 +82,9 @@ const AnswerComponent = ({ answer, selectedRoutes }) => {
             />
           ) : (
             <ImageDiv
-              src={require("../../../Assets/Route/ColumLine2.png")}
+              src={require("../../../Assets/Route/colum_line.png")}
               width={24}
-              height={524}
+              height={638}
               left={8}
               right={8}
             />
@@ -176,7 +176,7 @@ const ColumnDiv = styled.div`
 `;
 
 const PackageDiv = styled.div`
-  margin-top: 30px;
+  margin-top: 38px;
 `;
 
 const ColorfulText = styled.span`

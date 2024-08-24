@@ -32,7 +32,16 @@ export const JejuPackage = [
       difficulty: "하",
       difficultynum: 1.00,
       Description : "설명이다.설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다",
-      Icons: ["휠체어 이용", "장애인 화장실", "보조견 동반", "오디오 가이드"]
+      Icons: ["휠체어 이용", "장애인 화장실", "보조견 동반", "오디오 가이드"],
+      graph : [
+        { day: "월", crowd: [{ type: "현지인", color: "#ED685A", value: 10 }, { type: "외지인", color: "#F3A953", value: 5 }] },
+        { day: "화", crowd: [{ type: "현지인", color: "#ED685A", value: 8 }, { type: "외지인", color: "#F3A953", value: 7 }] },
+        { day: "수", crowd: [{ type: "현지인", color: "#ED685A", value: 15 }, { type: "외국인", color: "#EB7D4B", value: 3 }] },
+        { day: "목", crowd: [{ type: "현지인", color: "#ED685A", value: 12 }] },
+        { day: "금", crowd: [{ type: "외국인", color: "#ED685A", value: 9 }] },
+        { day: "토", crowd: [{ type: "현지인", color: "#ED685A", value: 20 }, { type: "외지인", color: "#F3A953", value: 10 }] },
+        { day: "일", crowd: [{ type: "현지인", color: "#ED685A", value: 18 }] },
+    ],
     },
     {
       id: 2,
@@ -45,7 +54,16 @@ export const JejuPackage = [
       difficulty: "하",
       difficultynum: 2.00,
       Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
-       Description : "설명이다.설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다"
+       graph : [
+        { day: "월", crowd: [{ type: "현지인", color: "#ED685A", value: 10 }, { type: "외지인", color: "#E9AE5F", value: 5 }, { type: "외국인", color: "#DC5C49", value: 17 }] },
+        { day: "화", crowd: [{ type: "현지인", color: "#ED685A", value: 20 }, { type: "외지인", color: "#E9AE5F", value: 7 }, { type: "외국인", color: "#DC5C49", value: 17 }] },
+        { day: "수", crowd: [{ type: "현지인", color: "#ED685A", value: 15 }, { type: "외지인", color: "#E9AE5F", value: 14 }, { type: "외국인", color: "#DC5C49", value: 3 }] },
+        { day: "목", crowd: [{ type: "현지인", color: "#ED685A", value: 12 }, { type: "외지인", color: "#E9AE5F", value: 4 }, { type: "외국인", color: "#DC5C49", value: 17 }] },
+        { day: "금", crowd: [{ type: "현지인", color: "#ED685A", value: 0 }, { type: "외지인", color: "#E9AE5F", value: 20 }, { type: "외국인", color: "#DC5C49", value: 9 }] },
+        { day: "토", crowd: [{ type: "현지인", color: "#ED685A", value: 20 }, { type: "외지인", color: "#E9AE5F", value: 10 }, { type: "외국인", color: "#DC5C49", value: 20 }] },
+        { day: "일", crowd: [{ type: "현지인", color: "#ED685A", value: 18 }, { type: "외지인", color: "#E9AE5F", value: 12 }, { type: "외국인", color: "#DC5C49", value: 29 }] },
+    ],
+       Description : "설명이다.설명이다설명이다설명이다설명이다설명이다설명이다.설명이다설명이다설명이다설명이이다설명이다설명이다설명이다설명이다.설명이다설명이다설명이다설명이다설명이다.설이다설명이다설명이다설명이다설명이다.설명\nm명이다설명이다설명이다설명이다설명이다.설명\n다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다"
     },
     {
       id: 3,
@@ -57,6 +75,15 @@ export const JejuPackage = [
       time: "15분",
       difficulty: "중",
       difficultynum: 3.00,
+      graph : [
+        { day: "월", crowd: [{ type: "현지인", color: "#ED685A", value: 10 }, { type: "외지인", color: "#E9AE5F", value: 5 }, { type: "외국인", color: "#DC5C49", value: 0 }] },
+        { day: "화", crowd: [{ type: "현지인", color: "#ED685A", value: 20 }, { type: "외지인", color: "#E9AE5F", value: 7 }, { type: "외국인", color: "#DC5C49", value: 0 }] },
+        { day: "수", crowd: [{ type: "현지인", color: "#ED685A", value: 15 }, { type: "외지인", color: "#E9AE5F", value: 14 }, { type: "외국인", color: "#DC5C49", value: 3 }] },
+        { day: "목", crowd: [{ type: "현지인", color: "#ED685A", value: 12 }, { type: "외지인", color: "#E9AE5F", value: 4 }, { type: "외국인", color: "#DC5C49", value: 0 }] },
+        { day: "금", crowd: [{ type: "현지인", color: "#ED685A", value: 0 }, { type: "외지인", color: "#E9AE5F", value: 20 }, { type: "외국인", color: "#DC5C49", value: 9 }] },
+        { day: "토", crowd: [{ type: "현지인", color: "#ED685A", value: 20 }, { type: "외지인", color: "#E9AE5F", value: 10 }, { type: "외국인", color: "#DC5C49", value: 20 }] },
+        { day: "일", crowd: [{ type: "현지인", color: "#ED685A", value: 18 }, { type: "외지인", color: "#E9AE5F", value: 12 }, { type: "외국인", color: "#DC5C49", value: 29 }] },
+    ],
       Icons: ["휠체어 이용", "접근로 낮음", "보조견 동반", "오디오 가이드"],
       Description : "설명이다.설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다설명이다"
     },
@@ -70,6 +97,15 @@ export const JejuPackage = [
       time: "25분",
       difficulty: "하",
       difficultynum: 1.00,
+      graph : [
+        { day: "월", crowd: [{ type: "현지인", color: "#ed685a", value: 10 }, { type: "외지인", color: "#F3A953", value: 5 }] },
+        { day: "화", crowd: [{ type: "현지인", color: "#ed685a", value: 8 }, { type: "외지인", color: "#F3A953", value: 7 }] },
+        { day: "수", crowd: [{ type: "현지인", color: "#ed685a", value: 15 }, { type: "외국인", color: "#EB7D4B", value: 3 }] },
+        { day: "목", crowd: [{ type: "현지인", color: "#ed685a", value: 12 }] },
+        { day: "금", crowd: [{ type: "외국인", color: "#EB7D4B", value: 9 }] },
+        { day: "토", crowd: [{ type: "현지인", color: "#ed685a", value: 20 }, { type: "외지인", color: "#F3A953", value: 10 }] },
+        { day: "일", crowd: [{ type: "현지인", color: "#ed685a", value: 18 }] },
+    ],
       Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
       Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
     },
@@ -83,6 +119,15 @@ export const JejuPackage = [
       time: "18분",
       difficulty: "상",
       difficultynum: 3.77,
+       graph : [
+        { day: "월", crowd: [{ type: "현지인", color: "#ed685a", value: 10 }, { type: "외지인", color: "#F3A953", value: 5 }] },
+        { day: "화", crowd: [{ type: "현지인", color: "#ed685a", value: 8 }, { type: "외지인", color: "#F3A953", value: 7 }] },
+        { day: "수", crowd: [{ type: "현지인", color: "#ed685a", value: 15 }, { type: "외국인", color: "#EB7D4B", value: 3 }] },
+        { day: "목", crowd: [{ type: "현지인", color: "#ed685a", value: 12 }] },
+        { day: "금", crowd: [{ type: "외국인", color: "#EB7D4B", value: 9 }] },
+        { day: "토", crowd: [{ type: "현지인", color: "#ed685a", value: 20 }, { type: "외지인", color: "#F3A953", value: 10 }] },
+        { day: "일", crowd: [{ type: "현지인", color: "#ed685a", value: 18 }] },
+    ],
       Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
       Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
     },
@@ -95,6 +140,15 @@ export const JejuPackage = [
       Image: OneJejuDay6Img,
       time: "30분",
       difficulty: "중",
+      graph : [
+        { day: "월", crowd: [{ type: "현지인", color: "#ed685a", value: 10 }, { type: "외지인", color: "#F3A953", value: 5 }] },
+        { day: "화", crowd: [{ type: "현지인", color: "#ed685a", value: 8 }, { type: "외지인", color: "#F3A953", value: 7 }] },
+        { day: "수", crowd: [{ type: "현지인", color: "#ed685a", value: 15 }, { type: "외국인", color: "#EB7D4B", value: 3 }] },
+        { day: "목", crowd: [{ type: "현지인", color: "#ed685a", value: 12 }] },
+        { day: "금", crowd: [{ type: "외국인", color: "#EB7D4B", value: 9 }] },
+        { day: "토", crowd: [{ type: "현지인", color: "#ed685a", value: 20 }, { type: "외지인", color: "#F3A953", value: 10 }] },
+        { day: "일", crowd: [{ type: "현지인", color: "#ed685a", value: 18 }] },
+    ],
       difficultynum: 2.22,
       Icons: ["휠체어 이용", "접근로 낮음", "주차시설", "오디오 가이드"],
       Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
@@ -109,6 +163,15 @@ export const JejuPackage = [
       Image: TwoJejuDay1Img,
       time: "10분",
       difficulty: "하",
+      graph : [
+        { day: "월", crowd: [{ type: "현지인", color: "#ed685a", value: 10 }, { type: "외지인", color: "#F3A953", value: 5 }] },
+        { day: "화", crowd: [{ type: "현지인", color: "#ed685a", value: 8 }, { type: "외지인", color: "#F3A953", value: 7 }] },
+        { day: "수", crowd: [{ type: "현지인", color: "#ed685a", value: 15 }, { type: "외국인", color: "#EB7D4B", value: 3 }] },
+        { day: "목", crowd: [{ type: "현지인", color: "#ed685a", value: 12 }] },
+        { day: "금", crowd: [{ type: "외국인", color: "#EB7D4B", value: 9 }] },
+        { day: "토", crowd: [{ type: "현지인", color: "#ed685a", value: 20 }, { type: "외지인", color: "#F3A953", value: 10 }] },
+        { day: "일", crowd: [{ type: "현지인", color: "#ed685a", value: 18 }] },
+    ],
       difficultynum: 3.79,
       Icons: ["휠체어 이용", "장애인 화장실", "접근로 낮음", "오디오 가이드"],
       Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
@@ -124,6 +187,15 @@ export const JejuPackage = [
       time: "1분",
       difficulty: "중",
       difficultynum: 4.66,
+      graph : [
+        { day: "월", crowd: [{ type: "현지인", color: "#ed685a", value: 10 }, { type: "외지인", color: "#F3A953", value: 5 }] },
+        { day: "화", crowd: [{ type: "현지인", color: "#ed685a", value: 8 }, { type: "외지인", color: "#F3A953", value: 7 }] },
+        { day: "수", crowd: [{ type: "현지인", color: "#ed685a", value: 15 }, { type: "외국인", color: "#EB7D4B", value: 3 }] },
+        { day: "목", crowd: [{ type: "현지인", color: "#ed685a", value: 12 }] },
+        { day: "금", crowd: [{ type: "외국인", color: "#EB7D4B", value: 9 }] },
+        { day: "토", crowd: [{ type: "현지인", color: "#ed685a", value: 20 }, { type: "외지인", color: "#F3A953", value: 10 }] },
+        { day: "일", crowd: [{ type: "현지인", color: "#ed685a", value: 18 }] },
+    ],
       Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드", "접근로 낮음"],
       Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
 
@@ -138,6 +210,15 @@ export const JejuPackage = [
       time: "23분",
       difficulty: "중",
       difficultynum: 2.32,
+      graph : [
+        { day: "월", crowd: [{ type: "현지인", color: "#ed685a", value: 10 }, { type: "외지인", color: "#F3A953", value: 5 }] },
+        { day: "화", crowd: [{ type: "현지인", color: "#ed685a", value: 8 }, { type: "외지인", color: "#F3A953", value: 7 }] },
+        { day: "수", crowd: [{ type: "현지인", color: "#ed685a", value: 15 }, { type: "외국인", color: "#EB7D4B", value: 3 }] },
+        { day: "목", crowd: [{ type: "현지인", color: "#ed685a", value: 12 }] },
+        { day: "금", crowd: [{ type: "외국인", color: "#EB7D4B", value: 9 }] },
+        { day: "토", crowd: [{ type: "현지인", color: "#ed685a", value: 20 }, { type: "외지인", color: "#F3A953", value: 10 }] },
+        { day: "일", crowd: [{ type: "현지인", color: "#ed685a", value: 18 }] },
+    ],
       Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
       Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
 
@@ -151,6 +232,15 @@ export const JejuPackage = [
       Image: TwoJejuDay4Img,
       time: "50분",
       difficulty: "중",
+      graph : [
+        { day: "월", crowd: [{ type: "현지인", color: "#ed685a", value: 10 }, { type: "외지인", color: "#F3A953", value: 5 }] },
+        { day: "화", crowd: [{ type: "현지인", color: "#ed685a", value: 8 }, { type: "외지인", color: "#F3A953", value: 7 }] },
+        { day: "수", crowd: [{ type: "현지인", color: "#ed685a", value: 15 }, { type: "외국인", color: "#EB7D4B", value: 3 }] },
+        { day: "목", crowd: [{ type: "현지인", color: "#ed685a", value: 12 }] },
+        { day: "금", crowd: [{ type: "외국인", color: "#EB7D4B", value: 9 }] },
+        { day: "토", crowd: [{ type: "현지인", color: "#ed685a", value: 20 }, { type: "외지인", color: "#F3A953", value: 10 }] },
+        { day: "일", crowd: [{ type: "현지인", color: "#ed685a", value: 18 }] },
+    ],
       difficultynum: 3.4,
       Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
       Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
@@ -165,6 +255,15 @@ export const JejuPackage = [
       Image: OneJeju1Img,
       time: "10분",
       difficulty: "하",
+      graph : [
+        { day: "월", crowd: [{ type: "현지인", color: "#ed685a", value: 10 }, { type: "외지인", color: "#F3A953", value: 5 }] },
+        { day: "화", crowd: [{ type: "현지인", color: "#ed685a", value: 8 }, { type: "외지인", color: "#F3A953", value: 7 }] },
+        { day: "수", crowd: [{ type: "현지인", color: "#ed685a", value: 15 }, { type: "외국인", color: "#EB7D4B", value: 3 }] },
+        { day: "목", crowd: [{ type: "현지인", color: "#ed685a", value: 12 }] },
+        { day: "금", crowd: [{ type: "외국인", color: "#EB7D4B", value: 9 }] },
+        { day: "토", crowd: [{ type: "현지인", color: "#ed685a", value: 20 }, { type: "외지인", color: "#F3A953", value: 10 }] },
+        { day: "일", crowd: [{ type: "현지인", color: "#ed685a", value: 18 }] },
+    ],
       difficultynum: 1.00,
       Icons: ["휠체어 이용", "장애인 화장실", "주차시설", "오디오 가이드"],
       Description : "설명이다.설명이다설명이다설명이다설명이 다설명이다설 명이다설명이다설 명이다설명이다설명이다설명이다설명이다설명이다설명이다"
