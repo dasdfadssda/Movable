@@ -190,7 +190,7 @@ const ColumnDiv = styled.div`
 `;
 
 const PackageDiv = styled.div`
-  margin-top: 38px;
+  margin-top: 32px;
 `;
 
 const ColorfulText = styled.span`
