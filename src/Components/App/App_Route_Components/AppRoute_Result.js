@@ -36,7 +36,7 @@ const AnswerComponent = ({ answer, selectedRoutes }) => {
   }, [activeButton]);
 
   const handleClick = (item) => {
-    setSelectedItem(item); 
+    setSelectedItem(item);
     setIsDialogOpen(true);
   };
 
@@ -58,6 +58,11 @@ const AnswerComponent = ({ answer, selectedRoutes }) => {
   }
 
   const currentPackage = selectedRoutes[0] === 3 ? JejuPackage : TravelPackage;
+
+  // Calculate total price for the selected day
+  const totalPrice = currentPackage
+    .filter((item) => item.day.toString() === activeButton)
+    .reduce((acc, item) => acc + item.price, 0);
 
   return (
     <ThemeProvider theme={theme}>
@@ -82,40 +87,49 @@ const AnswerComponent = ({ answer, selectedRoutes }) => {
             />
           ) : (
             <ImageDiv
-              src={require("../../../Assets/Route/ColumLine2.png")}
+              src={require("../../../Assets/Route/colum_line.png")}
               width={24}
-              height={524}
+              height={638}
               left={8}
               right={8}
             />
           )}
           <ColumnDiv>
-          <FlexDiv>
-                <Body1 color={theme.colors.black_70} top={-5}>
-                  {selectedRoutes[0] === 3 && activeButton === "1" ? "비행기" : "자동차"}
-                </Body1>
-                <Body1 color={theme.colors.black_30} top={-5}>
-                  &nbsp;|&nbsp;
-                  <ColorfulText color="#A5A5A5">{duringTime}</ColorfulText>
-                </Body1>
-              </FlexDiv>
+            <FlexDiv>
+              <Body1 color={theme.colors.black_70} top={-5}>
+                {selectedRoutes[0] === 3 && activeButton === "1" ? "비행기" : "자동차"}
+              </Body1>
+              <Body1 color={theme.colors.black_30} top={-5}>
+                &nbsp;|&nbsp;
+                <ColorfulText color="#A5A5A5">{duringTime}</ColorfulText>
+              </Body1>
+            </FlexDiv>
             <div>
               <PackageDiv>
-                {currentPackage.filter(
-                  (item) => item.day.toString() === activeButton
-                ).map((item) => (
-                  <PackageItem key={item.id} item={item} onClick={() => handleClick(item)} />
-                ))}
+                {currentPackage
+                  .filter((item) => item.day.toString() === activeButton)
+                  .map((item) => (
+                    <PackageItem
+                      key={item.id}
+                      item={item}
+                      onClick={() => handleClick(item)}
+                    />
+                  ))}
               </PackageDiv>
             </div>
           </ColumnDiv>
         </FlexDiv>
         {isDialogOpen && (
-          <Dialog 
+          <Dialog
             item={selectedItem}
             onClose={handleCloseDialog}
           />
         )}
+        <FlexDiv style={{flexDirection:"column"}}>
+          <Hr/>
+          <TotalPriceText>1일차 예상 여행 비용</TotalPriceText>
+          <TotalPrice>₩{totalPrice.toLocaleString()} ~</TotalPrice>
+        </FlexDiv>
       </Div>
     </ThemeProvider>
   );
@@ -176,9 +190,34 @@ const ColumnDiv = styled.div`
 `;
 
 const PackageDiv = styled.div`
-  margin-top: 30px;
+  margin-top: 38px;
 `;
 
 const ColorfulText = styled.span`
   color: ${(props) => props.color || "black"};
 `;
+
+const TotalPriceText = styled.div`
+  font-size: 14px;
+  font-weight: ${(props) => props.theme.fontWeights.Body2};
+  color: ${(props) => props.theme.colors.black_70};
+  margin-bottom: 6px;
+`;
+
+const TotalPrice = styled.div`
+  font-size:24px;
+  font-weight: ${(props) => props.theme.fontWeights.Body2};
+  color: ${(props) => props.theme.colors.Primary_pink100};
+  margin-bottom: 10px;
+`;
+
+const Hr = styled.hr`
+width : 180px;
+height : 2px;
+  margin-bottom: 10px;
+  border : none;
+    background-color: #E3E3E3;
+  
+`;
+
+

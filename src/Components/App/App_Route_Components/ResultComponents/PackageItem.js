@@ -3,56 +3,57 @@ import styled from "styled-components";
 import { theme } from "../../../../Style/theme";
 
 const PackageItem = ({ item, onClick }) => {
-  return (
-    <Item onClick={onClick}>
-      <TravelCategory>{item.Category}</TravelCategory>
-      <FlexDiv flex={"flex-start"}>
-        <ImageDiv
-          src={item.Image}
-          alt={item.Title}
-          width={110}
-          height={70}
-          left={-5}
-        />
-        <PackageInfo>
-          <FlexDiv flex={"center"} bottom={5}>
-            <TravelTitle>{item.Title}</TravelTitle>
-            <TravelPosition> &nbsp;{item.position}</TravelPosition>
-          </FlexDiv>
-          <FlexDiv flex={"flex-start"}>
-            <Body1 color={theme.colors.black_50}>난이도&nbsp;</Body1>
-            <Body1 color={theme.colors.Primary_pink100}>{item.difficulty}&nbsp;</Body1>
-            <ImageDiv
-              src={require("../../../../Assets/Route/travelLine.png")}
-              width={1.5}
-              height={13}
-              right={5}
-              top={1.2}
-            />
-            <ImageDiv
-              src={require("../../../../Assets/Route/StarIcon.png")}
-              width={14}
-              height={14}
-              right={4}
-            />
-            <TravelDifficultyNum>{item.difficultynum}</TravelDifficultyNum>
-          </FlexDiv>
-          <FlexDiv flex={"center"}>
-            <TravelTime>
-              <span>자동차</span> <span>&nbsp;|&nbsp;</span>
-              <span>{item.time}</span>
-            </TravelTime>
-          </FlexDiv>
-          <FlexDiv flex={"center"}>
-            <TravelTime>
-              <span>예상금액</span> <span>&nbsp;|&nbsp;</span>
-              <span>{item.time}</span>
-            </TravelTime>
-          </FlexDiv>
-        </PackageInfo>
-      </FlexDiv>
-    </Item>
-  );
+    return (
+        <Item onClick={onClick}>
+            <FlexDiv flex={"center"} bottom={5}>
+                <TravelCategory>{item.Category}</TravelCategory>
+                <span style={{ color: '#5B5B5B' }}>&nbsp;|&nbsp;</span>
+                <TravelTitle>{item.Title}</TravelTitle>
+                <TravelPosition> &nbsp;{item.position}</TravelPosition>
+            </FlexDiv>
+            <FlexDiv flex={"flex-start"}>
+                <ImageDiv
+                    src={item.Image}
+                    alt={item.Title}
+                    width={110}
+                    height={70}
+                    left={-5}
+                />
+                <PackageInfo>
+                    <FlexDiv flex={"flex-start"} bottom={18}>
+                        <Body1 color={theme.colors.black_50}>난이도&nbsp;</Body1>
+                        <Body1 color={theme.colors.Primary_pink100}>{item.difficulty}&nbsp;</Body1>
+                        <ImageDiv
+                            src={require("../../../../Assets/Route/travelLine.png")}
+                            width={1.5}
+                            height={13}
+                            right={5}
+                            top={1.2}
+                        />
+                        <ImageDiv
+                            src={require("../../../../Assets/Route/StarIcon.png")}
+                            width={14}
+                            height={14}
+                            right={4}
+                        />
+                        <TravelDifficultyNum>{item.difficultynum}</TravelDifficultyNum>
+                    </FlexDiv>
+                    <FlexDiv flex={"center"}>
+                        <TravelTime>
+                            <span style={{ color: '#5B5B5B' }}>자동차</span> <span style={{ color: '#E3E3E3' }}>&nbsp;|&nbsp;</span>
+                            <span style={{ color: '#A5A5A5' }}>{item.time}</span>
+                        </TravelTime>
+                    </FlexDiv>
+                    <FlexDiv flex={"center"}>
+                        <TravelTime>
+                            <span style={{ color: '#5B5B5B' }}>예상금액</span> <span style={{ color: '#E3E3E3' }}>&nbsp;|&nbsp;</span>
+                            <span style={{ color: '#A5A5A5' }}>{item.time}</span>
+                        </TravelTime>
+                    </FlexDiv>
+                </PackageInfo>
+            </FlexDiv>
+        </Item>
+    );
 };
 
 export default PackageItem;
@@ -76,6 +77,7 @@ const TravelCategory = styled.div`
   font-size: 14px;
   font-weight: 500;
   line-height: 140%;
+  color : #5B5B5B
 `;
 
 const TravelTitle = styled.div`
@@ -84,7 +86,6 @@ const TravelTitle = styled.div`
   font-size: 14px;
   font-weight: 600;
   line-height: 140%;
-  margin-top: 5px;
 `;
 
 const TravelPosition = styled.div`
@@ -93,7 +94,7 @@ const TravelPosition = styled.div`
   font-size: 12px;
   font-weight: 500;
   line-height: 140%;
-  margin-top: 5px;
+  margin-left: 5px;
 `;
 
 const FlexDiv = styled.div`

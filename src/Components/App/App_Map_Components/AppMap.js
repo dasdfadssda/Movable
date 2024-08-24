@@ -496,16 +496,16 @@ const AppMap = () => {
                   <Body4>{selectedMarkerInfo.address}</Body4>
                   <img
                     style={{
-                      marginTop: "12px",
+                      marginTop: "8px",
                       width: "171px",
                       height: "21px",
                     }}
                     src={LocationDetail}
                   />
-                  <div style={{ marginTop: "24px" }}>
+                  <div style={{ marginTop: "8px" }}>
                     <img
                       src={PhoneShare}
-                      style={{ width: "351px", height: "44px" }}
+                      style={{ width: "385px", height: "auto" }}
                     />
                   </div>
                   <div
