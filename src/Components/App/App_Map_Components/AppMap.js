@@ -47,7 +47,7 @@ import RegisterReview from "../../../Assets/Map/ReviewWriting.png";
 import Review1 from "../../../Assets/Map/review1.png";
 import Review2 from "../../../Assets/Map/review2.png";
 import Review3 from "../../../Assets/Map/review3.png";
-import Review4 from "../../../Assets/Map/review4.png";
+import Review5 from "../../../Assets/Map/Review5.png";
 import AppSpash from "../App_Splash_Components/AppSplash";
 import FloatingActionButton from "./AppFloatingActionButton";
 
@@ -207,7 +207,7 @@ const AppMap = () => {
 
   const toggleSliderHeight = () => {
     setSliderHeight((prevHeight) =>
-      prevHeight === "167px" ? "568px" : "167px"
+      prevHeight === "167px" ? "600px" : "167px"
     );
 
     setIsContainersVisible((prevVisible) => !prevVisible);
@@ -328,10 +328,6 @@ const AppMap = () => {
       }
       alert("검색 중 오류가 발생했습니다.");
     }
-  };
-
-  const handleRecommendationClick = () => {
-    window.location.href = "/Route";
   };
 
   // 로딩 화면 시간 3초 
@@ -491,7 +487,7 @@ const AppMap = () => {
               handleSliderUpClick={toggleSliderHeight}
             >
               <SliderContent>
-                <div>
+                <div style={{paddingBottom : "20px"}}>
                   <Header1>{selectedMarkerInfo.title}</Header1>
                   <Body4>{selectedMarkerInfo.address}</Body4>
                   <img
@@ -520,7 +516,7 @@ const AppMap = () => {
                       src={Divider}
                       style={{
                         position: "absolute",
-                        top: 240,
+                        top: 223,
                         zIndex: 0,
                         width: "100%",
                       }}
@@ -535,26 +531,6 @@ const AppMap = () => {
                       }}
                     />
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "center",
-                      flexWrap: "wrap",
-                    }}
-                  >
-                    {/* {serviceData &&
-                    serviceData.map((service, index) => (
-                      <img
-                        key={index}
-                        style={{
-                          marginTop: "24px",
-                          width: "60px",
-                          height: "60px",
-                        }}
-                        src={service.image}
-                        alt={service.name}
-                      />
-                    ))} */}
                     <ServiceIconsContainer>
                       <ServiceIcon src={ParkingService} alt="ParkingService" style={{ height: '57px', width: "55px" }} />
                       {/* <ServiceIcon src={GuideDogService} alt="HelpDogService" /> */}
@@ -566,7 +542,6 @@ const AppMap = () => {
                         style={{ height: '57px', width: "55px" }}
                       />
                     </ServiceIconsContainer>
-                  </div>
                   <div
                     style={{
                       posiitoin: "relative",
@@ -578,7 +553,7 @@ const AppMap = () => {
                       src={Divider}
                       style={{
                         position: "absolute",
-                        top: 370,
+                        top: 360,
                         zIndex: 0,
                         width: "100%",
                       }}
@@ -596,7 +571,7 @@ const AppMap = () => {
                     style={{
                       width: "66px",
                       height: "21px",
-                      marginLeft: "283px",
+                      marginLeft: "312px",
                     }}
                     src={RegisterReview}
                   />
@@ -611,29 +586,30 @@ const AppMap = () => {
                       src={Review1}
                       style={{
                         marginBottom: "8px",
-                        width: "350px",
-                        height: "37px",
+                        width: "100%",
+                        height: "auto",
                       }}
                     />
                     <img
                       src={Review2}
                       style={{
                         marginBottom: "8px",
-                        width: "350px",
-                        height: "37px",
+                        width: "100%",
+                        height: "auto",
                       }}
                     />
                     <img
                       src={Review3}
                       style={{
                         marginBottom: "8px",
-                        width: "350px",
-                        height: "37px",
+                        width: "100%",
+                        height: "auto",
                       }}
                     />
                     <img
-                      src={Review4}
-                      style={{ width: "350px", height: "37px" }}
+                      src={Review5}
+                      style={{ width: "100%",
+                        height: "auto" }}
                     />
                   </div>
                 </div>
@@ -765,7 +741,7 @@ const FindRouteButton = styled.button`
 `;
 const ServiceIconsContainer = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   margin-top: 20px;
   margin-bottom: 24px;
 `;
