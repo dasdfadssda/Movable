@@ -116,6 +116,7 @@ const Description = styled.div`
   text-align: start;
   padding-left: 3px;
   margin-top : 12px;
+  margin-bottom : 12px;
 `;
 
 const DetailsContainer = styled.div`

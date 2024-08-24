@@ -5,7 +5,7 @@ import styled from "styled-components";
 const iconMap = {
     "휠체어 이용": require("../../../../Assets/Map/wheelchair_service.png"),
     "장애인 화장실": require("../../../../Assets/Map/toilet_service.png"),
-    "주차시설": require("../../../../Assets/Map/parking_service.png"),
+    "주차시설": require("../../../../Assets/Map/videoSub_service.png"),
     "오디오 가이드": require("../../../../Assets/Map/audioGuide_service.png"),
     "보조견 동반": require("../../../../Assets/Map/guideDog_service.png"),
     "접근로 낮음": require("../../../../Assets/Map/scope_service.png"),
