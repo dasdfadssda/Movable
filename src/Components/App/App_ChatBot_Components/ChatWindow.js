@@ -47,10 +47,40 @@ const Title = styled.h1`
   text-align: center;
 `;
 
+const LoadingBar = styled.div`
+  width: 100%;
+  height: 3px;
+  background-color: #f3f3f3;
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background-color: #ed685a;
+    animation: loading 1.5s infinite;
+  }
+
+  @keyframes loading {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(200%);
+    }
+  }
+`;
+
 const ChatWindow = () => {
   const [messages, setMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const sendMessage = useCallback(async (text) => {
+    setIsLoading(true);
     // 사용자 메시지 추가
     const userMessage = { sender: "user", text };
     setMessages((prevMessages) => [...prevMessages, userMessage]);
@@ -71,6 +101,7 @@ const ChatWindow = () => {
       };
       setMessages((prevMessages) => [...prevMessages, errorMessage]);
     }
+    setIsLoading(false);
   }, []);
 
   const handleBackClick = () => {
@@ -78,16 +109,19 @@ const ChatWindow = () => {
   };
 
   return (
-    <ChatWindowContainer>
-      <Header>
-        <BackButton onClick={handleBackClick}>
-          <BackIconImage src={BackIcon} alt="뒤로가기" />
-        </BackButton>
-        <Title>무블챗봇</Title>
-      </Header>
-      <MessageList messages={messages} />
-      <MessageInput onSend={sendMessage} />
-    </ChatWindowContainer>
+    <div>
+      {isLoading && <LoadingBar />}
+      <ChatWindowContainer>
+        <Header>
+          <BackButton onClick={handleBackClick}>
+            <BackIconImage src={BackIcon} alt="뒤로가기" />
+          </BackButton>
+          <Title>무블챗봇</Title>
+        </Header>
+        <MessageList messages={messages} />
+        <MessageInput onSend={sendMessage} />
+      </ChatWindowContainer>
+    </div>
   );
 };
 
